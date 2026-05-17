@@ -96,11 +96,11 @@ Aproveitamento geral: ${Math.round((azul + verde) / ALL_Q.length * 100)}%
 
   // Usa EmailJS REST API (serviço gratuito)
   const payload = JSON.stringify({
-    service_id:  'service_copa_higiene',
-    template_id: 'template_copa_higiene',
-    user_id:     'YOUR_EMAILJS_PUBLIC_KEY',
+    service_id:  'service_t2hr53m',
+    template_id: 'template_pwoea85',
+    user_id:     'uFnIjg1P8MKqSKyAp',
     template_params: {
-      to_email:   'raianesouzan09@gmail.com',
+      to_email:   'raianesouzam09@gmail.com',
       subject:    `⚽ Relatório Copa da Higiene — ${dataHora}`,
       message:    corpo,
       vencedor,
