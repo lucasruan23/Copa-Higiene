@@ -55,12 +55,12 @@ function todosResponderam() {
 }
 
 function resetarRespostas() {
-  partida.times.azul.respondeu = false;
+  partida.times.azul.respondeu  = false;
   partida.times.verde.respondeu = false;
 }
 
 function podeIniciar() {
-  return partida.times.azul.jogadores.length > 0 &&
+  return partida.times.azul.jogadores.length  > 0 &&
          partida.times.verde.jogadores.length > 0;
 }
 
@@ -112,7 +112,7 @@ Aproveitamento geral: ${Math.round((azul + verde) / ALL_Q.length * 100)}%
       vencedor,
       azul_gols:       String(azul),
       verde_gols:      String(verde),
-      jogadores_azul:  jogadoresAzul.join(', ') || '—',
+      jogadores_azul:  jogadoresAzul.join(', ')  || '—',
       jogadores_verde: jogadoresVerde.join(', ') || '—',
       data_hora:       dataHora,
     }
@@ -154,11 +154,11 @@ Aproveitamento geral: ${Math.round((azul + verde) / ALL_Q.length * 100)}%
 
 // ===== ROTAS =====
 
-// Estado
+// GET /estado
 app.get('/estado', (req, res) => {
   const { time = 'azul' } = req.query;
 
-  // Avança pergunta automaticamente quando timer expirar
+  // ✅ Avança pergunta automaticamente quando countdown expirar
   if (
     partida.aguardandoProxima &&
     partida.proximaEm &&
@@ -166,13 +166,13 @@ app.get('/estado', (req, res) => {
   ) {
     partida.perguntaIndex++;
     partida.aguardandoProxima = false;
-    partida.proximaEm = null;
+    partida.proximaEm         = null;
     resetarRespostas();
 
     if (partida.perguntaIndex >= partida.perguntas.length) {
       partida.encerrada = true;
-      console.log('🏁 Fim de jogo! Enviando relatório...');
-      console.log('   Azul:', partida.times.azul.gols, 'gols |', partida.times.azul.jogadores);
+      console.log('🏁 Fim de jogo detectado! Enviando relatório...');
+      console.log('   Azul:', partida.times.azul.gols,  'gols |', partida.times.azul.jogadores);
       console.log('   Verde:', partida.times.verde.gols, 'gols |', partida.times.verde.jogadores);
       enviarRelatorio(
         { azul: partida.times.azul.gols, verde: partida.times.verde.gols },
@@ -182,7 +182,7 @@ app.get('/estado', (req, res) => {
     }
   }
 
-  const idx      = partida.perguntaIndex;
+  const idx       = partida.perguntaIndex;
   const fimDeJogo = partida.iniciada && partida.encerrada;
   const pergunta  = !fimDeJogo ? partida.perguntas[idx] : null;
 
@@ -215,9 +215,10 @@ app.get('/estado', (req, res) => {
   });
 });
 
-// Registrar jogadores
+// POST /registrar
 app.post('/registrar', (req, res) => {
   const { time, jogadores = [] } = req.body;
+
   if (!['azul','verde'].includes(time))
     return res.status(400).json({ erro: 'Time inválido.' });
   if (!Array.isArray(jogadores) || jogadores.length === 0)
@@ -229,7 +230,7 @@ app.post('/registrar', (req, res) => {
   console.log(`✅ Time ${time} registrado:`, partida.times[time].jogadores);
 
   res.json({
-    ok: true,
+    ok:             true,
     versao:         partida.versao,
     jogadoresAzul:  partida.times.azul.jogadores,
     jogadoresVerde: partida.times.verde.jogadores,
@@ -238,28 +239,28 @@ app.post('/registrar', (req, res) => {
   });
 });
 
-// Iniciar
+// POST /iniciar
 app.post('/iniciar', (req, res) => {
   if (!podeIniciar())
     return res.status(400).json({ erro: 'Os 2 times precisam ter jogadores.' });
   if (partida.iniciada)
     return res.status(400).json({ erro: 'Partida já iniciada.' });
 
-  partida.iniciada          = true;
-  partida.encerrada         = false;
-  partida.perguntaIndex     = 0;
-  partida.aguardandoProxima = false;
-  partida.proximaEm         = null;
-  partida.times.azul.gols   = 0;
+  partida.iniciada              = true;
+  partida.encerrada             = false;
+  partida.perguntaIndex         = 0;
+  partida.aguardandoProxima     = false;
+  partida.proximaEm             = null;
+  partida.times.azul.gols       = 0;
   partida.times.azul.respondeu  = false;
-  partida.times.verde.gols  = 0;
+  partida.times.verde.gols      = 0;
   partida.times.verde.respondeu = false;
 
   console.log('🚀 Partida iniciada!');
   res.json({ ok: true, versao: partida.versao });
 });
 
-// Responder
+// POST /responder
 app.post('/responder', (req, res) => {
   const { time, resposta } = req.body;
 
@@ -284,23 +285,23 @@ app.post('/responder', (req, res) => {
 
   const todos = todosResponderam();
 
-  // ✅ Quando os 2 respondem: inicia countdown de 5s
+  // ✅ Ambos responderam — inicia countdown de 5s
   if (todos && !partida.aguardandoProxima) {
     partida.aguardandoProxima = true;
-    partida.proximaEm = Date.now() + 5000;
+    partida.proximaEm         = Date.now() + 5000;
     console.log('⏳ Ambos responderam! Próxima pergunta em 5 segundos...');
   }
 
   // ✅ Verifica se é a última pergunta
   const ultimaPergunta = partida.perguntaIndex === partida.perguntas.length - 1;
-  const fimDeJogo = todos && ultimaPergunta;
+  const fimDeJogo      = todos && ultimaPergunta;
 
   res.json({
     acertou,
-    respostaCorreta: pergunta.ans,
-    opcaoTexto:      pergunta.opts[pergunta.ans],
-    explicacao:      pergunta.exp,
-    gols:            partida.times[time].gols,
+    respostaCorreta:   pergunta.ans,
+    opcaoTexto:        pergunta.opts[pergunta.ans],
+    explicacao:        pergunta.exp,
+    gols:              partida.times[time].gols,
     placar: {
       azul:  partida.times.azul.gols,
       verde: partida.times.verde.gols,
@@ -312,13 +313,14 @@ app.post('/responder', (req, res) => {
   });
 });
 
-// Resetar
+// POST /resetar
 app.post('/resetar', (req, res) => {
   console.log('🔄 Partida resetada!');
   partida = novaPartida();
   res.json({ ok: true, versao: partida.versao });
 });
 
+// ===== START =====
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n✅ Servidor Copa da Higiene rodando na porta ${PORT}\n`);
