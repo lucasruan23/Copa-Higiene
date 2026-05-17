@@ -12,8 +12,6 @@ html,body{
   background:#021428;
   overflow-x:hidden;
 }
-
-/* ESTÁDIO */
 #stadium{
   position:fixed;inset:0;z-index:0;overflow:hidden;
   background:radial-gradient(circle at 50% 0,#1a3d8f 0,#021428 55%,#000814 100%);
@@ -37,8 +35,6 @@ html,body{
     radial-gradient(circle at 85% 40%,rgba(255,255,255,.3) 0,transparent 50%);
   opacity:.25;
 }
-
-/* CAMPO */
 #field{
   position:fixed;left:50%;bottom:0;transform:translateX(-50%);
   width:130%;max-width:1000px;height:54%;
@@ -63,8 +59,6 @@ html,body{
   background:rgba(255,255,255,.7);
   transform:translate(-50%,-50%);
 }
-
-/* GOL */
 #goal-front{
   position:absolute;bottom:10%;left:50%;transform:translateX(-50%);
   width:48%;max-width:300px;height:36%;
@@ -81,13 +75,10 @@ html,body{
     linear-gradient(-60deg,transparent 0,transparent 5px,rgba(255,255,255,.25) 5px,rgba(255,255,255,.25) 6px,transparent 6px);
   background-size:12px 12px;
 }
-
-/* BOLA */
 #ball{
   position:absolute;bottom:14%;left:50%;transform:translateX(-50%);
   width:22px;height:22px;border-radius:50%;
-  background:
-    radial-gradient(circle at 35% 30%,#fff 0,#e0e0e0 50%,#aaa 100%);
+  background:radial-gradient(circle at 35% 30%,#fff 0,#e0e0e0 50%,#aaa 100%);
   border:2px solid #333;
   box-shadow:0 3px 8px rgba(0,0,0,.8),inset 0 -2px 4px rgba(0,0,0,.3);
   z-index:5;
@@ -109,22 +100,17 @@ html,body{
 }
 #ball.goal{animation:shootGoal .85s cubic-bezier(.4,0,.2,1) forwards}
 #ball.miss{animation:shootMiss .85s cubic-bezier(.4,0,.2,1) forwards}
-
-/* ── GOLEIRO FIFA-style ── */
 #keeper{
   position:absolute;bottom:22%;left:50%;
   transform:translateX(-50%);
-  width:36px;height:72px;
-  z-index:4;
+  width:36px;height:72px;z-index:4;
 }
-/* sombra no chão */
 #keeper::after{
   content:"";position:absolute;bottom:-4px;left:50%;
   transform:translateX(-50%);
   width:28px;height:6px;border-radius:50%;
   background:rgba(0,0,0,.35);
 }
-/* cabeça */
 #kp-head{
   position:absolute;top:0;left:50%;transform:translateX(-50%);
   width:18px;height:18px;border-radius:50%;
@@ -132,37 +118,29 @@ html,body{
   border:1.5px solid #c8845a;
   box-shadow:0 2px 4px rgba(0,0,0,.4);
 }
-/* cabelo */
 #kp-head::before{
   content:"";position:absolute;top:-1px;left:1px;right:1px;height:8px;
   background:#5d3a1a;border-radius:50% 50% 0 0;
 }
-/* olhos */
 #kp-head::after{
   content:"";position:absolute;top:7px;left:3px;
   width:4px;height:2px;border-radius:50%;
-  background:#333;
-  box-shadow:6px 0 0 #333;
+  background:#333;box-shadow:6px 0 0 #333;
 }
-/* pescoço */
 #kp-neck{
   position:absolute;top:17px;left:50%;transform:translateX(-50%);
-  width:8px;height:5px;
-  background:#d4956a;
+  width:8px;height:5px;background:#d4956a;
 }
-/* torso (camisa) */
 #kp-body{
   position:absolute;top:21px;left:50%;transform:translateX(-50%);
   width:22px;height:24px;border-radius:4px 4px 2px 2px;
   background:linear-gradient(160deg,#ffb300 0,#e65100 100%);
   box-shadow:inset 0 2px 4px rgba(255,255,255,.2),0 2px 6px rgba(0,0,0,.4);
 }
-/* número na camisa */
 #kp-body::after{
   content:"1";position:absolute;top:5px;left:50%;transform:translateX(-50%);
   font-size:9px;font-weight:900;color:rgba(255,255,255,.9);
 }
-/* braço esquerdo */
 #kp-arm-l{
   position:absolute;top:22px;left:3px;
   width:8px;height:18px;border-radius:4px;
@@ -170,7 +148,6 @@ html,body{
   transform-origin:top center;transform:rotate(-15deg);
   box-shadow:0 2px 4px rgba(0,0,0,.3);
 }
-/* braço direito */
 #kp-arm-r{
   position:absolute;top:22px;right:3px;
   width:8px;height:18px;border-radius:4px;
@@ -178,34 +155,29 @@ html,body{
   transform-origin:top center;transform:rotate(15deg);
   box-shadow:0 2px 4px rgba(0,0,0,.3);
 }
-/* luvas */
 #kp-arm-l::after,#kp-arm-r::after{
   content:"";position:absolute;bottom:-3px;left:0;
   width:9px;height:7px;border-radius:3px;
   background:#fdd835;border:1px solid #f9a825;
 }
-/* calça */
 #kp-pants{
   position:absolute;top:43px;left:50%;transform:translateX(-50%);
   width:22px;height:14px;
   background:linear-gradient(180deg,#1a237e,#283593);
   border-radius:0 0 2px 2px;
 }
-/* perna esq */
 #kp-leg-l{
   position:absolute;top:55px;left:7px;
   width:9px;height:14px;border-radius:3px;
   background:linear-gradient(180deg,#1a237e,#283593);
   box-shadow:0 2px 4px rgba(0,0,0,.3);
 }
-/* perna dir */
 #kp-leg-r{
   position:absolute;top:55px;right:7px;
   width:9px;height:14px;border-radius:3px;
   background:linear-gradient(180deg,#1a237e,#283593);
   box-shadow:0 2px 4px rgba(0,0,0,.3);
 }
-/* chuteiras */
 #kp-leg-l::after,#kp-leg-r::after{
   content:"";position:absolute;bottom:-2px;left:-1px;
   width:11px;height:6px;border-radius:3px 3px 2px 2px;
@@ -221,12 +193,8 @@ html,body{
 }
 #keeper.dive-left{animation:diveLeft .5s ease-out forwards}
 #keeper.dive-right{animation:diveRight .5s ease-out forwards}
-
-/* ── JOGADORES FIFA-style ── */
 .player-fig{
-  position:absolute;
-  width:28px;height:58px;
-  z-index:3;
+  position:absolute;width:28px;height:58px;z-index:3;
 }
 .player-fig::after{
   content:"";position:absolute;bottom:-3px;left:50%;
@@ -238,8 +206,7 @@ html,body{
   position:absolute;top:0;left:50%;transform:translateX(-50%);
   width:14px;height:14px;border-radius:50%;
   background:radial-gradient(circle at 40% 35%,#ffe0b2,#d4956a);
-  border:1px solid #c8845a;
-  box-shadow:0 1px 3px rgba(0,0,0,.4);
+  border:1px solid #c8845a;box-shadow:0 1px 3px rgba(0,0,0,.4);
 }
 .pl-head::before{
   content:"";position:absolute;top:-1px;left:1px;right:1px;height:6px;
@@ -287,8 +254,6 @@ html,body{
 }
 #player-azul{bottom:5%;left:36%}
 #player-verde{bottom:5%;right:36%}
-
-/* LABEL GOL/FORA */
 #shot-label{
   position:fixed;top:26%;left:50%;transform:translateX(-50%);
   font-size:2.4em;font-weight:900;color:#FFD700;
@@ -303,8 +268,6 @@ html,body{
 }
 #shot-label.show{animation:labelPop .6s .35s ease forwards}
 #shot-label.miss{color:#ff4444;text-shadow:0 0 20px rgba(255,68,68,.8),3px 3px 8px rgba(0,0,0,.9)}
-
-/* CONFETES */
 .conf{
   position:fixed;top:-10px;width:8px;height:14px;border-radius:2px;
   opacity:0;pointer-events:none;z-index:40;
@@ -315,8 +278,6 @@ html,body{
   50%{transform:translateY(50vh) rotate(360deg) scaleX(-1)}
   100%{opacity:0;transform:translateY(100vh) rotate(720deg) scaleX(1)}
 }
-
-/* PAINÉIS */
 .panel{
   position:fixed;left:50%;top:50%;
   transform:translate(-50%,-50%);
@@ -333,8 +294,6 @@ html,body{
   from{opacity:0;transform:translate(-50%,-46%) scale(.94)}
   to{opacity:1;transform:translate(-50%,-50%) scale(1)}
 }
-
-/* HOME */
 #home-panel{background:linear-gradient(160deg,#03163d 0,#051f52 100%);color:#fff;}
 .home-title{font-size:1.7em;font-weight:900;margin-bottom:4px;letter-spacing:.5px}
 .home-sub{font-size:.85em;color:#dbe3ff;margin-bottom:12px;line-height:1.55}
@@ -349,13 +308,48 @@ html,body{
 .input-group input,.input-group select{
   width:100%;padding:10px 12px;border-radius:12px;border:none;
   font-size:.9em;background:rgba(255,255,255,.1);color:#fff;
-  border:1.5px solid rgba(255,255,255,.15);
-  transition:.2s;outline:none;
+  border:1.5px solid rgba(255,255,255,.15);transition:.2s;outline:none;
 }
 .input-group input:focus,.input-group select:focus{
   border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.15);
 }
 .input-group select option{background:#0d2554;color:#fff}
+
+/* Lista de jogadores adicionados */
+.jogadores-list{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-top:8px;min-height:28px;
+}
+.jogador-chip{
+  display:flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:20px;
+  font-size:.78em;font-weight:600;
+  animation:chipIn .2s ease;
+}
+@keyframes chipIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.chip-azul-j{background:#1565c0;color:#fff}
+.chip-verde-j{background:#2e7d32;color:#fff}
+.chip-rm{background:none;border:none;color:rgba(255,255,255,.7);
+  cursor:pointer;font-size:.9em;padding:0;line-height:1;}
+.chip-rm:hover{color:#fff}
+.add-row{display:flex;gap:8px;margin-top:8px}
+.add-row input{flex:1}
+.btn-add{
+  padding:8px 14px;border-radius:12px;border:none;
+  background:linear-gradient(135deg,#FFD700,#FFA500);color:#222;
+  font-size:.85em;font-weight:700;cursor:pointer;white-space:nowrap;
+  transition:.2s;
+}
+.btn-add:hover{transform:translateY(-1px)}
+.team-section{
+  background:rgba(255,255,255,.06);border-radius:14px;
+  padding:12px 14px;margin-bottom:10px;
+}
+.team-section-title{
+  font-size:.82em;font-weight:700;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+
 .btn-entrar-disabled{
   width:100%;padding:13px;border-radius:50px;border:none;
   font-size:.95em;font-weight:700;
@@ -366,12 +360,10 @@ html,body{
   font-size:.95em;font-weight:700;
   background:linear-gradient(135deg,#00c853,#00a040);color:#fff;
   cursor:pointer;margin-top:8px;
-  box-shadow:0 4px 14px rgba(0,200,83,.5);
-  transition:.22s;
+  box-shadow:0 4px 14px rgba(0,200,83,.5);transition:.22s;
 }
-.btn-entrar-ok:hover{transform:translateY(-1px);box-shadow:0 7px 20px rgba(0,200,83,.6)}
+.btn-entrar-ok:hover{transform:translateY(-1px)}
 
-/* WAIT */
 #wait-panel{text-align:center;background:linear-gradient(160deg,#03163d,#051f52);color:#fff}
 .wait-spinner{font-size:3em;animation:spin 2s linear infinite;display:inline-block;margin-bottom:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -383,8 +375,7 @@ html,body{
 .chip-verde{background:#2e7d32;color:#fff}
 .btn-iniciar{
   width:100%;padding:13px;border-radius:50px;border:none;
-  font-size:.95em;font-weight:700;margin-top:14px;cursor:pointer;
-  transition:.22s;
+  font-size:.95em;font-weight:700;margin-top:14px;cursor:pointer;transition:.22s;
 }
 .btn-iniciar-ok{
   background:linear-gradient(135deg,#00c853,#00a040);color:#fff;
@@ -393,7 +384,6 @@ html,body{
 .btn-iniciar-ok:hover{transform:translateY(-1px)}
 .btn-iniciar-wait{background:#37474f;color:#78909c;cursor:not-allowed}
 
-/* QUIZ */
 .quiz-header{
   display:flex;justify-content:space-between;align-items:center;
   flex-wrap:wrap;gap:6px;margin-bottom:8px;
@@ -427,7 +417,7 @@ html,body{
   box-shadow:0 2px 6px rgba(21,101,192,.4);
 }
 .opt.correct{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20}
-.opt.correct .opt-letter{background:#2e7d32;box-shadow:0 2px 6px rgba(46,125,50,.4)}
+.opt.correct .opt-letter{background:#2e7d32}
 .opt.wrong{background:#ffebee;border-color:#c62828;color:#b71c1c}
 .opt.wrong .opt-letter{background:#c62828}
 .opt:disabled{cursor:not-allowed;opacity:.75}
@@ -447,8 +437,6 @@ html,body{
   margin-top:10px;width:100%;transition:.2s;
 }
 .btn-next:hover{transform:translateY(-1px)}
-
-/* RESULTADO */
 #result-panel{text-align:center}
 .stats-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
 .stat-box{flex:1;min-width:95px;background:#f5f7ff;border-radius:14px;padding:12px}
@@ -466,13 +454,10 @@ html,body{
   cursor:pointer;box-shadow:0 4px 14px rgba(0,200,83,.5);transition:.22s;
 }
 .btn-jogar-novo:hover{transform:translateY(-1px)}
-
-/* SCOREBOARD */
 #scoreboard{
   position:fixed;top:8px;left:50%;transform:translateX(-50%);
   width:min(700px,96vw);z-index:45;
-  display:flex;justify-content:space-between;align-items:center;
-  gap:8px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
 }
 .sb-box{
   background:rgba(0,0,0,.75);backdrop-filter:blur(4px);
@@ -487,11 +472,8 @@ html,body{
 .sb-name{font-size:.78em;font-weight:700;color:#ddd}
 .sb-title{
   font-size:.88em;font-weight:900;color:#fff;text-align:center;
-  text-shadow:2px 2px 8px rgba(0,0,0,.9);
-  white-space:nowrap;
+  text-shadow:2px 2px 8px rgba(0,0,0,.9);white-space:nowrap;
 }
-
-/* TIMER */
 #big-timer{
   position:fixed;bottom:10px;left:50%;transform:translateX(-50%);
   padding:5px 16px;border-radius:12px;
@@ -503,22 +485,18 @@ html,body{
 </head>
 <body>
 
-<!-- ESTÁDIO -->
 <div id="stadium">
   <div class="spot tl"></div>
   <div class="spot tr"></div>
   <div class="crowd"></div>
 </div>
 
-<!-- CAMPO -->
 <div id="field">
   <div class="center-circle"></div>
   <div class="center-dot"></div>
-
   <div id="goal-front">
     <div class="goal-posts"></div>
     <div class="goal-net"></div>
-    <!-- Goleiro FIFA-style -->
     <div id="keeper">
       <div id="kp-head"></div>
       <div id="kp-neck"></div>
@@ -531,36 +509,23 @@ html,body{
     </div>
     <div id="ball"></div>
   </div>
-
-  <!-- Jogador Azul FIFA-style -->
   <div id="player-azul" class="player-fig pl-azul">
-    <div class="pl-head"></div>
-    <div class="pl-neck"></div>
-    <div class="pl-body"></div>
-    <div class="pl-arm-l"></div>
-    <div class="pl-arm-r"></div>
-    <div class="pl-pants"></div>
-    <div class="pl-leg-l"></div>
-    <div class="pl-leg-r"></div>
+    <div class="pl-head"></div><div class="pl-neck"></div>
+    <div class="pl-body"></div><div class="pl-arm-l"></div>
+    <div class="pl-arm-r"></div><div class="pl-pants"></div>
+    <div class="pl-leg-l"></div><div class="pl-leg-r"></div>
   </div>
-
-  <!-- Jogador Verde FIFA-style -->
   <div id="player-verde" class="player-fig pl-verde">
-    <div class="pl-head"></div>
-    <div class="pl-neck"></div>
-    <div class="pl-body"></div>
-    <div class="pl-arm-l"></div>
-    <div class="pl-arm-r"></div>
-    <div class="pl-pants"></div>
-    <div class="pl-leg-l"></div>
-    <div class="pl-leg-r"></div>
+    <div class="pl-head"></div><div class="pl-neck"></div>
+    <div class="pl-body"></div><div class="pl-arm-l"></div>
+    <div class="pl-arm-r"></div><div class="pl-pants"></div>
+    <div class="pl-leg-l"></div><div class="pl-leg-r"></div>
   </div>
 </div>
 
 <div id="shot-label"></div>
 <div id="big-timer">00:20</div>
 
-<!-- SCOREBOARD -->
 <div id="scoreboard">
   <div class="sb-box">
     <div class="sb-dot dot-azul"></div>
@@ -582,7 +547,7 @@ html,body{
 <!-- HOME -->
 <div id="home-panel" class="panel">
   <div style="font-size:2.6em;text-align:center;margin-bottom:6px;
-              filter:drop-shadow(0 4px 8px rgba(255,165,0,.5))">🏆</div>
+    filter:drop-shadow(0 4px 8px rgba(255,165,0,.5))">🏆</div>
   <div class="home-title" style="text-align:center">Copa da Higiene</div>
   <div class="home-sub" style="text-align:center">
     Responda o quiz sobre higienização das mãos e marque gols pelo seu time!
@@ -591,21 +556,38 @@ html,body{
     <span class="home-badge">⚽ 20 perguntas — Azul x Verde</span>
   </div>
 
-  <div class="input-group">
-    <label>Seu nome</label>
-    <input type="text" id="inp-nome" placeholder="Digite seu nome" autocomplete="off">
-  </div>
-  <div class="input-group">
-    <label>Seu time</label>
-    <select id="inp-time">
-      <option value="">Selecione o time...</option>
-      <option value="azul">🔵 Time Azul</option>
-      <option value="verde">🟢 Time Verde</option>
-    </select>
-  </div>
-  <div class="input-group">
+  <!-- Sala -->
+  <div class="input-group" style="margin-top:10px">
     <label>Sala da partida</label>
     <input type="text" id="inp-sala" value="1" placeholder="Ex: 1" autocomplete="off">
+  </div>
+
+  <!-- Time Azul -->
+  <div class="team-section">
+    <div class="team-section-title">
+      <div style="width:12px;height:12px;border-radius:3px;background:#1565c0"></div>
+      <span>Jogadores do Time Azul <span id="count-azul" style="color:#90caf9">(0/10)</span></span>
+    </div>
+    <div class="add-row">
+      <input type="text" id="inp-nome-azul" placeholder="Nome do jogador..." autocomplete="off"
+             onkeydown="if(event.key==='Enter')adicionarJogador('azul')">
+      <button class="btn-add" onclick="adicionarJogador('azul')">+ Adicionar</button>
+    </div>
+    <div class="jogadores-list" id="list-azul"></div>
+  </div>
+
+  <!-- Time Verde -->
+  <div class="team-section">
+    <div class="team-section-title">
+      <div style="width:12px;height:12px;border-radius:3px;background:#2e7d32"></div>
+      <span>Jogadores do Time Verde <span id="count-verde" style="color:#a5d6a7">(0/10)</span></span>
+    </div>
+    <div class="add-row">
+      <input type="text" id="inp-nome-verde" placeholder="Nome do jogador..." autocomplete="off"
+             onkeydown="if(event.key==='Enter')adicionarJogador('verde')">
+      <button class="btn-add" onclick="adicionarJogador('verde')">+ Adicionar</button>
+    </div>
+    <div class="jogadores-list" id="list-verde"></div>
   </div>
 
   <button id="btn-entrar" class="btn-entrar-disabled" disabled onclick="entrarNaSala()">
@@ -615,27 +597,23 @@ html,body{
        style="color:#ff6b6b;font-size:.8em;margin-top:6px;text-align:center;min-height:18px"></div>
 </div>
 
-<!-- AGUARDANDO INÍCIO -->
+<!-- AGUARDANDO -->
 <div id="wait-panel" class="panel" style="display:none">
   <div class="wait-spinner">⏳</div>
   <h2 style="color:#FFD700;margin-bottom:10px;font-size:1.3em">Aguardando times...</h2>
-
   <div style="background:rgba(255,255,255,.07);border-radius:14px;padding:12px;margin-bottom:12px">
     <div style="font-size:.82em;color:#b0bfff;margin-bottom:6px">
-      Sala <strong id="wait-sala" style="color:#fff"></strong> —
-      Você entrou como <strong id="wait-time" style="color:#fff"></strong>
+      Sala <strong id="wait-sala" style="color:#fff"></strong>
     </div>
     <div style="font-size:.8em;color:#b0bfff;margin-bottom:4px">Times conectados:</div>
     <div id="wait-chips" style="margin-bottom:8px"></div>
-    <div style="font-size:.8em;color:#b0bfff;margin-bottom:2px">Jogadores Azul:</div>
+    <div style="font-size:.8em;color:#b0bfff;margin-bottom:2px">🔵 Jogadores Azul:</div>
     <div id="wait-jogadores-azul" style="font-size:.78em;color:#90caf9;margin-bottom:6px">—</div>
-    <div style="font-size:.8em;color:#b0bfff;margin-bottom:2px">Jogadores Verde:</div>
+    <div style="font-size:.8em;color:#b0bfff;margin-bottom:2px">🟢 Jogadores Verde:</div>
     <div id="wait-jogadores-verde" style="font-size:.78em;color:#a5d6a7">—</div>
   </div>
-
   <div id="wait-msg"
        style="font-size:.82em;color:#ffcc02;text-align:center;margin-bottom:8px;min-height:20px"></div>
-
   <button id="btn-iniciar" class="btn-iniciar btn-iniciar-wait" disabled onclick="iniciarPartida()">
     ⚽ Iniciar partida
   </button>
@@ -654,28 +632,22 @@ html,body{
     </div>
     <span class="tag tag-gold" id="score-tag">0 x 0</span>
   </div>
-
   <div class="bar-wrap"><div class="bar-fill prog-bar" id="prog-bar" style="width:0%"></div></div>
   <div class="bar-wrap"><div class="bar-fill time-bar" id="time-bar" style="width:100%"></div></div>
-
   <div style="margin-bottom:8px">
     <span id="turn-badge" class="tag tag-blue">Time Azul</span>
     <span style="font-size:.78em;color:#666"> respondendo</span>
   </div>
-
   <span class="tag tag-green" id="cat-tag">Categoria</span>
   <div class="q-text" id="q-text">Carregando...</div>
-
   <div class="options" id="opts"></div>
   <div class="feedback" id="feedback"></div>
-
   <div id="wait-other">
     <div style="font-size:1.8em">⏳</div>
     <p style="color:#888;font-size:.84em;margin-top:4px">
       Aguardando o outro time responder...
     </p>
   </div>
-
   <button class="btn-next" id="next-btn" onclick="avancarPergunta()" style="display:none">
     Próxima pergunta ➜
   </button>
@@ -687,23 +659,12 @@ html,body{
   <div style="font-size:1.5em;color:#006400;font-weight:900;margin-bottom:4px">Fim de jogo!</div>
   <div style="margin:6px 0;font-size:1.3em;font-weight:800;color:#1a1a2e" id="res-scoreline">0 x 0</div>
   <div class="stats-row">
-    <div class="stat-box">
-      <div class="sv" id="st-azul">0</div>
-      <div class="sl">⚽ Gols Azul</div>
-    </div>
-    <div class="stat-box">
-      <div class="sv" id="st-verde">0</div>
-      <div class="sl">⚽ Gols Verde</div>
-    </div>
-    <div class="stat-box">
-      <div class="sv" id="st-acc">0%</div>
-      <div class="sl">Aproveitamento</div>
-    </div>
+    <div class="stat-box"><div class="sv" id="st-azul">0</div><div class="sl">⚽ Gols Azul</div></div>
+    <div class="stat-box"><div class="sv" id="st-verde">0</div><div class="sl">⚽ Gols Verde</div></div>
+    <div class="stat-box"><div class="sv" id="st-acc">0%</div><div class="sl">Aproveitamento</div></div>
   </div>
   <div class="res-msg" id="res-msg"></div>
-  <button class="btn-jogar-novo" onclick="jogarNovamente()">
-    🔄 Jogar novamente
-  </button>
+  <button class="btn-jogar-novo" onclick="jogarNovamente()">🔄 Jogar novamente</button>
 </div>
 
 <script>
@@ -711,19 +672,18 @@ const SERVIDOR = window.location.origin;
 const $ = id => document.getElementById(id);
 
 let meuTime = '', meuNome = '', minhaSala = '1';
+let jogadoresLocais = { azul: [], verde: [] };
 let perguntaAtual = null;
 let ultimaIndex = -1;
 let respondeuEstaRodada = false;
 let timeLeft = 20;
 let timer = null;
 let pollingInterval = null;
+let respostaServidor = null; // ✅ guarda resposta do servidor para o polling usar
 
 // ===== ÁUDIO =====
 let actx=null,ambNode=null,ambGain=null;
-function ctx(){
-  if(!actx) actx=new(window.AudioContext||window.webkitAudioContext)();
-  return actx;
-}
+function ctx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
 function startAmbient(){
   const c=ctx();if(ambNode)return;
   const len=c.sampleRate*4,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);
@@ -773,46 +733,107 @@ function spawnConfetti(){
   }
 }
 
-// ===== HABILITAR BOTÃO ENTRAR =====
-['inp-nome','inp-time','inp-sala'].forEach(id=>{
-  $(id).addEventListener('input',()=>{
-    const ok=$('inp-nome').value.trim() && $('inp-time').value && $('inp-sala').value.trim();
-    const btn=$('btn-entrar');
-    btn.disabled=!ok;
-    btn.className=ok?'btn-entrar-ok':'btn-entrar-disabled';
-  });
-});
-
 // ===== PAINÉIS =====
 function showPanel(id){
-  ['home-panel','wait-panel','quiz-panel','result-panel'].forEach(p=>$(p).style.display='none');
+  ['home-panel','wait-panel','quiz-panel','result-panel'].forEach(p=>{
+    $(p).style.display='none';
+  });
   $(id).style.display='block';
 }
 
 // ===== ANIMAÇÃO =====
 function resetShot(){
   const ball=$('ball');
-  ball.className='';ball.style.bottom='14%';ball.style.left='50%';
-  ball.style.transform='translateX(-50%)';
+  ball.className='';
+  ball.style.cssText='bottom:14%;left:50%;transform:translateX(-50%)';
   $('keeper').className='';
   const lbl=$('shot-label');lbl.className='';lbl.textContent='';
 }
 
+// ===== CADASTRO DE JOGADORES NA TELA HOME =====
+// ✅ CORRIGIDO: cada time tem sua própria lista de nomes
+// até 10 jogadores por time, todos entram na sala juntos
+
+function adicionarJogador(time){
+  const inp=$(`inp-nome-${time}`);
+  const nome=inp.value.trim();
+  if(!nome)return;
+  if(jogadoresLocais[time].length>=10){
+    alert('Máximo de 10 jogadores por time!');
+    return;
+  }
+  if(jogadoresLocais[time].includes(nome)){
+    alert('Este nome já foi adicionado!');
+    return;
+  }
+  jogadoresLocais[time].push(nome);
+  inp.value='';
+  inp.focus();
+  renderizarListaHome(time);
+  atualizarBtnEntrar();
+}
+
+function removerJogador(time, nome){
+  jogadoresLocais[time]=jogadoresLocais[time].filter(n=>n!==nome);
+  renderizarListaHome(time);
+  atualizarBtnEntrar();
+}
+
+function renderizarListaHome(time){
+  const lista=$(`list-${time}`);
+  const count=$(`count-${time}`);
+  lista.innerHTML='';
+  count.textContent=`(${jogadoresLocais[time].length}/10)`;
+  jogadoresLocais[time].forEach(nome=>{
+    const chip=document.createElement('div');
+    chip.className=`jogador-chip chip-${time}-j`;
+    chip.innerHTML=`
+      <span>${nome}</span>
+      <button class="chip-rm" onclick="removerJogador('${time}','${nome}')" title="Remover">✕</button>
+    `;
+    lista.appendChild(chip);
+  });
+}
+
+function atualizarBtnEntrar(){
+  // ✅ Pode entrar se ao menos 1 jogador em cada time
+  const temAzul=jogadoresLocais.azul.length>0;
+  const temVerde=jogadoresLocais.verde.length>0;
+  const temSala=$('inp-sala').value.trim()!=='';
+  const ok=temAzul && temVerde && temSala;
+  const btn=$('btn-entrar');
+  btn.disabled=!ok;
+  btn.className=ok?'btn-entrar-ok':'btn-entrar-disabled';
+}
+
+$('inp-sala').addEventListener('input', atualizarBtnEntrar);
+
 // ===== ENTRAR NA SALA =====
+// ✅ Envia todos os jogadores de cada time de uma vez
 async function entrarNaSala(){
-  meuNome=$('inp-nome').value.trim();
-  meuTime=$('inp-time').value;
   minhaSala=$('inp-sala').value.trim()||'1';
   $('home-erro').textContent='';
 
   try{
-    const r=await fetch(`${SERVIDOR}/entrar?sala=${minhaSala}&time=${meuTime}&nome=${encodeURIComponent(meuNome)}`);
+    // Envia jogadores do time azul
+    for(const nome of jogadoresLocais.azul){
+      await fetch(`${SERVIDOR}/entrar?sala=${minhaSala}&time=azul&nome=${encodeURIComponent(nome)}`);
+    }
+    // Envia jogadores do time verde
+    for(const nome of jogadoresLocais.verde){
+      await fetch(`${SERVIDOR}/entrar?sala=${minhaSala}&time=verde&nome=${encodeURIComponent(nome)}`);
+    }
+
+    // Pega estado atualizado
+    const r=await fetch(`${SERVIDOR}/entrar?sala=${minhaSala}&time=azul&nome=`);
     const data=await r.json();
 
-    $('wait-sala').textContent=minhaSala;
-    $('wait-time').textContent=meuTime==='azul'?'🔵 Time Azul':'🟢 Time Verde';
-    atualizarWaitPanel(data);
+    // Define time local como azul por padrão (não importa — qualquer um responde)
+    meuTime='azul';
+    meuNome=jogadoresLocais.azul[0]||'';
 
+    $('wait-sala').textContent=minhaSala;
+    atualizarWaitPanel(data);
     showPanel('wait-panel');
     iniciarPolling();
   }catch(e){
@@ -821,7 +842,6 @@ async function entrarNaSala(){
 }
 
 function atualizarWaitPanel(data){
-  // Chips dos times
   const chips=$('wait-chips');
   chips.innerHTML='';
   (data.timesNaSala||[]).forEach(t=>{
@@ -830,12 +850,9 @@ function atualizarWaitPanel(data){
     s.textContent=t==='azul'?'🔵 Time Azul':'🟢 Time Verde';
     chips.appendChild(s);
   });
-
-  // Jogadores
   $('wait-jogadores-azul').textContent=(data.jogadoresAzul||[]).join(', ')||'—';
   $('wait-jogadores-verde').textContent=(data.jogadoresVerde||[]).join(', ')||'—';
 
-  // Botão iniciar
   const btn=$('btn-iniciar');
   if(data.podeIniciar){
     btn.disabled=false;
@@ -868,6 +885,7 @@ async function iniciarPartida(){
 }
 
 // ===== POLLING =====
+// ✅ CORRIGIDO: polling detecta todosResponderam e mostra botão nos 2 dispositivos
 function iniciarPolling(){
   if(pollingInterval)clearInterval(pollingInterval);
   pollingInterval=setInterval(verificarEstado,1200);
@@ -885,7 +903,7 @@ async function verificarEstado(){
       $('score-tag').textContent=`${data.placar.azul??0} x ${data.placar.verde??0}`;
     }
 
-    // Tela de espera ainda aberta
+    // Ainda na tela de espera
     if(!data.iniciada){
       atualizarWaitPanel(data);
       return;
@@ -900,19 +918,20 @@ async function verificarEstado(){
       return;
     }
 
-    // Mudou de pergunta
+    // ✅ CORRIGIDO: se já respondeu e o outro também — mostra "Próxima pergunta" nos 2
+    if(respondeuEstaRodada && data.todosResponderam){
+      $('wait-other').style.display='none';
+      $('next-btn').style.display='block';
+      return;
+    }
+
+    // Mudou de pergunta (avançou pelo servidor)
     if(data.perguntaIndex!==ultimaIndex){
       ultimaIndex=data.perguntaIndex;
       perguntaAtual=data.pergunta;
       respondeuEstaRodada=false;
+      respostaServidor=null;
       renderizarPergunta(data);
-      return;
-    }
-
-    // Ambos responderam mas este ainda não avançou
-    if(data.todosResponderam && respondeuEstaRodada){
-      $('wait-other').style.display='none';
-      $('next-btn').style.display='block';
     }
 
   }catch(e){
@@ -937,10 +956,9 @@ function renderizarPergunta(data){
   $('prog-bar').style.width=`${(q.index/q.total)*100}%`;
 
   const tb=$('turn-badge');
-  tb.textContent=meuTime==='azul'?'🔵 Time Azul':'🟢 Time Verde';
-  tb.className='tag '+(meuTime==='azul'?'tag-blue':'tag-verde-dark');
+  tb.textContent='Responda!';
+  tb.className='tag tag-blue';
 
-  // Opções
   const cont=$('opts');cont.innerHTML='';
   ['A','B','C','D'].forEach((l,i)=>{
     const b=document.createElement('button');
@@ -950,7 +968,6 @@ function renderizarPergunta(data){
     cont.appendChild(b);
   });
 
-  // Timer
   resetShot();
   clearInterval(timer);
   timeLeft=20;updateTimer();
@@ -982,6 +999,7 @@ async function responder(opcao){
       body:JSON.stringify({sala:minhaSala,time:meuTime,resposta:opcao})
     });
     const data=await r.json();
+    respostaServidor=data; // ✅ guarda para o polling usar
 
     // Marca botões
     const btns=document.querySelectorAll('.opt');
@@ -989,6 +1007,7 @@ async function responder(opcao){
     if(opcao>=0 && opcao!==data.respostaCorreta && btns[opcao])btns[opcao].classList.add('wrong');
 
     const fb=$('feedback');
+
     if(data.acertou){
       fb.className='feedback ok show';
       fb.innerHTML=`✅ <strong>Resposta correta!</strong><br><em>${data.explicacao}</em>`;
@@ -1002,7 +1021,8 @@ async function responder(opcao){
       },550);
     }else{
       fb.className='feedback err show';
-      const correta=perguntaAtual?.opts[data.respostaCorreta]||data.opcaoTexto||'';
+      // ✅ CORRIGIDO: usa opcaoTexto que vem direto do servidor
+      const correta=data.opcaoTexto||perguntaAtual?.opts[data.respostaCorreta]||'';
       fb.innerHTML=`❌ <strong>Chute pra fora!</strong> Correta: <strong>${correta}</strong><br><em>${data.explicacao}</em>`;
       setTimeout(()=>sndKick(),80);
       setTimeout(()=>$('ball').classList.add('miss'),140);
@@ -1016,15 +1036,19 @@ async function responder(opcao){
 
     setTimeout(()=>{
       $('quiz-panel').style.display='block';
+
       if(data.fimDeJogo){
         clearInterval(pollingInterval);
         stopAmbient();
         mostrarResultado(null);
       }else if(data.todosResponderam){
+        // ✅ Ambos responderam: mostra próxima nos 2
         $('wait-other').style.display='none';
         $('next-btn').style.display='block';
       }else{
+        // ✅ Só este respondeu: aguarda o outro (polling vai detectar)
         $('wait-other').style.display='block';
+        $('next-btn').style.display='none';
       }
     },1300);
 
@@ -1039,6 +1063,7 @@ async function responder(opcao){
 function avancarPergunta(){
   $('next-btn').style.display='none';
   $('wait-other').style.display='none';
+  // Força polling imediato para buscar nova pergunta
   verificarEstado();
 }
 
@@ -1076,26 +1101,29 @@ function mostrarResultado(placar){
 // ===== JOGAR NOVAMENTE =====
 async function jogarNovamente(){
   try{
-    // Reseta a sala no servidor
     await fetch(`${SERVIDOR}/resetar`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({sala:minhaSala})
     });
-  }catch(e){
-    console.error('Erro ao resetar:',e);
-  }
+  }catch(e){console.error('Erro ao resetar:',e);}
 
-  // Reseta estado local
   clearInterval(pollingInterval);
   clearInterval(timer);
   ultimaIndex=-1;
   respondeuEstaRodada=false;
+  respostaServidor=null;
   resetShot();
 
-  // Re-entra na sala com o mesmo time e nome
+  // Re-entra com todos os jogadores
   try{
-    const r=await fetch(`${SERVIDOR}/entrar?sala=${minhaSala}&time=${meuTime}&nome=${encodeURIComponent(meuNome)}`);
+    for(const nome of jogadoresLocais.azul){
+      await fetch(`${SERVIDOR}/entrar?sala=${minhaSala}&time=azul&nome=${encodeURIComponent(nome)}`);
+    }
+    for(const nome of jogadoresLocais.verde){
+      await fetch(`${SERVIDOR}/entrar?sala=${minhaSala}&time=verde&nome=${encodeURIComponent(nome)}`);
+    }
+    const r=await fetch(`${SERVIDOR}/estado?sala=${minhaSala}&time=azul`);
     const data=await r.json();
     atualizarWaitPanel(data);
     showPanel('wait-panel');
@@ -1103,17 +1131,6 @@ async function jogarNovamente(){
   }catch(e){
     showPanel('home-panel');
   }
-}
-
-// ===== VOLTAR HOME =====
-function voltarHome(){
-  clearInterval(pollingInterval);
-  clearInterval(timer);
-  stopAmbient();
-  resetShot();
-  ultimaIndex=-1;
-  respondeuEstaRodada=false;
-  showPanel('home-panel');
 }
 </script>
 </body>
