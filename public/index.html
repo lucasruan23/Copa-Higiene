@@ -11,6 +11,8 @@ html,body{
   font-family:'Segoe UI',sans-serif;
   background:#021428;overflow-x:hidden;
 }
+
+/* ESTÁDIO */
 #stadium{
   position:fixed;inset:0;z-index:0;overflow:hidden;
   background:radial-gradient(circle at 50% 0,#1a3d8f 0,#021428 55%,#000814 100%);
@@ -34,6 +36,8 @@ html,body{
     radial-gradient(circle at 85% 40%,rgba(255,255,255,.3) 0,transparent 50%);
   opacity:.25;
 }
+
+/* CAMPO */
 #field{
   position:fixed;left:50%;bottom:0;transform:translateX(-50%);
   width:130%;max-width:1000px;height:54%;
@@ -58,6 +62,8 @@ html,body{
   background:rgba(255,255,255,.7);
   transform:translate(-50%,-50%);
 }
+
+/* GOL */
 #goal-front{
   position:absolute;bottom:10%;left:50%;transform:translateX(-50%);
   width:48%;max-width:300px;height:36%;
@@ -74,6 +80,8 @@ html,body{
     linear-gradient(-60deg,transparent 0,transparent 5px,rgba(255,255,255,.25) 5px,rgba(255,255,255,.25) 6px,transparent 6px);
   background-size:12px 12px;
 }
+
+/* BOLA */
 #ball{
   position:absolute;bottom:14%;left:50%;transform:translateX(-50%);
   width:22px;height:22px;border-radius:50%;
@@ -94,286 +102,277 @@ html,body{
 }
 @keyframes shootMiss{
   0%{transform:translate(-50%,0) scale(1);bottom:14%;opacity:1}
-  50%{transform:translate(-130%,5%) scale(.8);bottom:17%}
-  100%{transform:translate(-240%,12%) scale(.5);bottom:20%;opacity:.3}
+  100%{transform:translate(-220%,5%) scale(.45);bottom:18%;opacity:.3}
 }
-#ball.goal{animation:shootGoal .85s cubic-bezier(.4,0,.2,1) forwards}
-#ball.miss{animation:shootMiss .85s cubic-bezier(.4,0,.2,1) forwards}
+#ball.goal{animation:shootGoal .85s ease-in forwards}
+#ball.miss{animation:shootMiss .85s ease-in forwards}
+
+/* GOLEIRO */
 #keeper{
-  position:absolute;bottom:22%;left:50%;
-  transform:translateX(-50%);
-  width:36px;height:72px;z-index:4;
-}
-#keeper::after{
-  content:"";position:absolute;bottom:-4px;left:50%;
-  transform:translateX(-50%);
-  width:28px;height:6px;border-radius:50%;
-  background:rgba(0,0,0,.35);
+  position:absolute;bottom:22%;left:50%;transform:translateX(-50%);
+  width:32px;height:64px;
 }
 #kp-head{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:18px;height:18px;border-radius:50%;
-  background:radial-gradient(circle at 40% 35%,#ffe0b2,#d4956a);
-  border:1.5px solid #c8845a;box-shadow:0 2px 4px rgba(0,0,0,.4);
+  position:absolute;bottom:44px;left:50%;transform:translateX(-50%);
+  width:16px;height:16px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#ffe0b2,#ffb74d);
+  border:1.5px solid #e09040;
+  box-shadow:0 2px 4px rgba(0,0,0,.3);
 }
 #kp-head::before{
-  content:"";position:absolute;top:-1px;left:1px;right:1px;height:8px;
-  background:#5d3a1a;border-radius:50% 50% 0 0;
-}
-#kp-head::after{
-  content:"";position:absolute;top:7px;left:3px;
-  width:4px;height:2px;border-radius:50%;
-  background:#333;box-shadow:6px 0 0 #333;
+  content:"";position:absolute;top:2px;left:2px;
+  width:12px;height:5px;border-radius:3px;background:#5d3a1a;
 }
 #kp-neck{
-  position:absolute;top:17px;left:50%;transform:translateX(-50%);
-  width:8px;height:5px;background:#d4956a;
+  position:absolute;bottom:41px;left:50%;transform:translateX(-50%);
+  width:7px;height:5px;border-radius:2px;background:#ffb74d;
 }
 #kp-body{
-  position:absolute;top:21px;left:50%;transform:translateX(-50%);
-  width:22px;height:24px;border-radius:4px 4px 2px 2px;
-  background:linear-gradient(160deg,#ffb300 0,#e65100 100%);
-  box-shadow:inset 0 2px 4px rgba(255,255,255,.2),0 2px 6px rgba(0,0,0,.4);
+  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+  width:20px;height:24px;border-radius:6px 6px 4px 4px;
+  background:linear-gradient(180deg,#ffeb3b,#f9a825);
+  border:1.5px solid #f57f17;
+  box-shadow:0 2px 6px rgba(0,0,0,.4);
 }
 #kp-body::after{
-  content:"1";position:absolute;top:5px;left:50%;transform:translateX(-50%);
-  font-size:9px;font-weight:900;color:rgba(255,255,255,.9);
+  content:"1";position:absolute;top:4px;left:50%;transform:translateX(-50%);
+  font-size:8px;font-weight:900;color:#f57f17;
 }
 #kp-arm-l{
-  position:absolute;top:22px;left:3px;
-  width:8px;height:18px;border-radius:4px;
-  background:linear-gradient(180deg,#ffb300,#e65100);
-  transform-origin:top center;transform:rotate(-15deg);
+  position:absolute;bottom:30px;left:-8px;
+  width:12px;height:7px;border-radius:4px;
+  background:#ffeb3b;border:1px solid #f57f17;
+  transform:rotate(25deg);transform-origin:right center;
 }
 #kp-arm-r{
-  position:absolute;top:22px;right:3px;
-  width:8px;height:18px;border-radius:4px;
-  background:linear-gradient(180deg,#ffb300,#e65100);
-  transform-origin:top center;transform:rotate(15deg);
-}
-#kp-arm-l::after,#kp-arm-r::after{
-  content:"";position:absolute;bottom:-3px;left:0;
-  width:9px;height:7px;border-radius:3px;
-  background:#fdd835;border:1px solid #f9a825;
+  position:absolute;bottom:30px;right:-8px;
+  width:12px;height:7px;border-radius:4px;
+  background:#ffeb3b;border:1px solid #f57f17;
+  transform:rotate(-25deg);transform-origin:left center;
 }
 #kp-pants{
-  position:absolute;top:43px;left:50%;transform:translateX(-50%);
-  width:22px;height:14px;
-  background:linear-gradient(180deg,#1a237e,#283593);
-  border-radius:0 0 2px 2px;
+  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+  width:20px;height:10px;border-radius:3px;
+  background:#1565c0;border:1px solid #0d47a1;
 }
 #kp-leg-l{
-  position:absolute;top:55px;left:7px;
-  width:9px;height:14px;border-radius:3px;
-  background:linear-gradient(180deg,#1a237e,#283593);
+  position:absolute;bottom:0;left:3px;
+  width:7px;height:12px;border-radius:3px 3px 4px 4px;
+  background:#ffb74d;border:1px solid #e09040;
+}
+#kp-leg-l::after{
+  content:"";position:absolute;bottom:0;left:0;
+  width:9px;height:4px;border-radius:2px;
+  background:#222;
 }
 #kp-leg-r{
-  position:absolute;top:55px;right:7px;
-  width:9px;height:14px;border-radius:3px;
-  background:linear-gradient(180deg,#1a237e,#283593);
+  position:absolute;bottom:0;right:3px;
+  width:7px;height:12px;border-radius:3px 3px 4px 4px;
+  background:#ffb74d;border:1px solid #e09040;
 }
-#kp-leg-l::after,#kp-leg-r::after{
-  content:"";position:absolute;bottom:-2px;left:-1px;
-  width:11px;height:6px;border-radius:3px 3px 2px 2px;
-  background:#f5f5f5;border:1px solid #bdbdbd;
-}
-@keyframes diveLeft{
-  0%{transform:translateX(-50%) rotate(0)}
-  100%{transform:translateX(-120%) translateY(-14%) rotate(-70deg)}
+#kp-leg-r::after{
+  content:"";position:absolute;bottom:0;left:0;
+  width:9px;height:4px;border-radius:2px;background:#222;
 }
 @keyframes diveRight{
-  0%{transform:translateX(-50%) rotate(0)}
-  100%{transform:translateX(20%) translateY(-14%) rotate(70deg)}
+  0%{transform:translateX(-50%) rotate(0deg)}
+  100%{transform:translateX(60%) rotate(-40deg)}
 }
-#keeper.dive-left{animation:diveLeft .5s ease-out forwards}
+@keyframes diveLeft{
+  0%{transform:translateX(-50%) rotate(0deg)}
+  100%{transform:translateX(-160%) rotate(40deg)}
+}
 #keeper.dive-right{animation:diveRight .5s ease-out forwards}
-.player-fig{position:absolute;width:28px;height:58px;z-index:3;}
-.player-fig::after{
-  content:"";position:absolute;bottom:-3px;left:50%;
-  transform:translateX(-50%);
-  width:22px;height:5px;border-radius:50%;
-  background:rgba(0,0,0,.3);
+#keeper.dive-left{animation:diveLeft .5s ease-out forwards}
+
+/* JOGADORES */
+.player-fig{
+  position:absolute;bottom:8%;
+  width:28px;height:58px;
 }
+.pl-azul{left:22%}
+.pl-verde{right:22%}
 .pl-head{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
   width:14px;height:14px;border-radius:50%;
-  background:radial-gradient(circle at 40% 35%,#ffe0b2,#d4956a);
-  border:1px solid #c8845a;
+  background:radial-gradient(circle at 40% 35%,#ffe0b2,#ffb74d);
+  border:1.5px solid #e09040;
 }
 .pl-head::before{
-  content:"";position:absolute;top:-1px;left:1px;right:1px;height:6px;
-  border-radius:50% 50% 0 0;
+  content:"";position:absolute;top:1px;left:1px;
+  width:11px;height:5px;border-radius:3px;
 }
 .pl-azul .pl-head::before{background:#1a237e}
 .pl-verde .pl-head::before{background:#1b5e20}
-.pl-neck{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:6px;height:4px;background:#d4956a;}
+.pl-neck{
+  position:absolute;bottom:37px;left:50%;transform:translateX(-50%);
+  width:6px;height:5px;border-radius:2px;background:#ffb74d;
+}
 .pl-body{
-  position:absolute;top:16px;left:50%;transform:translateX(-50%);
-  width:18px;height:18px;border-radius:3px 3px 2px 2px;
-  box-shadow:inset 0 2px 3px rgba(255,255,255,.2),0 2px 5px rgba(0,0,0,.4);
+  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  width:18px;height:22px;border-radius:5px 5px 3px 3px;
+  border:1.5px solid rgba(0,0,0,.2);
 }
-.pl-azul .pl-body{background:linear-gradient(160deg,#1565c0 0,#0d47a1 100%)}
-.pl-verde .pl-body{background:linear-gradient(160deg,#2e7d32 0,#1b5e20 100%)}
-.pl-arm-l,.pl-arm-r{position:absolute;top:17px;width:6px;height:14px;border-radius:3px;}
-.pl-arm-l{left:4px;transform-origin:top center;transform:rotate(-12deg)}
-.pl-arm-r{right:4px;transform-origin:top center;transform:rotate(12deg)}
-.pl-azul .pl-arm-l,.pl-azul .pl-arm-r{background:linear-gradient(180deg,#1565c0,#0d47a1)}
-.pl-verde .pl-arm-l,.pl-verde .pl-arm-r{background:linear-gradient(180deg,#2e7d32,#1b5e20)}
-.pl-pants{position:absolute;top:32px;left:50%;transform:translateX(-50%);width:18px;height:10px;border-radius:0 0 2px 2px;}
-.pl-azul .pl-pants{background:linear-gradient(180deg,#0d47a1,#1a237e)}
-.pl-verde .pl-pants{background:linear-gradient(180deg,#1b5e20,#33691e)}
-.pl-leg-l,.pl-leg-r{position:absolute;top:40px;width:7px;height:12px;border-radius:3px;}
-.pl-leg-l{left:6px}
-.pl-leg-r{right:6px}
-.pl-azul .pl-leg-l,.pl-azul .pl-leg-r{background:linear-gradient(180deg,#1a237e,#283593)}
-.pl-verde .pl-leg-l,.pl-verde .pl-leg-r{background:linear-gradient(180deg,#1b5e20,#33691e)}
-.pl-leg-l::after,.pl-leg-r::after{
-  content:"";position:absolute;bottom:-2px;left:-1px;
-  width:9px;height:5px;border-radius:3px 3px 2px 2px;
-  background:#f5f5f5;border:1px solid #bdbdbd;
+.pl-azul .pl-body{background:linear-gradient(180deg,#1976d2,#0d47a1)}
+.pl-verde .pl-body{background:linear-gradient(180deg,#388e3c,#1b5e20)}
+.pl-arm-l{
+  position:absolute;bottom:28px;left:-7px;
+  width:10px;height:6px;border-radius:3px;
+  transform:rotate(20deg);transform-origin:right center;
+  border:1px solid rgba(0,0,0,.2);
 }
-#player-azul{bottom:5%;left:36%}
-#player-verde{bottom:5%;right:36%}
+.pl-azul .pl-arm-l{background:#1976d2}
+.pl-verde .pl-arm-l{background:#388e3c}
+.pl-arm-r{
+  position:absolute;bottom:28px;right:-7px;
+  width:10px;height:6px;border-radius:3px;
+  transform:rotate(-20deg);transform-origin:left center;
+  border:1px solid rgba(0,0,0,.2);
+}
+.pl-azul .pl-arm-r{background:#1976d2}
+.pl-verde .pl-arm-r{background:#388e3c}
+.pl-pants{
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  width:18px;height:9px;border-radius:2px;
+}
+.pl-azul .pl-pants{background:#0d47a1}
+.pl-verde .pl-pants{background:#1b5e20}
+.pl-leg-l{
+  position:absolute;bottom:0;left:2px;
+  width:6px;height:10px;border-radius:2px 2px 3px 3px;
+  background:#ffb74d;border:1px solid #e09040;
+}
+.pl-leg-l::after{
+  content:"";position:absolute;bottom:0;left:-1px;
+  width:8px;height:3px;border-radius:2px;
+}
+.pl-azul .pl-leg-l::after{background:#1a237e}
+.pl-verde .pl-leg-l::after{background:#1b5e20}
+.pl-leg-r{
+  position:absolute;bottom:0;right:2px;
+  width:6px;height:10px;border-radius:2px 2px 3px 3px;
+  background:#ffb74d;border:1px solid #e09040;
+}
+.pl-leg-r::after{
+  content:"";position:absolute;bottom:0;left:-1px;
+  width:8px;height:3px;border-radius:2px;
+}
+.pl-azul .pl-leg-r::after{background:#1a237e}
+.pl-verde .pl-leg-r::after{background:#1b5e20}
+
+/* SHOT LABEL */
 #shot-label{
-  position:fixed;top:26%;left:50%;transform:translateX(-50%);
-  font-size:2.4em;font-weight:900;color:#FFD700;
-  text-shadow:0 0 20px rgba(255,215,0,.8),3px 3px 8px rgba(0,0,0,.9);
-  opacity:0;white-space:nowrap;pointer-events:none;z-index:20;
+  position:fixed;top:38%;left:50%;transform:translateX(-50%);
+  font-size:2.2em;font-weight:900;color:#FFD700;
+  text-shadow:0 4px 16px rgba(0,0,0,.9),0 0 30px #FFD700;
+  z-index:50;opacity:0;pointer-events:none;transition:opacity .2s;
+  white-space:nowrap;
 }
-@keyframes labelPop{
-  0%{opacity:0;transform:translateX(-50%) scale(.3) rotate(-10deg)}
-  60%{opacity:1;transform:translateX(-50%) scale(1.25) rotate(3deg)}
-  80%{transform:translateX(-50%) scale(.95) rotate(-1deg)}
-  100%{opacity:1;transform:translateX(-50%) scale(1) rotate(0)}
+#shot-label.show{opacity:1}
+#shot-label.miss{color:#ff5252;text-shadow:0 4px 16px rgba(0,0,0,.9),0 0 30px #ff5252}
+
+/* CONFETTI */
+@keyframes confettiFall{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0}
 }
-#shot-label.show{animation:labelPop .6s .35s ease forwards}
-#shot-label.miss{color:#ff4444;text-shadow:0 0 20px rgba(255,68,68,.8),3px 3px 8px rgba(0,0,0,.9)}
 .conf{
-  position:fixed;top:-10px;width:8px;height:14px;border-radius:2px;
-  opacity:0;pointer-events:none;z-index:40;
-  animation:confFall 1.4s ease-in forwards;
+  position:fixed;top:0;width:10px;height:10px;border-radius:2px;
+  animation:confettiFall 1.4s ease-in forwards;z-index:99;pointer-events:none;
 }
-@keyframes confFall{
-  0%{opacity:1;transform:translateY(0) rotate(0) scaleX(1)}
-  50%{transform:translateY(50vh) rotate(360deg) scaleX(-1)}
-  100%{opacity:0;transform:translateY(100vh) rotate(720deg) scaleX(1)}
-}
+
+/* PAINEL */
 .panel{
-  position:fixed;left:50%;top:50%;
-  transform:translate(-50%,-50%);
-  background:rgba(255,255,255,.97);
-  border-radius:24px;
-  box-shadow:0 20px 60px rgba(0,0,0,.8);
-  z-index:50;
-  animation:panelIn .35s ease;
-  width:min(640px,94vw);
-  max-height:92vh;overflow-y:auto;
-  padding:22px 20px 18px;
+  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(480px,94vw);max-height:88vh;overflow-y:auto;
+  background:#fff;border-radius:24px;
+  padding:22px 20px;z-index:40;
+  box-shadow:0 20px 60px rgba(0,0,0,.7);
 }
-@keyframes panelIn{
-  from{opacity:0;transform:translate(-50%,-46%) scale(.94)}
-  to{opacity:1;transform:translate(-50%,-50%) scale(1)}
-}
-#home-panel{background:linear-gradient(160deg,#03163d 0,#051f52 100%);color:#fff;}
-.home-title{font-size:1.7em;font-weight:900;margin-bottom:4px;letter-spacing:.5px}
-.home-sub{font-size:.85em;color:#dbe3ff;margin-bottom:12px;line-height:1.55}
+.home-title{font-size:1.5em;font-weight:900;color:#1a1a2e;margin-bottom:4px}
+.home-sub{font-size:.82em;color:#555;margin-bottom:10px;line-height:1.5}
 .home-badge{
-  display:inline-block;padding:6px 14px;border-radius:20px;
-  font-size:.8em;font-weight:700;
-  background:linear-gradient(135deg,#FFD700,#FFA500);color:#222;
-  margin-bottom:14px;box-shadow:0 3px 10px rgba(255,165,0,.4);
+  display:inline-block;padding:4px 14px;border-radius:20px;
+  background:linear-gradient(135deg,#e3f2fd,#bbdefb);
+  color:#0d47a1;font-size:.78em;font-weight:700;margin-bottom:14px;
 }
 .input-group{margin-bottom:10px}
-.input-group label{display:block;font-size:.8em;color:#b0bfff;margin-bottom:4px;font-weight:600}
+.input-group label{font-size:.78em;font-weight:700;color:#444;display:block;margin-bottom:4px}
 .input-group input,.input-group select{
-  width:100%;padding:10px 12px;border-radius:12px;border:none;
-  font-size:.9em;background:rgba(255,255,255,.1);color:#fff;
-  border:1.5px solid rgba(255,255,255,.15);transition:.2s;outline:none;
+  width:100%;padding:10px 12px;border-radius:12px;
+  border:2px solid #e0e0e0;font-size:.88em;outline:none;
+  transition:.2s;background:#fafafa;
 }
-.input-group input:focus{
-  border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.15);
+.input-group input:focus,.input-group select:focus{border-color:#1565c0;background:#fff}
+
+/* TIME SELECTOR */
+.time-selector{display:flex;gap:10px;margin-bottom:14px}
+.time-btn{
+  flex:1;padding:12px;border-radius:14px;border:2px solid #e0e0e0;
+  font-size:.88em;font-weight:700;cursor:pointer;background:#fafafa;
+  transition:.2s;color:#333;
 }
+.time-btn:hover{border-color:#888}
+.sel-azul{background:linear-gradient(135deg,#1565c0,#1976d2);color:#fff;border-color:#1565c0}
+.sel-verde{background:linear-gradient(135deg,#2e7d32,#388e3c);color:#fff;border-color:#2e7d32}
+
+/* TEAM SECTION */
 .team-section{
-  background:rgba(255,255,255,.06);border-radius:14px;
-  padding:12px 14px;margin-bottom:10px;
+  background:#f8f9ff;border-radius:14px;border:2px solid #e8eaf6;
+  padding:12px;margin-bottom:12px;
 }
 .team-section-title{
-  font-size:.82em;font-weight:700;margin-bottom:8px;
-  display:flex;align-items:center;gap:6px;color:#fff;
+  display:flex;align-items:center;gap:8px;
+  font-size:.8em;font-weight:700;color:#333;margin-bottom:8px;
 }
-.add-row{display:flex;gap:8px;margin-top:4px}
+.add-row{display:flex;gap:8px;margin-bottom:8px}
 .add-row input{
-  flex:1;padding:9px 12px;border-radius:12px;border:none;
-  font-size:.88em;background:rgba(255,255,255,.1);color:#fff;
-  border:1.5px solid rgba(255,255,255,.15);outline:none;
+  flex:1;padding:9px 12px;border-radius:10px;
+  border:2px solid #e0e0e0;font-size:.84em;outline:none;
+  transition:.2s;background:#fff;
 }
-.add-row input:focus{border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.15);}
+.add-row input:focus{border-color:#1565c0}
 .btn-add{
-  padding:9px 14px;border-radius:12px;border:none;
-  background:linear-gradient(135deg,#FFD700,#FFA500);color:#222;
-  font-size:.85em;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s;
+  padding:9px 14px;border-radius:10px;border:none;
+  font-size:.82em;font-weight:700;cursor:pointer;
+  background:linear-gradient(135deg,#1565c0,#1976d2);color:#fff;
+  white-space:nowrap;transition:.2s;
 }
 .btn-add:hover{transform:translateY(-1px)}
-.jogadores-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:10px;}
+.jogadores-list{display:flex;flex-wrap:wrap;gap:6px;min-height:10px}
 .jogador-chip{
   display:flex;align-items:center;gap:5px;
-  padding:4px 10px;border-radius:20px;
-  font-size:.78em;font-weight:600;
-  animation:chipIn .2s ease;
+  padding:4px 10px;border-radius:20px;font-size:.76em;font-weight:600;
 }
-@keyframes chipIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
-.chip-azul-j{background:#1565c0;color:#fff}
-.chip-verde-j{background:#2e7d32;color:#fff}
+.chip-azul-j{background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9}
+.chip-verde-j{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
 .chip-rm{
-  background:none;border:none;color:rgba(255,255,255,.7);
-  cursor:pointer;font-size:.9em;padding:0;line-height:1;
+  background:none;border:none;cursor:pointer;
+  font-size:.85em;color:#999;padding:0 2px;line-height:1;
 }
-.chip-rm:hover{color:#fff}
+.chip-rm:hover{color:#e53935}
 
-/* ✅ Seletor de time — cada dispositivo escolhe 1 time */
-.time-selector{display:flex;gap:10px;margin-bottom:12px;}
-.time-btn{
-  flex:1;padding:12px;border-radius:14px;border:2px solid rgba(255,255,255,.15);
-  background:rgba(255,255,255,.07);color:#ccc;
-  font-size:.9em;font-weight:700;cursor:pointer;transition:.2s;text-align:center;
-}
-.time-btn:hover{border-color:rgba(255,255,255,.4)}
-.time-btn.sel-azul{
-  background:linear-gradient(135deg,#1565c0,#0d47a1);
-  border-color:#1976d2;color:#fff;
-  box-shadow:0 4px 14px rgba(21,101,192,.5);
-}
-.time-btn.sel-verde{
-  background:linear-gradient(135deg,#2e7d32,#1b5e20);
-  border-color:#388e3c;color:#fff;
-  box-shadow:0 4px 14px rgba(46,125,50,.5);
-}
-
-.btn-entrar-disabled{
+/* BOTÕES HOME */
+.btn-entrar-ok,.btn-entrar-disabled{
   width:100%;padding:13px;border-radius:50px;border:none;
-  font-size:.95em;font-weight:700;
-  background:#37474f;color:#78909c;cursor:not-allowed;margin-top:8px;
+  font-size:.95em;font-weight:700;margin-top:6px;transition:.22s;cursor:pointer;
 }
 .btn-entrar-ok{
-  width:100%;padding:13px;border-radius:50px;border:none;
-  font-size:.95em;font-weight:700;
-  background:linear-gradient(135deg,#00c853,#00a040);color:#fff;
-  cursor:pointer;margin-top:8px;
-  box-shadow:0 4px 14px rgba(0,200,83,.5);transition:.22s;
+  background:linear-gradient(135deg,#1976d2,#0d47a1);color:#fff;
+  box-shadow:0 4px 14px rgba(21,101,192,.5);
 }
 .btn-entrar-ok:hover{transform:translateY(-1px)}
-#wait-panel{
+.btn-entrar-disabled{background:#e0e0e0;color:#aaa;cursor:not-allowed}
+
+/* WAIT PANEL */
+.wait-panel{
   text-align:center;
   background:linear-gradient(160deg,#03163d,#051f52);color:#fff;
 }
 .wait-spinner{font-size:3em;animation:spin 2s linear infinite;display:inline-block;margin-bottom:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.team-chip-w{
-  display:inline-block;padding:4px 12px;border-radius:20px;
-  font-size:.78em;font-weight:700;margin:2px;
-}
-.chip-azul-w{background:#1565c0;color:#fff}
-.chip-verde-w{background:#2e7d32;color:#fff}
+
+/* BOTÃO INICIAR */
 .btn-iniciar{
   width:100%;padding:13px;border-radius:50px;border:none;
   font-size:.95em;font-weight:700;margin-top:14px;cursor:pointer;transition:.22s;
@@ -384,6 +383,8 @@ html,body{
 }
 .btn-iniciar-ok:hover{transform:translateY(-1px)}
 .btn-iniciar-wait{background:#37474f;color:#78909c;cursor:not-allowed}
+
+/* QUIZ */
 .quiz-header{
   display:flex;justify-content:space-between;align-items:center;
   flex-wrap:wrap;gap:6px;margin-bottom:8px;
@@ -427,7 +428,22 @@ html,body{
 .feedback.show{display:block}
 .feedback.ok{background:#e8f5e9;border-left:4px solid #2e7d32;color:#1b5e20}
 .feedback.err{background:#ffebee;border-left:4px solid #c62828;color:#b71c1c}
-#wait-other{text-align:center;padding:16px 0;display:none}
+#wait-other{text-align:center;padding:12px 0;display:none}
+
+/* COUNTDOWN ENTRE PERGUNTAS */
+#countdown-box{
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:20px 0 10px;gap:4px;
+}
+#countdown-num{
+  font-size:4em;font-weight:900;
+  background:linear-gradient(135deg,#1565c0,#00c853);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;filter:drop-shadow(0 2px 8px rgba(21,101,192,.3));
+}
+
+/* BOTÃO PRÓXIMA */
 .btn-next{
   padding:12px 18px;border-radius:16px;border:none;
   background:linear-gradient(135deg,#FFD700,#FFA500);color:#222;
@@ -436,6 +452,8 @@ html,body{
   margin-top:10px;width:100%;transition:.2s;
 }
 .btn-next:hover{transform:translateY(-1px)}
+
+/* RESULTADO */
 #result-panel{text-align:center}
 .stats-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
 .stat-box{flex:1;min-width:95px;background:#f5f7ff;border-radius:14px;padding:12px}
@@ -453,6 +471,8 @@ html,body{
   cursor:pointer;box-shadow:0 4px 14px rgba(0,200,83,.5);transition:.22s;
 }
 .btn-jogar-novo:hover{transform:translateY(-1px)}
+
+/* SCOREBOARD */
 #scoreboard{
   position:fixed;top:8px;left:50%;transform:translateX(-50%);
   width:min(700px,96vw);z-index:45;
@@ -483,50 +503,78 @@ html,body{
 </head>
 <body>
 
+<!-- ESTÁDIO -->
 <div id="stadium">
-  <div class="spot tl"></div><div class="spot tr"></div>
+  <div class="spot tl"></div>
+  <div class="spot tr"></div>
   <div class="crowd"></div>
 </div>
 
+<!-- CAMPO -->
 <div id="field">
   <div class="center-circle"></div>
   <div class="center-dot"></div>
+
+  <!-- GOL + GOLEIRO + BOLA -->
   <div id="goal-front">
     <div class="goal-posts"></div>
     <div class="goal-net"></div>
     <div id="keeper">
-      <div id="kp-head"></div><div id="kp-neck"></div>
-      <div id="kp-body"></div><div id="kp-arm-l"></div>
-      <div id="kp-arm-r"></div><div id="kp-pants"></div>
-      <div id="kp-leg-l"></div><div id="kp-leg-r"></div>
+      <div id="kp-head"></div>
+      <div id="kp-neck"></div>
+      <div id="kp-body"></div>
+      <div id="kp-arm-l"></div>
+      <div id="kp-arm-r"></div>
+      <div id="kp-pants"></div>
+      <div id="kp-leg-l"></div>
+      <div id="kp-leg-r"></div>
     </div>
     <div id="ball"></div>
   </div>
+
+  <!-- JOGADOR AZUL -->
   <div id="player-azul" class="player-fig pl-azul">
-    <div class="pl-head"></div><div class="pl-neck"></div>
-    <div class="pl-body"></div><div class="pl-arm-l"></div>
-    <div class="pl-arm-r"></div><div class="pl-pants"></div>
-    <div class="pl-leg-l"></div><div class="pl-leg-r"></div>
+    <div class="pl-head"></div>
+    <div class="pl-neck"></div>
+    <div class="pl-body"></div>
+    <div class="pl-arm-l"></div>
+    <div class="pl-arm-r"></div>
+    <div class="pl-pants"></div>
+    <div class="pl-leg-l"></div>
+    <div class="pl-leg-r"></div>
   </div>
+
+  <!-- JOGADOR VERDE -->
   <div id="player-verde" class="player-fig pl-verde">
-    <div class="pl-head"></div><div class="pl-neck"></div>
-    <div class="pl-body"></div><div class="pl-arm-l"></div>
-    <div class="pl-arm-r"></div><div class="pl-pants"></div>
-    <div class="pl-leg-l"></div><div class="pl-leg-r"></div>
+    <div class="pl-head"></div>
+    <div class="pl-neck"></div>
+    <div class="pl-body"></div>
+    <div class="pl-arm-l"></div>
+    <div class="pl-arm-r"></div>
+    <div class="pl-pants"></div>
+    <div class="pl-leg-l"></div>
+    <div class="pl-leg-r"></div>
   </div>
 </div>
 
 <div id="shot-label"></div>
 <div id="big-timer">00:20</div>
 
+<!-- SCOREBOARD -->
 <div id="scoreboard">
   <div class="sb-box">
     <div class="sb-dot dot-azul"></div>
-    <div><div class="sb-name">Time Azul</div><div class="sb-score" id="score-azul">0</div></div>
+    <div>
+      <div class="sb-name">Time Azul</div>
+      <div class="sb-score" id="score-azul">0</div>
+    </div>
   </div>
   <div class="sb-title">⚽ COPA DA HIGIENE</div>
   <div class="sb-box">
-    <div><div class="sb-name">Time Verde</div><div class="sb-score" id="score-verde">0</div></div>
+    <div>
+      <div class="sb-name">Time Verde</div>
+      <div class="sb-score" id="score-verde">0</div>
+    </div>
     <div class="sb-dot dot-verde"></div>
   </div>
 </div>
@@ -540,12 +588,11 @@ html,body{
     Cada dispositivo representa <strong>1 time</strong>.<br>
     Cadastre os jogadores do seu time e entre na partida!
   </div>
-  <div style="text-align:center">
+  <div style="text-align:center;margin-bottom:14px">
     <span class="home-badge">⚽ 20 perguntas — Azul x Verde</span>
   </div>
 
-  <!-- ✅ Seletor de time — 1 por dispositivo -->
-  <div style="font-size:.8em;color:#b0bfff;margin-bottom:6px;font-weight:600">
+  <div style="font-size:.8em;color:#555;margin-bottom:6px;font-weight:600">
     Qual é o seu time neste dispositivo?
   </div>
   <div class="time-selector">
@@ -557,13 +604,12 @@ html,body{
     </button>
   </div>
 
-  <!-- Seção de jogadores — aparece após selecionar o time -->
   <div id="sec-jogadores" style="display:none">
-    <div class="team-section" id="sec-team-box">
-      <div class="team-section-title" id="sec-team-title">
+    <div class="team-section">
+      <div class="team-section-title">
         <div id="sec-team-dot" style="width:12px;height:12px;border-radius:3px;background:#1565c0"></div>
         <span id="sec-team-label">Jogadores do Time Azul</span>
-        <span id="sec-team-count" style="color:#90caf9;margin-left:4px">(0/10)</span>
+        <span id="sec-team-count" style="margin-left:4px;color:#90caf9">(0/10)</span>
       </div>
       <div class="add-row">
         <input type="text" id="inp-nome-jogador"
@@ -584,13 +630,12 @@ html,body{
 </div>
 
 <!-- AGUARDANDO -->
-<div id="wait-panel" class="panel" style="display:none">
+<div id="wait-panel" class="panel wait-panel" style="display:none">
   <div class="wait-spinner">⏳</div>
   <h2 style="color:#FFD700;margin-bottom:10px;font-size:1.3em">Aguardando os 2 times...</h2>
   <div style="background:rgba(255,255,255,.07);border-radius:14px;padding:12px;margin-bottom:12px">
-    <div style="font-size:.8em;color:#b0bfff;margin-bottom:6px">
-      Você entrou como:
-      <strong id="wait-meu-time" style="color:#fff"></strong>
+    <div style="font-size:.82em;color:#b0bfff;margin-bottom:6px">
+      Você entrou como: <strong id="wait-meu-time" style="color:#fff"></strong>
     </div>
     <div style="font-size:.8em;color:#b0bfff;margin-bottom:4px">🔵 Jogadores Azul:</div>
     <div id="wait-jogadores-azul" style="font-size:.78em;color:#90caf9;margin-bottom:8px">—</div>
@@ -627,12 +672,22 @@ html,body{
   <div class="q-text" id="q-text">Carregando...</div>
   <div class="options" id="opts"></div>
   <div class="feedback" id="feedback"></div>
+
+  <!-- COUNTDOWN ENTRE PERGUNTAS -->
+  <div id="countdown-box">
+    <div style="font-size:.85em;color:#555;font-weight:600">⏳ Próxima pergunta em...</div>
+    <div id="countdown-num">5</div>
+    <div style="font-size:.75em;color:#888">segundos</div>
+  </div>
+
+  <!-- AGUARDANDO OUTRO TIME -->
   <div id="wait-other">
     <div style="font-size:1.8em">⏳</div>
     <p style="color:#888;font-size:.84em;margin-top:4px">
       Aguardando o outro time responder...
     </p>
   </div>
+
   <button class="btn-next" id="next-btn" onclick="avancarPergunta()" style="display:none">
     Próxima pergunta ➜
   </button>
@@ -649,6 +704,16 @@ html,body{
     <div class="stat-box"><div class="sv" id="st-acc">0%</div><div class="sl">Aproveitamento</div></div>
   </div>
   <div class="res-msg" id="res-msg"></div>
+
+  <!-- AVISO EMAIL -->
+  <div id="res-email-info" style="
+    display:none;margin-top:10px;padding:10px 14px;
+    border-radius:12px;background:#e3f2fd;
+    border-left:4px solid #1565c0;
+    font-size:.8em;color:#1565c0;text-align:left;">
+    📧 Relatório enviado para <strong>raianesouzan09@gmail.com</strong>
+  </div>
+
   <button class="btn-jogar-novo" onclick="jogarNovamente()">🔄 Jogar novamente</button>
 </div>
 
@@ -666,7 +731,6 @@ let respondeuEstaRodada = false;
 let timeLeft = 20;
 let timer = null;
 let pollingInterval = null;
-// ✅ Countdown entre perguntas
 let countdownInterval = null;
 
 // ===== ÁUDIO =====
@@ -754,6 +818,7 @@ function selecionarTime(time){
   atualizarBtnEntrar();
 }
 
+// ===== CADASTRO DE JOGADORES =====
 function adicionarJogador(){
   const inp=$('inp-nome-jogador');
   const nome=inp.value.trim();
@@ -792,7 +857,7 @@ function atualizarBtnEntrar(){
   btn.className=ok?'btn-entrar-ok':'btn-entrar-disabled';
 }
 
-// ===== ENTRAR =====
+// ===== ENTRAR NA PARTIDA =====
 async function entrarNaSala(){
   $('home-erro').textContent='';
   if(!meuTime||jogadoresLocais.length===0){
@@ -829,6 +894,7 @@ function atualizarWaitPanel(data){
   }
 }
 
+// ===== INICIAR PARTIDA =====
 async function iniciarPartida(){
   try{
     const r=await fetch(`${SERVIDOR}/iniciar`,{
@@ -851,7 +917,7 @@ async function verificarEstado(){
     const r=await fetch(`${SERVIDOR}/estado?time=${meuTime}`);
     const data=await r.json();
 
-    // Reset detectado — volta para home
+    // ✅ Versão mudou = servidor resetado = volta para home
     if(ultimaVersao && data.versao!==ultimaVersao){irParaHome();return;}
 
     // Atualiza placar
@@ -861,22 +927,31 @@ async function verificarEstado(){
       $('score-tag').textContent=`${data.placar.azul??0} x ${data.placar.verde??0}`;
     }
 
-    // Tela de espera
+    // Ainda na espera
     if(!data.iniciada){atualizarWaitPanel(data);return;}
 
     // Fim de jogo
     if(data.fimDeJogo){
-      clearInterval(pollingInterval);clearInterval(timer);stopAmbient();
+      clearInterval(pollingInterval);clearInterval(timer);
+      pararCountdown();stopAmbient();
       mostrarResultado(data.placar);return;
     }
 
-    // ✅ COUNTDOWN ENTRE PERGUNTAS
+    // ✅ COUNTDOWN ativo — mostra contagem regressiva
     if(data.aguardandoProxima && data.proximaEm){
+      if(!respondeuEstaRodada){
+        // Dispositivo que ainda não respondeu: bloqueia botões e mostra countdown
+        document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+        respondeuEstaRodada=true;
+      }
+      showPanel('quiz-panel');
+      $('wait-other').style.display='none';
+      $('next-btn').style.display='none';
       mostrarCountdown(data.proximaEm);
       return;
     }
 
-    // Nova pergunta
+    // ✅ Nova pergunta chegou — renderiza nos 2 dispositivos
     if(data.perguntaIndex!==ultimaIndex){
       ultimaIndex=data.perguntaIndex;
       perguntaAtual=data.pergunta;
@@ -886,34 +961,28 @@ async function verificarEstado(){
       return;
     }
 
-    // Já respondeu, aguarda o outro
-    if(respondeuEstaRodada && data.todosResponderam && !data.aguardandoProxima){
-      $('wait-other').style.display='none';
+    // Já respondeu, aguarda o outro via polling
+    if(respondeuEstaRodada&&!data.aguardandoProxima){
+      $('wait-other').style.display='block';
+      $('next-btn').style.display='none';
     }
 
   }catch(e){console.error('Erro no polling:',e);}
 }
 
-// ===== COUNTDOWN 5s ENTRE PERGUNTAS =====
+// ===== COUNTDOWN 5s =====
 function mostrarCountdown(proximaEm){
-  // Garante que o painel do quiz está visível
-  showPanel('quiz-panel');
-  $('next-btn').style.display='none';
+  const cd=$('countdown-box');
+  cd.style.display='flex';
   $('wait-other').style.display='none';
+  $('next-btn').style.display='none';
 
-  // Desabilita opções durante countdown
-  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
-
-  if(countdownInterval)return; // já está rodando
+  if(countdownInterval)return;
 
   countdownInterval=setInterval(()=>{
-    const restante=Math.ceil((proximaEm - Date.now())/1000);
-    const cd=$('countdown-box');
-    if(cd){
-      cd.style.display='flex';
-      $('countdown-num').textContent=restante>0?restante:0;
-    }
-    if(restante<=0){pararCountdown();}
+    const restante=Math.ceil((proximaEm-Date.now())/1000);
+    $('countdown-num').textContent=restante>0?restante:0;
+    if(restante<=0)pararCountdown();
   },200);
 }
 
@@ -933,6 +1002,7 @@ function renderizarPergunta(data){
   $('next-btn').style.display='none';
   $('feedback').className='feedback';
   $('feedback').innerHTML='';
+  $('countdown-box').style.display='none';
 
   $('q-counter').textContent=`Pergunta ${q.index+1}/${q.total}`;
   $('cat-tag').textContent=q.cat;
@@ -946,7 +1016,7 @@ function renderizarPergunta(data){
   const cont=$('opts');cont.innerHTML='';
   ['A','B','C','D'].forEach((l,i)=>{
     const b=document.createElement('button');
-    b.className='opt';b.id=`opt-${i}`;
+    b.className='opt';
     b.innerHTML=`<span class="opt-letter">${l}</span><span>${q.opts[i]}</span>`;
     b.onclick=()=>responder(i);
     cont.appendChild(b);
@@ -972,7 +1042,6 @@ async function responder(opcao){
   if(respondeuEstaRodada)return;
   respondeuEstaRodada=true;
   clearInterval(timer);
-
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   $('quiz-panel').style.display='none';
 
@@ -1022,13 +1091,11 @@ async function responder(opcao){
 
     setTimeout(()=>{
       $('quiz-panel').style.display='block';
-
       if(data.fimDeJogo){
-        clearInterval(pollingInterval);stopAmbient();
+        clearInterval(pollingInterval);pararCountdown();stopAmbient();
         mostrarResultado(data.placar);
-      }else if(data.todosResponderam){
-        // ✅ Ambos responderam — mostra countdown nos 2 dispositivos
-        $('wait-other').style.display='none';
+      }else if(data.aguardandoProxima){
+        // ✅ Ambos responderam — mostra countdown
         mostrarCountdown(data.proximaEm);
       }else{
         // Só este respondeu — aguarda o outro
@@ -1045,21 +1112,35 @@ async function responder(opcao){
 
 // ===== RESULTADO =====
 function mostrarResultado(placar){
-  clearInterval(pollingInterval);clearInterval(timer);pararCountdown();stopAmbient();
+  clearInterval(pollingInterval);
+  clearInterval(timer);
+  pararCountdown();
+  stopAmbient();
+
   const azul=(placar?.azul??parseInt($('score-azul').textContent))||0;
   const verde=(placar?.verde??parseInt($('score-verde').textContent))||0;
+
   showPanel('result-panel');
   $('res-scoreline').textContent=`${azul} x ${verde}`;
   $('st-azul').textContent=azul;
   $('st-verde').textContent=verde;
   $('st-acc').textContent=Math.round((azul+verde)/20*100)+'%';
+
   let medal,msg;
-  if(azul>verde){medal='🔵';msg=`Time Azul venceu por ${azul} x ${verde}! Excelente domínio em higienização das mãos.`;}
-  else if(verde>azul){medal='🟢';msg=`Time Verde venceu por ${verde} x ${azul}! Mandou bem nos fundamentos de higiene.`;}
-  else{medal='🤝';msg=`Empate em ${azul} x ${verde}! Os dois times mostraram ótimo conhecimento.`;}
+  if(azul>verde){
+    medal='🔵';
+    msg=`Time Azul venceu por ${azul} x ${verde}! Excelente domínio em higienização das mãos.`;
+  }else if(verde>azul){
+    medal='🟢';
+    msg=`Time Verde venceu por ${verde} x ${azul}! Mandou bem nos fundamentos de higiene.`;
+  }else{
+    medal='🤝';
+    msg=`Empate em ${azul} x ${verde}! Os dois times mostraram ótimo conhecimento.`;
+  }
   $('res-medal').textContent=medal;
   $('res-msg').textContent=msg;
-  // ✅ Aviso de email enviado
+
+  // ✅ Mostra aviso de email enviado
   $('res-email-info').style.display='block';
 }
 
@@ -1067,7 +1148,9 @@ function mostrarResultado(placar){
 async function jogarNovamente(){
   try{
     await fetch(`${SERVIDOR}/resetar`,{
-      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({})
     });
   }catch(e){console.error('Erro ao resetar:',e);}
   irParaHome();
@@ -1075,9 +1158,19 @@ async function jogarNovamente(){
 
 // ===== IR PARA HOME =====
 function irParaHome(){
-  clearInterval(pollingInterval);clearInterval(timer);pararCountdown();stopAmbient();
-  ultimaIndex=-1;ultimaVersao=null;respondeuEstaRodada=false;
-  meuTime='';jogadoresLocais=[];resetShot();
+  clearInterval(pollingInterval);
+  clearInterval(timer);
+  pararCountdown();
+  stopAmbient();
+
+  ultimaIndex=-1;
+  ultimaVersao=null;
+  respondeuEstaRodada=false;
+  meuTime='';
+  jogadoresLocais=[];
+  resetShot();
+
+  // Reseta visual da home
   $('btn-time-azul').className='time-btn';
   $('btn-time-verde').className='time-btn';
   $('sec-jogadores').style.display='none';
@@ -1085,13 +1178,19 @@ function irParaHome(){
   $('sec-team-count').textContent='(0/10)';
   $('btn-entrar').disabled=true;
   $('btn-entrar').className='btn-entrar-disabled';
+  $('home-erro').textContent='';
+
+  // Reseta placar visual
   $('score-azul').textContent='0';
   $('score-verde').textContent='0';
   $('score-tag').textContent='0 x 0';
+
+  // Reseta resultado
+  $('res-email-info').style.display='none';
+
   showPanel('home-panel');
 }
 </script>
 </body>
 </html>
-
 
