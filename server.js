@@ -30,161 +30,147 @@ const ALL_Q = [
   {cat:"👨‍👩‍👧 Público Geral",q:"Em escolas e eventos esportivos, incentivar a higiene das mãos impacta principalmente:",opts:["Notas escolares","Transmissão de infecções","Conforto térmico","Desempenho físico"],ans:1,exp:"Menos infecções significam menos faltas e menor transmissão entre participantes."}
 ];
 
-const salas = {};
-
-function criarSala(salaId) {
-  salas[salaId] = {
+// ===== PARTIDA GLOBAL — sem salas =====
+function novaPartida() {
+  return {
     iniciada: false,
     perguntaIndex: 0,
     perguntas: ALL_Q,
-    times: {},
-    timesEsperados: [],
+    times: {
+      azul:  { gols: 0, respondeu: false, jogadores: [] },
+      verde: { gols: 0, respondeu: false, jogadores: [] }
+    },
+    versao: Date.now() // ✅ versão única para detectar reset
   };
 }
 
-function getSala(salaId) {
-  if (!salas[salaId]) criarSala(salaId);
-  return salas[salaId];
+let partida = novaPartida();
+
+function todosResponderam() {
+  return partida.times.azul.respondeu && partida.times.verde.respondeu;
 }
 
-function registrarJogador(salaId, time, nome) {
-  const sala = getSala(salaId);
-  if (!sala.times[time]) {
-    sala.times[time] = { gols: 0, respondeu: false, jogadores: [] };
-    if (!sala.timesEsperados.includes(time)) sala.timesEsperados.push(time);
-  }
-  if (nome && !sala.times[time].jogadores.includes(nome) && sala.times[time].jogadores.length < 10) {
-    sala.times[time].jogadores.push(nome);
-  }
+function resetarRespostas() {
+  partida.times.azul.respondeu = false;
+  partida.times.verde.respondeu = false;
 }
 
-function todosResponderam(sala) {
-  return sala.timesEsperados.length >= 2 &&
-         sala.timesEsperados.every(t => sala.times[t].respondeu);
+function podeIniciar() {
+  return partida.times.azul.jogadores.length > 0 &&
+         partida.times.verde.jogadores.length > 0;
 }
 
-function resetarRespostas(sala) {
-  sala.timesEsperados.forEach(t => { sala.times[t].respondeu = false; });
-}
+// ===== ROTAS =====
 
-function podeIniciar(sala) {
-  return sala.timesEsperados.includes('azul') && sala.timesEsperados.includes('verde');
-}
+// Registrar jogadores de UM time
+// POST /registrar  { time: "azul", jogadores: ["Lucas","Pedro"] }
+app.post('/registrar', (req, res) => {
+  const { time, jogadores = [] } = req.body;
+  if (!['azul','verde'].includes(time))
+    return res.status(400).json({ erro: 'Time inválido.' });
+  if (!Array.isArray(jogadores) || jogadores.length === 0)
+    return res.status(400).json({ erro: 'Informe ao menos 1 jogador.' });
 
-// Entrar na sala — aceita múltiplos nomes por time
-app.get('/entrar', (req, res) => {
-  const { sala = '1', time, nome = '' } = req.query;
-  if (!time) return res.status(400).json({ erro: 'Informe o time.' });
-  registrarJogador(sala, time, nome);
-  const s = getSala(sala);
+  // ✅ Substitui a lista do time (não acumula de partidas anteriores)
+  partida.times[time].jogadores = jogadores.slice(0, 10);
+
   res.json({
     ok: true,
-    sala,
-    time,
-    timesNaSala: s.timesEsperados,
-    jogadoresAzul: s.times['azul']?.jogadores || [],
-    jogadoresVerde: s.times['verde']?.jogadores || [],
-    podeIniciar: podeIniciar(s),
-    iniciada: s.iniciada,
+    versao: partida.versao,
+    podeIniciar: podeIniciar(),
+    jogadoresAzul: partida.times.azul.jogadores,
+    jogadoresVerde: partida.times.verde.jogadores,
+    iniciada: partida.iniciada,
   });
 });
 
-// Iniciar
-app.post('/iniciar', (req, res) => {
-  const { sala = '1' } = req.body;
-  const s = getSala(sala);
-  if (!podeIniciar(s)) {
-    return res.status(400).json({ erro: 'Aguarde os 2 times entrarem na sala.' });
-  }
-  s.iniciada = true;
-  s.perguntaIndex = 0;
-  s.timesEsperados.forEach(t => {
-    s.times[t].gols = 0;
-    s.times[t].respondeu = false;
-  });
-  res.json({ ok: true });
-});
-
-// Estado — inclui todosResponderam para o polling do cliente
+// Estado — polling do cliente
 app.get('/estado', (req, res) => {
-  const { sala = '1', time } = req.query;
-  const s = getSala(sala);
-  const pergunta = s.perguntas[s.perguntaIndex];
+  const { time = 'azul' } = req.query;
+  const pergunta = partida.perguntas[partida.perguntaIndex];
 
   const perguntaSegura = pergunta ? {
-    index: s.perguntaIndex,
-    total: s.perguntas.length,
+    index: partida.perguntaIndex,
+    total: partida.perguntas.length,
     cat: pergunta.cat,
     q: pergunta.q,
     opts: pergunta.opts,
   } : null;
 
-  const todos = todosResponderam(s);
-
   res.json({
-    iniciada: s.iniciada,
-    perguntaIndex: s.perguntaIndex,
-    totalPerguntas: s.perguntas.length,
-    timesNaSala: s.timesEsperados,
-    jogadoresAzul: s.times['azul']?.jogadores || [],
-    jogadoresVerde: s.times['verde']?.jogadores || [],
-    podeIniciar: podeIniciar(s),
+    versao: partida.versao,
+    iniciada: partida.iniciada,
+    perguntaIndex: partida.perguntaIndex,
+    totalPerguntas: partida.perguntas.length,
+    jogadoresAzul: partida.times.azul.jogadores,
+    jogadoresVerde: partida.times.verde.jogadores,
+    podeIniciar: podeIniciar(),
     pergunta: perguntaSegura,
-    placar: Object.fromEntries(
-      s.timesEsperados.map(t => [t, s.times[t].gols])
-    ),
-    jaRespondeu: time ? (s.times[time]?.respondeu || false) : false,
-    todosResponderam: todos,
-    fimDeJogo: s.iniciada && s.perguntaIndex >= s.perguntas.length,
+    placar: {
+      azul: partida.times.azul.gols,
+      verde: partida.times.verde.gols,
+    },
+    jaRespondeu: partida.times[time]?.respondeu || false,
+    todosResponderam: todosResponderam(),
+    fimDeJogo: partida.iniciada && partida.perguntaIndex >= partida.perguntas.length,
   });
+});
+
+// Iniciar partida
+app.post('/iniciar', (req, res) => {
+  if (!podeIniciar())
+    return res.status(400).json({ erro: 'Os 2 times precisam ter jogadores.' });
+
+  partida.iniciada = true;
+  partida.perguntaIndex = 0;
+  partida.times.azul.gols = 0;
+  partida.times.azul.respondeu = false;
+  partida.times.verde.gols = 0;
+  partida.times.verde.respondeu = false;
+
+  res.json({ ok: true, versao: partida.versao });
 });
 
 // Responder
 app.post('/responder', (req, res) => {
-  const { sala = '1', time, resposta } = req.body;
-  const s = getSala(sala);
+  const { time, resposta } = req.body;
 
-  if (!s.iniciada) return res.status(400).json({ erro: 'Partida não iniciada.' });
-  if (s.perguntaIndex >= s.perguntas.length) return res.status(400).json({ erro: 'Fim de jogo.' });
-  if (!s.times[time]) return res.status(400).json({ erro: 'Time não registrado.' });
-  if (s.times[time].respondeu) return res.status(400).json({ erro: 'Já respondeu esta pergunta.' });
+  if (!partida.iniciada)
+    return res.status(400).json({ erro: 'Partida não iniciada.' });
+  if (partida.perguntaIndex >= partida.perguntas.length)
+    return res.status(400).json({ erro: 'Fim de jogo.' });
+  if (!['azul','verde'].includes(time))
+    return res.status(400).json({ erro: 'Time inválido.' });
+  if (partida.times[time].respondeu)
+    return res.status(400).json({ erro: 'Já respondeu esta pergunta.' });
 
-  const pergunta = s.perguntas[s.perguntaIndex];
+  const pergunta = partida.perguntas[partida.perguntaIndex];
   const acertou = Number(resposta) === pergunta.ans;
 
-  if (acertou) s.times[time].gols++;
-  s.times[time].respondeu = true;
+  if (acertou) partida.times[time].gols++;
+  partida.times[time].respondeu = true;
 
-  const todos = todosResponderam(s);
+  const todos = todosResponderam();
   if (todos) {
-    s.perguntaIndex++;
-    resetarRespostas(s);
+    partida.perguntaIndex++;
+    resetarRespostas();
   }
 
   res.json({
     acertou,
     respostaCorreta: pergunta.ans,
-    // ✅ Corrigido: envia o texto da opção correta diretamente
     opcaoTexto: pergunta.opts[pergunta.ans],
     explicacao: pergunta.exp,
-    gols: s.times[time].gols,
+    gols: partida.times[time].gols,
     todosResponderam: todos,
-    fimDeJogo: s.perguntaIndex >= s.perguntas.length,
+    fimDeJogo: partida.perguntaIndex >= partida.perguntas.length,
   });
 });
 
-// Resetar sala
+// ✅ Resetar TUDO — nova partida do zero
 app.post('/resetar', (req, res) => {
-  const { sala = '1' } = req.body;
-  const s = getSala(sala);
-  const timesAntigos = { ...s.times };
-  const timesEsperados = [...s.timesEsperados];
-  criarSala(sala);
-  timesEsperados.forEach(t => {
-    salas[sala].times[t] = { gols: 0, respondeu: false, jogadores: timesAntigos[t]?.jogadores || [] };
-    salas[sala].timesEsperados.push(t);
-  });
-  res.json({ ok: true });
+  partida = novaPartida();
+  res.json({ ok: true, versao: partida.versao });
 });
 
 const PORT = process.env.PORT || 3000;
