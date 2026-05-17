@@ -4,501 +4,402 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Copa da Higiene</title>
+<!-- Cole isso substituindo APENAS os blocos de CSS:
+     #ball, @keyframes shoot*, #keeper, #kp-*, 
+     .player-fig, .pl-*, @keyframes dive* 
+     no seu index.html existente -->
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{
-  width:100%;min-height:100%;
-  font-family:'Segoe UI',sans-serif;
-  background:#021428;overflow-x:hidden;
-}
-
-/* ESTÁDIO */
-#stadium{
-  position:fixed;inset:0;z-index:0;overflow:hidden;
-  background:radial-gradient(circle at 50% 0,#1a3d8f 0,#021428 55%,#000814 100%);
-}
-.spot{position:absolute;width:200px;height:200px;border-radius:50%;
-  background:radial-gradient(circle,#fff 0,#fff 25%,transparent 70%);
-  opacity:.13;filter:blur(2px);}
-.spot.tl{top:-30px;left:-30px}
-.spot.tr{top:-30px;right:-30px}
-.crowd{
-  position:absolute;left:0;right:0;top:15%;height:22%;
-  background:repeating-linear-gradient(90deg,
-    #0b1c3d 0,#0b1c3d 6px,#122a5d 6px,#122a5d 12px,
-    #1b3a7a 12px,#1b3a7a 18px,#0f2146 18px,#0f2146 24px);
-}
-.crowd::before{
-  content:"";position:absolute;inset:0;
-  background-image:
-    radial-gradient(circle at 15% 50%,rgba(255,255,255,.3) 0,transparent 50%),
-    radial-gradient(circle at 55% 20%,rgba(255,255,255,.35) 0,transparent 50%),
-    radial-gradient(circle at 85% 40%,rgba(255,255,255,.3) 0,transparent 50%);
-  opacity:.25;
-}
-
-/* CAMPO */
-#field{
-  position:fixed;left:50%;bottom:0;transform:translateX(-50%);
-  width:130%;max-width:1000px;height:54%;
-  background:linear-gradient(180deg,#0c8f3a 0,#046c2a 40%,#02501f 100%);
-  border-radius:60% 60% 0 0/35% 35% 0 0;
-  box-shadow:0 -20px 70px rgba(0,0,0,.8);z-index:1;
-}
-#field::before{
-  content:"";position:absolute;inset:5% 8%;
-  border:3px solid rgba(255,255,255,.5);
-  border-radius:40% 40% 0 0/40% 40% 0 0;
-}
-.center-circle{
-  position:absolute;top:48%;left:50%;
-  width:130px;height:130px;border-radius:50%;
-  border:3px solid rgba(255,255,255,.4);
-  transform:translate(-50%,-50%);
-}
-.center-dot{
-  position:absolute;top:48%;left:50%;
-  width:8px;height:8px;border-radius:50%;
-  background:rgba(255,255,255,.7);
-  transform:translate(-50%,-50%);
-}
-
-/* GOL */
-#goal-front{
-  position:absolute;bottom:10%;left:50%;transform:translateX(-50%);
-  width:48%;max-width:300px;height:36%;
-}
-.goal-posts{
-  position:absolute;left:8%;right:8%;bottom:14%;height:82%;
-  border-radius:8px;
-  box-shadow:0 0 0 5px #fff inset,0 0 0 7px rgba(200,200,200,.3) inset;
-}
-.goal-net{
-  position:absolute;left:9%;right:9%;bottom:16%;top:4%;
-  background:
-    linear-gradient(60deg,transparent 0,transparent 5px,rgba(255,255,255,.25) 5px,rgba(255,255,255,.25) 6px,transparent 6px),
-    linear-gradient(-60deg,transparent 0,transparent 5px,rgba(255,255,255,.25) 5px,rgba(255,255,255,.25) 6px,transparent 6px);
-  background-size:12px 12px;
-}
-
-/* BOLA */
+/* ========== BOLA ========== */
 #ball{
   position:absolute;bottom:14%;left:50%;transform:translateX(-50%);
-  width:22px;height:22px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#fff 0,#e0e0e0 50%,#aaa 100%);
+  width:24px;height:24px;border-radius:50%;
+  background:
+    radial-gradient(circle at 32% 28%,#fff 0,#e8e8e8 40%,#bbb 100%);
   border:2px solid #333;
-  box-shadow:0 3px 8px rgba(0,0,0,.8),inset 0 -2px 4px rgba(0,0,0,.3);
+  box-shadow:0 4px 10px rgba(0,0,0,.8),inset 0 -3px 5px rgba(0,0,0,.3);
   z-index:5;
 }
 #ball::before{
-  content:"";position:absolute;top:2px;left:4px;
-  width:8px;height:8px;border-radius:50%;
-  background:rgba(255,255,255,.4);
+  content:"";position:absolute;top:3px;left:5px;
+  width:9px;height:9px;border-radius:50%;
+  background:rgba(255,255,255,.45);
 }
+/* Hexágonos do estilo de bola */
+#ball::after{
+  content:"";position:absolute;inset:2px;border-radius:50%;
+  background:
+    radial-gradient(circle at 65% 70%,#555 0,transparent 35%),
+    radial-gradient(circle at 25% 65%,#444 0,transparent 30%),
+    radial-gradient(circle at 60% 25%,#444 0,transparent 28%);
+}
+
 @keyframes shootGoal{
-  0%{transform:translate(-50%,0) scale(1);bottom:14%;opacity:1}
-  70%{transform:translate(-50%,-45%) scale(.55);bottom:42%}
-  100%{transform:translate(-50%,-50%) scale(.4);bottom:46%;opacity:.7}
+  0%  {bottom:14%;left:50%;transform:translateX(-50%) scale(1) rotate(0deg);opacity:1}
+  30% {bottom:28%;left:52%;transform:translateX(-50%) scale(.85) rotate(180deg)}
+  70% {bottom:44%;left:50%;transform:translateX(-50%) scale(.6) rotate(400deg)}
+  100%{bottom:48%;left:50%;transform:translateX(-50%) scale(.45) rotate(540deg);opacity:.7}
 }
 @keyframes shootMiss{
-  0%{transform:translate(-50%,0) scale(1);bottom:14%;opacity:1}
-  100%{transform:translate(-220%,5%) scale(.45);bottom:18%;opacity:.3}
+  0%  {bottom:14%;left:50%;transform:translateX(-50%) scale(1) rotate(0deg);opacity:1}
+  40% {bottom:24%;left:75%;transform:translateX(-50%) scale(.8) rotate(200deg);opacity:1}
+  100%{bottom:10%;left:95%;transform:translateX(-50%) scale(.4) rotate(420deg);opacity:.2}
 }
-#ball.goal{animation:shootGoal .85s ease-in forwards}
-#ball.miss{animation:shootMiss .85s ease-in forwards}
+#ball.goal{animation:shootGoal .9s cubic-bezier(.4,0,.2,1) forwards}
+#ball.miss{animation:shootMiss .9s cubic-bezier(.4,0,.2,1) forwards}
 
-/* GOLEIRO */
+/* ========== GOLEIRO ========== */
 #keeper{
   position:absolute;bottom:22%;left:50%;transform:translateX(-50%);
-  width:32px;height:64px;
+  width:36px;height:70px;
+  transition:transform .1s;
 }
+
+/* Cabeça */
 #kp-head{
-  position:absolute;bottom:44px;left:50%;transform:translateX(-50%);
-  width:16px;height:16px;border-radius:50%;
-  background:radial-gradient(circle at 40% 35%,#ffe0b2,#ffb74d);
-  border:1.5px solid #e09040;
+  position:absolute;bottom:50px;left:50%;transform:translateX(-50%);
+  width:18px;height:18px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#ffe0b2,#ffb74d);
+  border:2px solid #e09040;
+  box-shadow:0 2px 6px rgba(0,0,0,.35);
+  z-index:2;
+}
+/* Cabelo */
+#kp-head::before{
+  content:"";position:absolute;top:0;left:1px;
+  width:15px;height:7px;border-radius:8px 8px 0 0;
+  background:#4a2800;
+}
+/* Olhos */
+#kp-head::after{
+  content:"• •";position:absolute;top:7px;left:2px;
+  font-size:5px;color:#333;letter-spacing:3px;line-height:1;
+}
+
+/* Pescoço */
+#kp-neck{
+  position:absolute;bottom:47px;left:50%;transform:translateX(-50%);
+  width:8px;height:5px;border-radius:2px;background:#ffb74d;
+}
+
+/* Corpo — camisa amarela de goleiro */
+#kp-body{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  width:22px;height:28px;border-radius:7px 7px 4px 4px;
+  background:linear-gradient(160deg,#ffee58 0%,#fdd835 50%,#f9a825 100%);
+  border:2px solid #f57f17;
+  box-shadow:0 3px 8px rgba(0,0,0,.4);
+}
+/* Número na camisa */
+#kp-body::after{
+  content:"1";position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  font-size:9px;font-weight:900;color:#e65100;
+}
+
+/* Braço esquerdo */
+#kp-arm-l{
+  position:absolute;bottom:34px;left:-10px;
+  width:14px;height:8px;border-radius:5px;
+  background:linear-gradient(90deg,#ffe082,#fdd835);
+  border:1.5px solid #f57f17;
+  transform:rotate(20deg);transform-origin:right center;
   box-shadow:0 2px 4px rgba(0,0,0,.3);
 }
-#kp-head::before{
-  content:"";position:absolute;top:2px;left:2px;
-  width:12px;height:5px;border-radius:3px;background:#5d3a1a;
+/* Luva esquerda */
+#kp-arm-l::after{
+  content:"";position:absolute;left:-5px;top:-1px;
+  width:7px;height:10px;border-radius:4px;
+  background:#388e3c;border:1.5px solid #1b5e20;
 }
-#kp-neck{
+
+/* Braço direito */
+#kp-arm-r{
+  position:absolute;bottom:34px;right:-10px;
+  width:14px;height:8px;border-radius:5px;
+  background:linear-gradient(90deg,#fdd835,#ffe082);
+  border:1.5px solid #f57f17;
+  transform:rotate(-20deg);transform-origin:left center;
+  box-shadow:0 2px 4px rgba(0,0,0,.3);
+}
+/* Luva direita */
+#kp-arm-r::after{
+  content:"";position:absolute;right:-5px;top:-1px;
+  width:7px;height:10px;border-radius:4px;
+  background:#388e3c;border:1.5px solid #1b5e20;
+}
+
+/* Calção */
+#kp-pants{
+  position:absolute;bottom:11px;left:50%;transform:translateX(-50%);
+  width:22px;height:11px;border-radius:3px;
+  background:#1565c0;border:1.5px solid #0d47a1;
+}
+
+/* Perna esquerda */
+#kp-leg-l{
+  position:absolute;bottom:0;left:3px;
+  width:8px;height:13px;border-radius:3px 3px 5px 5px;
+  background:#ffb74d;border:1.5px solid #e09040;
+}
+#kp-leg-l::after{
+  content:"";position:absolute;bottom:0;left:-1px;
+  width:11px;height:5px;border-radius:3px;
+  background:#1a237e;
+}
+
+/* Perna direita */
+#kp-leg-r{
+  position:absolute;bottom:0;right:3px;
+  width:8px;height:13px;border-radius:3px 3px 5px 5px;
+  background:#ffb74d;border:1.5px solid #e09040;
+}
+#kp-leg-r::after{
+  content:"";position:absolute;bottom:0;left:-1px;
+  width:11px;height:5px;border-radius:3px;
+  background:#1a237e;
+}
+
+/* ========== ANIMAÇÕES GOLEIRO ========== */
+@keyframes diveRight{
+  0%  {transform:translateX(-50%) rotate(0deg) scaleX(1)}
+  25% {transform:translateX(-20%) rotate(-15deg) scaleX(1)}
+  60% {transform:translateX(55%) rotate(-55deg) scaleX(1)}
+  100%{transform:translateX(70%) rotate(-70deg) scaleX(1)}
+}
+@keyframes diveLeft{
+  0%  {transform:translateX(-50%) rotate(0deg) scaleX(1)}
+  25% {transform:translateX(-80%) rotate(15deg) scaleX(1)}
+  60% {transform:translateX(-155%) rotate(55deg) scaleX(1)}
+  100%{transform:translateX(-170%) rotate(70deg) scaleX(1)}
+}
+/* Tremor de susto quando leva gol */
+@keyframes keeperShake{
+  0%,100%{transform:translateX(-50%)}
+  20%{transform:translateX(-44%)}
+  40%{transform:translateX(-56%)}
+  60%{transform:translateX(-45%)}
+  80%{transform:translateX(-55%)}
+}
+#keeper.dive-right{animation:diveRight .55s cubic-bezier(.4,0,.2,1) forwards}
+#keeper.dive-left {animation:diveLeft  .55s cubic-bezier(.4,0,.2,1) forwards}
+#keeper.shake     {animation:keeperShake .4s ease forwards}
+
+/* ========== JOGADORES ========== */
+.player-fig{
+  position:absolute;bottom:8%;
+  width:30px;height:62px;
+}
+.pl-azul {left:18%}
+.pl-verde{right:18%}
+
+/* Cabeça */
+.pl-head{
+  position:absolute;bottom:44px;left:50%;transform:translateX(-50%);
+  width:16px;height:16px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#ffe0b2,#ffb74d);
+  border:2px solid #e09040;
+  box-shadow:0 2px 5px rgba(0,0,0,.3);
+  z-index:2;
+}
+/* Cabelo */
+.pl-azul  .pl-head::before{content:"";position:absolute;top:0;left:1px;width:13px;height:6px;border-radius:8px 8px 0 0;background:#1a237e;}
+.pl-verde .pl-head::before{content:"";position:absolute;top:0;left:1px;width:13px;height:6px;border-radius:8px 8px 0 0;background:#1b5e20;}
+/* Olhos */
+.pl-head::after{content:"· ·";position:absolute;top:7px;left:2px;font-size:5px;color:#333;letter-spacing:2px;}
+
+/* Pescoço */
+.pl-neck{
   position:absolute;bottom:41px;left:50%;transform:translateX(-50%);
   width:7px;height:5px;border-radius:2px;background:#ffb74d;
 }
-#kp-body{
+
+/* Corpo */
+.pl-body{
   position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
   width:20px;height:24px;border-radius:6px 6px 4px 4px;
-  background:linear-gradient(180deg,#ffeb3b,#f9a825);
-  border:1.5px solid #f57f17;
-  box-shadow:0 2px 6px rgba(0,0,0,.4);
+  border:2px solid rgba(0,0,0,.2);
+  box-shadow:0 3px 8px rgba(0,0,0,.35);
 }
-#kp-body::after{
-  content:"1";position:absolute;top:4px;left:50%;transform:translateX(-50%);
-  font-size:8px;font-weight:900;color:#f57f17;
-}
-#kp-arm-l{
-  position:absolute;bottom:30px;left:-8px;
-  width:12px;height:7px;border-radius:4px;
-  background:#ffeb3b;border:1px solid #f57f17;
-  transform:rotate(25deg);transform-origin:right center;
-}
-#kp-arm-r{
-  position:absolute;bottom:30px;right:-8px;
-  width:12px;height:7px;border-radius:4px;
-  background:#ffeb3b;border:1px solid #f57f17;
-  transform:rotate(-25deg);transform-origin:left center;
-}
-#kp-pants{
-  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
-  width:20px;height:10px;border-radius:3px;
-  background:#1565c0;border:1px solid #0d47a1;
-}
-#kp-leg-l{
-  position:absolute;bottom:0;left:3px;
-  width:7px;height:12px;border-radius:3px 3px 4px 4px;
-  background:#ffb74d;border:1px solid #e09040;
-}
-#kp-leg-l::after{
-  content:"";position:absolute;bottom:0;left:0;
-  width:9px;height:4px;border-radius:2px;
-  background:#222;
-}
-#kp-leg-r{
-  position:absolute;bottom:0;right:3px;
-  width:7px;height:12px;border-radius:3px 3px 4px 4px;
-  background:#ffb74d;border:1px solid #e09040;
-}
-#kp-leg-r::after{
-  content:"";position:absolute;bottom:0;left:0;
-  width:9px;height:4px;border-radius:2px;background:#222;
-}
-@keyframes diveRight{
-  0%{transform:translateX(-50%) rotate(0deg)}
-  100%{transform:translateX(60%) rotate(-40deg)}
-}
-@keyframes diveLeft{
-  0%{transform:translateX(-50%) rotate(0deg)}
-  100%{transform:translateX(-160%) rotate(40deg)}
-}
-#keeper.dive-right{animation:diveRight .5s ease-out forwards}
-#keeper.dive-left{animation:diveLeft .5s ease-out forwards}
+.pl-azul  .pl-body{background:linear-gradient(160deg,#1e88e5,#0d47a1)}
+.pl-verde .pl-body{background:linear-gradient(160deg,#43a047,#1b5e20)}
+/* Número */
+.pl-azul  .pl-body::after{content:"10";position:absolute;top:5px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:900;color:rgba(255,255,255,.85);}
+.pl-verde .pl-body::after{content:"11";position:absolute;top:5px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:900;color:rgba(255,255,255,.85);}
 
-/* JOGADORES */
-.player-fig{
-  position:absolute;bottom:8%;
-  width:28px;height:58px;
-}
-.pl-azul{left:22%}
-.pl-verde{right:22%}
-.pl-head{
-  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
-  width:14px;height:14px;border-radius:50%;
-  background:radial-gradient(circle at 40% 35%,#ffe0b2,#ffb74d);
-  border:1.5px solid #e09040;
-}
-.pl-head::before{
-  content:"";position:absolute;top:1px;left:1px;
-  width:11px;height:5px;border-radius:3px;
-}
-.pl-azul .pl-head::before{background:#1a237e}
-.pl-verde .pl-head::before{background:#1b5e20}
-.pl-neck{
-  position:absolute;bottom:37px;left:50%;transform:translateX(-50%);
-  width:6px;height:5px;border-radius:2px;background:#ffb74d;
-}
-.pl-body{
-  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
-  width:18px;height:22px;border-radius:5px 5px 3px 3px;
-  border:1.5px solid rgba(0,0,0,.2);
-}
-.pl-azul .pl-body{background:linear-gradient(180deg,#1976d2,#0d47a1)}
-.pl-verde .pl-body{background:linear-gradient(180deg,#388e3c,#1b5e20)}
+/* Braço esquerdo */
 .pl-arm-l{
-  position:absolute;bottom:28px;left:-7px;
-  width:10px;height:6px;border-radius:3px;
+  position:absolute;bottom:30px;left:-8px;
+  width:11px;height:7px;border-radius:4px;
+  border:1.5px solid rgba(0,0,0,.2);
   transform:rotate(20deg);transform-origin:right center;
-  border:1px solid rgba(0,0,0,.2);
 }
-.pl-azul .pl-arm-l{background:#1976d2}
+.pl-azul  .pl-arm-l{background:#1976d2}
 .pl-verde .pl-arm-l{background:#388e3c}
+
+/* Braço direito */
 .pl-arm-r{
-  position:absolute;bottom:28px;right:-7px;
-  width:10px;height:6px;border-radius:3px;
+  position:absolute;bottom:30px;right:-8px;
+  width:11px;height:7px;border-radius:4px;
+  border:1.5px solid rgba(0,0,0,.2);
   transform:rotate(-20deg);transform-origin:left center;
-  border:1px solid rgba(0,0,0,.2);
 }
-.pl-azul .pl-arm-r{background:#1976d2}
+.pl-azul  .pl-arm-r{background:#1976d2}
 .pl-verde .pl-arm-r{background:#388e3c}
+
+/* Calção */
 .pl-pants{
-  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
-  width:18px;height:9px;border-radius:2px;
+  position:absolute;bottom:9px;left:50%;transform:translateX(-50%);
+  width:20px;height:10px;border-radius:3px;
+  border:1px solid rgba(0,0,0,.15);
 }
-.pl-azul .pl-pants{background:#0d47a1}
+.pl-azul  .pl-pants{background:#0d47a1}
 .pl-verde .pl-pants{background:#1b5e20}
+
+/* Perna esquerda */
 .pl-leg-l{
   position:absolute;bottom:0;left:2px;
-  width:6px;height:10px;border-radius:2px 2px 3px 3px;
-  background:#ffb74d;border:1px solid #e09040;
+  width:7px;height:11px;border-radius:3px 3px 4px 4px;
+  background:#ffb74d;border:1.5px solid #e09040;
 }
-.pl-leg-l::after{
-  content:"";position:absolute;bottom:0;left:-1px;
-  width:8px;height:3px;border-radius:2px;
-}
-.pl-azul .pl-leg-l::after{background:#1a237e}
-.pl-verde .pl-leg-l::after{background:#1b5e20}
+.pl-azul  .pl-leg-l::after{content:"";position:absolute;bottom:0;left:-1px;width:9px;height:4px;border-radius:2px;background:#1a237e;}
+.pl-verde .pl-leg-l::after{content:"";position:absolute;bottom:0;left:-1px;width:9px;height:4px;border-radius:2px;background:#1b5e20;}
+
+/* Perna direita */
 .pl-leg-r{
   position:absolute;bottom:0;right:2px;
-  width:6px;height:10px;border-radius:2px 2px 3px 3px;
-  background:#ffb74d;border:1px solid #e09040;
+  width:7px;height:11px;border-radius:3px 3px 4px 4px;
+  background:#ffb74d;border:1.5px solid #e09040;
 }
-.pl-leg-r::after{
-  content:"";position:absolute;bottom:0;left:-1px;
-  width:8px;height:3px;border-radius:2px;
-}
-.pl-azul .pl-leg-r::after{background:#1a237e}
-.pl-verde .pl-leg-r::after{background:#1b5e20}
+.pl-azul  .pl-leg-r::after{content:"";position:absolute;bottom:0;left:-1px;width:9px;height:4px;border-radius:2px;background:#1a237e;}
+.pl-verde .pl-leg-r::after{content:"";position:absolute;bottom:0;left:-1px;width:9px;height:4px;border-radius:2px;background:#1b5e20;}
 
-/* SHOT LABEL */
-#shot-label{
-  position:fixed;top:38%;left:50%;transform:translateX(-50%);
-  font-size:2.2em;font-weight:900;color:#FFD700;
-  text-shadow:0 4px 16px rgba(0,0,0,.9),0 0 30px #FFD700;
-  z-index:50;opacity:0;pointer-events:none;transition:opacity .2s;
-  white-space:nowrap;
-}
-#shot-label.show{opacity:1}
-#shot-label.miss{color:#ff5252;text-shadow:0 4px 16px rgba(0,0,0,.9),0 0 30px #ff5252}
+/* ========== ANIMAÇÕES DOS JOGADORES ========== */
 
-/* CONFETTI */
-@keyframes confettiFall{
-  0%{transform:translateY(-20px) rotate(0deg);opacity:1}
-  100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+/* Corrida em loop */
+@keyframes runCycle{
+  0%  {transform:translateY(0px)}
+  25% {transform:translateY(-4px)}
+  50% {transform:translateY(0px)}
+  75% {transform:translateY(-2px)}
+  100%{transform:translateY(0px)}
 }
-.conf{
-  position:fixed;top:0;width:10px;height:10px;border-radius:2px;
-  animation:confettiFall 1.4s ease-in forwards;z-index:99;pointer-events:none;
+/* Pernas alternando ao correr */
+@keyframes legRunL{
+  0%,100%{transform:rotate(0deg) translateY(0)}
+  25%    {transform:rotate(-30deg) translateY(-3px)}
+  50%    {transform:rotate(0deg) translateY(0)}
+  75%    {transform:rotate(20deg) translateY(2px)}
 }
-
-/* PAINEL */
-.panel{
-  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:min(480px,94vw);max-height:88vh;overflow-y:auto;
-  background:#fff;border-radius:24px;
-  padding:22px 20px;z-index:40;
-  box-shadow:0 20px 60px rgba(0,0,0,.7);
+@keyframes legRunR{
+  0%,100%{transform:rotate(0deg) translateY(0)}
+  25%    {transform:rotate(20deg) translateY(2px)}
+  50%    {transform:rotate(0deg) translateY(0)}
+  75%    {transform:rotate(-30deg) translateY(-3px)}
 }
-.home-title{font-size:1.5em;font-weight:900;color:#1a1a2e;margin-bottom:4px}
-.home-sub{font-size:.82em;color:#555;margin-bottom:10px;line-height:1.5}
-.home-badge{
-  display:inline-block;padding:4px 14px;border-radius:20px;
-  background:linear-gradient(135deg,#e3f2fd,#bbdefb);
-  color:#0d47a1;font-size:.78em;font-weight:700;margin-bottom:14px;
+/* Braços alternando ao correr */
+@keyframes armSwingL{
+  0%,100%{transform:rotate(20deg)}
+  50%    {transform:rotate(-30deg)}
 }
-.input-group{margin-bottom:10px}
-.input-group label{font-size:.78em;font-weight:700;color:#444;display:block;margin-bottom:4px}
-.input-group input,.input-group select{
-  width:100%;padding:10px 12px;border-radius:12px;
-  border:2px solid #e0e0e0;font-size:.88em;outline:none;
-  transition:.2s;background:#fafafa;
-}
-.input-group input:focus,.input-group select:focus{border-color:#1565c0;background:#fff}
-
-/* TIME SELECTOR */
-.time-selector{display:flex;gap:10px;margin-bottom:14px}
-.time-btn{
-  flex:1;padding:12px;border-radius:14px;border:2px solid #e0e0e0;
-  font-size:.88em;font-weight:700;cursor:pointer;background:#fafafa;
-  transition:.2s;color:#333;
-}
-.time-btn:hover{border-color:#888}
-.sel-azul{background:linear-gradient(135deg,#1565c0,#1976d2);color:#fff;border-color:#1565c0}
-.sel-verde{background:linear-gradient(135deg,#2e7d32,#388e3c);color:#fff;border-color:#2e7d32}
-
-/* TEAM SECTION */
-.team-section{
-  background:#f8f9ff;border-radius:14px;border:2px solid #e8eaf6;
-  padding:12px;margin-bottom:12px;
-}
-.team-section-title{
-  display:flex;align-items:center;gap:8px;
-  font-size:.8em;font-weight:700;color:#333;margin-bottom:8px;
-}
-.add-row{display:flex;gap:8px;margin-bottom:8px}
-.add-row input{
-  flex:1;padding:9px 12px;border-radius:10px;
-  border:2px solid #e0e0e0;font-size:.84em;outline:none;
-  transition:.2s;background:#fff;
-}
-.add-row input:focus{border-color:#1565c0}
-.btn-add{
-  padding:9px 14px;border-radius:10px;border:none;
-  font-size:.82em;font-weight:700;cursor:pointer;
-  background:linear-gradient(135deg,#1565c0,#1976d2);color:#fff;
-  white-space:nowrap;transition:.2s;
-}
-.btn-add:hover{transform:translateY(-1px)}
-.jogadores-list{display:flex;flex-wrap:wrap;gap:6px;min-height:10px}
-.jogador-chip{
-  display:flex;align-items:center;gap:5px;
-  padding:4px 10px;border-radius:20px;font-size:.76em;font-weight:600;
-}
-.chip-azul-j{background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9}
-.chip-verde-j{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
-.chip-rm{
-  background:none;border:none;cursor:pointer;
-  font-size:.85em;color:#999;padding:0 2px;line-height:1;
-}
-.chip-rm:hover{color:#e53935}
-
-/* BOTÕES HOME */
-.btn-entrar-ok,.btn-entrar-disabled{
-  width:100%;padding:13px;border-radius:50px;border:none;
-  font-size:.95em;font-weight:700;margin-top:6px;transition:.22s;cursor:pointer;
-}
-.btn-entrar-ok{
-  background:linear-gradient(135deg,#1976d2,#0d47a1);color:#fff;
-  box-shadow:0 4px 14px rgba(21,101,192,.5);
-}
-.btn-entrar-ok:hover{transform:translateY(-1px)}
-.btn-entrar-disabled{background:#e0e0e0;color:#aaa;cursor:not-allowed}
-
-/* WAIT PANEL */
-.wait-panel{
-  text-align:center;
-  background:linear-gradient(160deg,#03163d,#051f52);color:#fff;
-}
-.wait-spinner{font-size:3em;animation:spin 2s linear infinite;display:inline-block;margin-bottom:8px}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* BOTÃO INICIAR */
-.btn-iniciar{
-  width:100%;padding:13px;border-radius:50px;border:none;
-  font-size:.95em;font-weight:700;margin-top:14px;cursor:pointer;transition:.22s;
-}
-.btn-iniciar-ok{
-  background:linear-gradient(135deg,#00c853,#00a040);color:#fff;
-  box-shadow:0 4px 14px rgba(0,200,83,.5);
-}
-.btn-iniciar-ok:hover{transform:translateY(-1px)}
-.btn-iniciar-wait{background:#37474f;color:#78909c;cursor:not-allowed}
-
-/* QUIZ */
-.quiz-header{
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:6px;margin-bottom:8px;
-}
-.tag{display:inline-block;padding:5px 11px;border-radius:20px;font-size:.76em;font-weight:700}
-.tag-blue{background:linear-gradient(135deg,#004ba0,#1976d2);color:#fff}
-.tag-gold{background:linear-gradient(135deg,#FFD700,#FFA500);color:#222}
-.tag-green{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);color:#2e7d32;border:1px solid #81c784}
-.tag-verde-dark{background:#2e7d32;color:#fff}
-.timer-big{font-size:1.9em;font-weight:900;color:#006400;line-height:1}
-.bar-wrap{width:100%;height:6px;background:#e8eaf6;border-radius:4px;margin:4px 0 8px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px}
-.prog-bar{background:linear-gradient(90deg,#1565c0,#00c853)}
-.time-bar{background:linear-gradient(90deg,#00c853,#FFD700);transition:width 1s linear}
-.q-text{font-size:1em;font-weight:700;color:#1a1a2e;line-height:1.55;margin:8px 0 12px}
-.options{display:flex;flex-direction:column;gap:8px}
-.opt{
-  display:flex;align-items:center;gap:12px;
-  background:#fafafa;border:2px solid #e0e0e0;
-  border-radius:14px;padding:13px 14px;
-  font-size:.92em;color:#333;cursor:pointer;
-  transition:.18s;text-align:left;width:100%;
-}
-.opt:active:not(:disabled){transform:scale(.98)}
-.opt:hover:not(:disabled){border-color:#1565c0;background:#e3f2fd}
-.opt-letter{
-  width:30px;height:30px;border-radius:50%;
-  background:#1565c0;color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.8em;font-weight:800;flex-shrink:0;
-}
-.opt.correct{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20}
-.opt.correct .opt-letter{background:#2e7d32}
-.opt.wrong{background:#ffebee;border-color:#c62828;color:#b71c1c}
-.opt.wrong .opt-letter{background:#c62828}
-.opt:disabled{cursor:not-allowed;opacity:.75}
-.feedback{
-  margin-top:10px;padding:11px 13px;border-radius:12px;
-  font-size:.84em;line-height:1.55;display:none;
-}
-.feedback.show{display:block}
-.feedback.ok{background:#e8f5e9;border-left:4px solid #2e7d32;color:#1b5e20}
-.feedback.err{background:#ffebee;border-left:4px solid #c62828;color:#b71c1c}
-#wait-other{text-align:center;padding:12px 0;display:none}
-
-/* COUNTDOWN ENTRE PERGUNTAS */
-#countdown-box{
-  display:none;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:20px 0 10px;gap:4px;
-}
-#countdown-num{
-  font-size:4em;font-weight:900;
-  background:linear-gradient(135deg,#1565c0,#00c853);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  line-height:1;filter:drop-shadow(0 2px 8px rgba(21,101,192,.3));
+@keyframes armSwingR{
+  0%,100%{transform:rotate(-20deg)}
+  50%    {transform:rotate(30deg)}
 }
 
-/* BOTÃO PRÓXIMA */
-.btn-next{
-  padding:12px 18px;border-radius:16px;border:none;
-  background:linear-gradient(135deg,#FFD700,#FFA500);color:#222;
-  font-size:.9em;font-weight:700;cursor:pointer;
-  box-shadow:0 3px 12px rgba(255,160,0,.4);
-  margin-top:10px;width:100%;transition:.2s;
+/* CHUTE — jogador chuta e volta */
+@keyframes kickShot{
+  0%  {transform:translateX(0) rotate(0deg) scaleX(1)}
+  20% {transform:translateX(8px) rotate(5deg) scaleX(1)}
+  45% {transform:translateX(18px) rotate(12deg) scaleX(1)}
+  65% {transform:translateX(12px) rotate(6deg) scaleX(1)}
+  85% {transform:translateX(4px) rotate(2deg) scaleX(1)}
+  100%{transform:translateX(0) rotate(0deg) scaleX(1)}
 }
-.btn-next:hover{transform:translateY(-1px)}
+@keyframes kickLegR{
+  0%  {transform:rotate(0deg)}
+  30% {transform:rotate(-60deg) translateY(-6px)}
+  55% {transform:rotate(-80deg) translateY(-8px)}
+  80% {transform:rotate(-20deg)}
+  100%{transform:rotate(0deg)}
+}
+@keyframes kickLegL{
+  0%  {transform:rotate(0deg)}
+  30% {transform:rotate(20deg)}
+  55% {transform:rotate(30deg)}
+  100%{transform:rotate(0deg)}
+}
+@keyframes kickArmL{
+  0%  {transform:rotate(20deg)}
+  40% {transform:rotate(-60deg)}
+  100%{transform:rotate(20deg)}
+}
+@keyframes kickArmR{
+  0%  {transform:rotate(-20deg)}
+  40% {transform:rotate(50deg)}
+  100%{transform:rotate(-20deg)}
+}
 
-/* RESULTADO */
-#result-panel{text-align:center}
-.stats-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
-.stat-box{flex:1;min-width:95px;background:#f5f7ff;border-radius:14px;padding:12px}
-.stat-box .sv{font-size:1.5em;font-weight:800;color:#006400}
-.stat-box .sl{font-size:.72em;color:#888;margin-top:2px}
-.res-msg{
-  margin-top:10px;padding:13px 14px;border-radius:14px;
-  background:linear-gradient(135deg,#f0fff4,#e8f5e9);
-  border:2px solid #4CAF50;font-size:.88em;color:#2e7d32;line-height:1.6;
+/* COMEMORAÇÃO — pula e levanta os braços */
+@keyframes celebrate{
+  0%  {transform:translateY(0) rotate(0deg)}
+  20% {transform:translateY(-14px) rotate(-5deg)}
+  40% {transform:translateY(-20px) rotate(5deg)}
+  60% {transform:translateY(-10px) rotate(-3deg)}
+  80% {transform:translateY(-16px) rotate(4deg)}
+  100%{transform:translateY(0) rotate(0deg)}
 }
-.btn-jogar-novo{
-  width:100%;padding:13px;border-radius:50px;border:none;
-  font-size:.95em;font-weight:700;margin-top:14px;
-  background:linear-gradient(135deg,#00c853,#00a040);color:#fff;
-  cursor:pointer;box-shadow:0 4px 14px rgba(0,200,83,.5);transition:.22s;
+@keyframes celebrateArm{
+  0%,100%{transform:rotate(-80deg)}
+  50%    {transform:rotate(-130deg)}
 }
-.btn-jogar-novo:hover{transform:translateY(-1px)}
+@keyframes celebrateLeg{
+  0%,100%{transform:rotate(0deg)}
+  40%    {transform:rotate(-40deg) translateY(-5px)}
+  70%    {transform:rotate(20deg)}
+}
 
-/* SCOREBOARD */
-#scoreboard{
-  position:fixed;top:8px;left:50%;transform:translateX(-50%);
-  width:min(700px,96vw);z-index:45;
-  display:flex;justify-content:space-between;align-items:center;gap:8px;
+/* TRISTEZA — cabeça baixa, jogador agacha */
+@keyframes sad{
+  0%  {transform:translateY(0)}
+  40% {transform:translateY(5px)}
+  70% {transform:translateY(3px)}
+  100%{transform:translateY(4px)}
 }
-.sb-box{
-  background:rgba(0,0,0,.75);backdrop-filter:blur(4px);
-  border-radius:14px;padding:6px 12px;color:#fff;
-  display:flex;align-items:center;gap:8px;
-  border:1px solid rgba(255,255,255,.1);
+@keyframes sadArm{
+  0%,100%{transform:rotate(-10deg)}
+  50%    {transform:rotate(40deg)}
 }
-.sb-dot{width:13px;height:17px;border-radius:4px;border:2px solid #fff}
-.dot-azul{background:#1565c0}
-.dot-verde{background:#2e7d32}
-.sb-score{font-size:1.2em;font-weight:900;line-height:1}
-.sb-name{font-size:.78em;font-weight:700;color:#ddd}
-.sb-title{
-  font-size:.88em;font-weight:900;color:#fff;text-align:center;
-  text-shadow:2px 2px 8px rgba(0,0,0,.9);white-space:nowrap;
+@keyframes sadLeg{
+  0%,100%{transform:rotate(0deg)}
+  50%    {transform:rotate(15deg)}
 }
-#big-timer{
-  position:fixed;bottom:10px;left:50%;transform:translateX(-50%);
-  padding:5px 16px;border-radius:12px;
-  background:rgba(0,0,0,.85);border:2px solid #4dd0e1;
-  color:#e0f7fa;font-family:monospace;font-size:1.1em;font-weight:700;z-index:45;
-}
+
+/* Classes de estado aplicadas via JS */
+
+/* Estado idle — jogadores ficam "respirando" suavemente */
+.player-fig.idle .pl-arm-l{animation:armSwingL 1.4s ease-in-out infinite}
+.player-fig.idle .pl-arm-r{animation:armSwingR 1.4s ease-in-out infinite}
+
+/* Estado chutando */
+.player-fig.kicking{animation:kickShot .7s ease-in-out forwards}
+.player-fig.kicking .pl-leg-r{animation:kickLegR .7s ease-in-out forwards;transform-origin:top center}
+.player-fig.kicking .pl-leg-l{animation:kickLegL .7s ease-in-out forwards;transform-origin:top center}
+.player-fig.kicking .pl-arm-l{animation:kickArmL .7s ease-in-out forwards;transform-origin:right center}
+.player-fig.kicking .pl-arm-r{animation:kickArmR .7s ease-in-out forwards;transform-origin:left center}
+
+/* Estado comemorando — GOL */
+.player-fig.celebrating{animation:celebrate .5s ease-in-out 3}
+.player-fig.celebrating .pl-arm-l{animation:celebrateArm .5s ease-in-out 3;transform-origin:right center}
+.player-fig.celebrating .pl-arm-r{animation:celebrateArm .5s ease-in-out 3;transform-origin:left center}
+.player-fig.celebrating .pl-leg-l{animation:celebrateLeg .5s ease-in-out 3;transform-origin:top center}
+.player-fig.celebrating .pl-leg-r{animation:celebrateLeg .5s ease-in-out 3 .25s;transform-origin:top center}
+
+/* Estado triste — FORA */
+.player-fig.sad{animation:sad .6s ease-in-out forwards}
+.player-fig.sad .pl-arm-l{animation:sadArm .6s ease-in-out forwards;transform-origin:right center}
+.player-fig.sad .pl-arm-r{animation:sadArm .6s ease-in-out forwards;transform-origin:left center}
+.player-fig.sad .pl-leg-l{animation:sadLeg .6s ease-in-out forwards;transform-origin:top center}
+.player-fig.sad .pl-leg-r{animation:sadLeg .6s ease-in-out forwards .15s;transform-origin:top center}
 </style>
 </head>
 <body>
