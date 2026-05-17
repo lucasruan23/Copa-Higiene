@@ -1,0 +1,13 @@
+{
+  "name": "copa-higiene",
+  "version": "1.0.0",
+  "description": "Quiz de higienização das mãos com disputa de pênaltis",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
