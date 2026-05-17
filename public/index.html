@@ -661,8 +661,9 @@ let meuTime = '';
 let jogadoresLocais = [];
 let perguntaAtual = null;
 let ultimaIndex = -1;
-let ultimaVersao = null; // ✅ detecta reset do servidor
+let ultimaVersao = null;
 let respondeuEstaRodada = false;
+let jaExibiuFeedback = false; // ✅ impede exibir feedback duplo
 let timeLeft = 20;
 let timer = null;
 let pollingInterval = null;
@@ -696,13 +697,14 @@ function sndGoal(){
   for(let i=0;i<len;i++){lv=(lv+.05*(Math.random()*2-1))/1.05;d[i]=lv*20;}
   const src=c.createBufferSource();src.buffer=b;
   const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1200;bp.Q.value=.9;
-  const g=c.createGain();  g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.5,now+.25);g.gain.linearRampToValueAtTime(0,now+2);
+  const g=c.createGain();
+  g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.5,now+.25);g.gain.linearRampToValueAtTime(0,now+2);
   src.connect(bp);bp.connect(g);g.connect(c.destination);src.start(now);src.stop(now+2);
 }
 function sndMiss(){
   const c=ctx(),now=c.currentTime,o=c.createOscillator(),g=c.createGain();
   o.type='sine';o.frequency.setValueAtTime(420,now);o.frequency.exponentialRampToValueAtTime(180,now+.9);
-  g.gain.setValueAtTime(.26,now);g.gain.exponentialRampToValueAtTime(.001,now+1);
+  g.gain.setValueAtValue(.26,now);g.gain.exponentialRampToValueAtTime(.001,now+1);
   o.connect(g);g.connect(c.destination);o.start(now);o.stop(now+1);
 }
 function spawnConfetti(){
@@ -726,7 +728,6 @@ function showPanel(id){
   $(id).style.display='block';
 }
 
-// ===== ANIMAÇÃO =====
 function resetShot(){
   const ball=$('ball');
   ball.className='';
@@ -736,16 +737,11 @@ function resetShot(){
 }
 
 // ===== SELECIONAR TIME =====
-// ✅ Cada dispositivo escolhe apenas 1 time
 function selecionarTime(time){
   meuTime=time;
   jogadoresLocais=[];
-
-  // Atualiza botões de seleção
   $('btn-time-azul').className='time-btn'+(time==='azul'?' sel-azul':'');
   $('btn-time-verde').className='time-btn'+(time==='verde'?' sel-verde':'');
-
-  // Atualiza visual da seção de jogadores
   const isAzul=time==='azul';
   $('sec-team-dot').style.background=isAzul?'#1565c0':'#2e7d32';
   $('sec-team-label').textContent=isAzul?'Jogadores do Time Azul':'Jogadores do Time Verde';
@@ -753,25 +749,18 @@ function selecionarTime(time){
   $('sec-jogadores').style.display='block';
   $('inp-nome-jogador').value='';
   $('inp-nome-jogador').focus();
-
   renderizarListaHome();
   atualizarBtnEntrar();
 }
 
-// ===== CADASTRO DE JOGADORES =====
 function adicionarJogador(){
   const inp=$('inp-nome-jogador');
   const nome=inp.value.trim();
   if(!nome)return;
-  if(jogadoresLocais.length>=10){
-    alert('Máximo de 10 jogadores por time!');return;
-  }
-  if(jogadoresLocais.includes(nome)){
-    alert('Este nome já foi adicionado!');return;
-  }
+  if(jogadoresLocais.length>=10){alert('Máximo de 10 jogadores por time!');return;}
+  if(jogadoresLocais.includes(nome)){alert('Este nome já foi adicionado!');return;}
   jogadoresLocais.push(nome);
-  inp.value='';
-  inp.focus();
+  inp.value='';inp.focus();
   renderizarListaHome();
   atualizarBtnEntrar();
 }
@@ -784,23 +773,19 @@ function removerJogador(nome){
 
 function renderizarListaHome(){
   const lista=$('list-jogadores');
-  const count=$('sec-team-count');
+  $('sec-team-count').textContent=`(${jogadoresLocais.length}/10)`;
   lista.innerHTML='';
-  count.textContent=`(${jogadoresLocais.length}/10)`;
   jogadoresLocais.forEach(nome=>{
     const chip=document.createElement('div');
     chip.className=`jogador-chip chip-${meuTime}-j`;
-    chip.innerHTML=`
-      <span>${nome}</span>
-      <button class="chip-rm" onclick="removerJogador('${nome.replace(/'/g,"\\'")}')">✕</button>
-    `;
+    chip.innerHTML=`<span>${nome}</span>
+      <button class="chip-rm" onclick="removerJogador('${nome.replace(/'/g,"\\'")}')">✕</button>`;
     lista.appendChild(chip);
   });
 }
 
-// ✅ Botão "Entrar" ativa com time selecionado + ao menos 1 jogador
 function atualizarBtnEntrar(){
-  const ok = meuTime!=='' && jogadoresLocais.length>0;
+  const ok=meuTime!=='' && jogadoresLocais.length>0;
   const btn=$('btn-entrar');
   btn.disabled=!ok;
   btn.className=ok?'btn-entrar-ok':'btn-entrar-disabled';
@@ -809,51 +794,39 @@ function atualizarBtnEntrar(){
 // ===== ENTRAR NA PARTIDA =====
 async function entrarNaSala(){
   $('home-erro').textContent='';
-  if(!meuTime || jogadoresLocais.length===0){
-    $('home-erro').textContent='❌ Selecione um time e adicione ao menos 1 jogador.';
-    return;
+  if(!meuTime||jogadoresLocais.length===0){
+    $('home-erro').textContent='❌ Selecione um time e adicione ao menos 1 jogador.';return;
   }
-
   try{
-    // ✅ Envia jogadores do time deste dispositivo
     const r=await fetch(`${SERVIDOR}/registrar`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({time:meuTime, jogadores:jogadoresLocais})
+      body:JSON.stringify({time:meuTime,jogadores:jogadoresLocais})
     });
     const data=await r.json();
-
     if(!data.ok){
-      $('home-erro').textContent='❌ '+(data.erro||'Erro ao entrar.');
-      return;
+      $('home-erro').textContent='❌ '+(data.erro||'Erro ao entrar.');return;
     }
-
-    // Guarda versão para detectar reset
+    // ✅ Guarda versão DESTA partida
     ultimaVersao=data.versao;
-
-    // Atualiza tela de espera
     $('wait-meu-time').textContent=meuTime==='azul'?'🔵 Time Azul':'🟢 Time Verde';
     atualizarWaitPanel(data);
     showPanel('wait-panel');
     iniciarPolling();
-
   }catch(e){
-    $('home-erro').textContent='❌ Erro ao conectar com o servidor. Tente novamente.';
+    $('home-erro').textContent='❌ Erro ao conectar com o servidor.';
   }
 }
 
 function atualizarWaitPanel(data){
   $('wait-jogadores-azul').textContent=(data.jogadoresAzul||[]).join(', ')||'—';
   $('wait-jogadores-verde').textContent=(data.jogadoresVerde||[]).join(', ')||'—';
-
   const btn=$('btn-iniciar');
   if(data.podeIniciar){
-    btn.disabled=false;
-    btn.className='btn-iniciar btn-iniciar-ok';
+    btn.disabled=false;btn.className='btn-iniciar btn-iniciar-ok';
     $('wait-msg').textContent='✅ Os 2 times estão prontos! Pode iniciar.';
   }else{
-    btn.disabled=true;
-    btn.className='btn-iniciar btn-iniciar-wait';
+    btn.disabled=true;btn.className='btn-iniciar btn-iniciar-wait';
     $('wait-msg').textContent='⏳ Aguardando o outro time entrar...';
   }
 }
@@ -862,19 +835,15 @@ function atualizarWaitPanel(data){
 async function iniciarPartida(){
   try{
     const r=await fetch(`${SERVIDOR}/iniciar`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+      method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({})
     });
     const data=await r.json();
     if(!data.ok){
-      $('wait-msg').textContent='❌ '+(data.erro||'Erro ao iniciar.');
-      return;
+      $('wait-msg').textContent='❌ '+(data.erro||'Erro ao iniciar.');return;
     }
     startAmbient();
-  }catch(e){
-    console.error('Erro ao iniciar:',e);
-  }
+  }catch(e){console.error('Erro ao iniciar:',e);}
 }
 
 // ===== POLLING =====
@@ -888,20 +857,13 @@ async function verificarEstado(){
     const r=await fetch(`${SERVIDOR}/estado?time=${meuTime}`);
     const data=await r.json();
 
-    // ✅ Detecta reset do servidor — volta para home
-    if(ultimaVersao && data.versao && data.versao!==ultimaVersao){
-      clearInterval(pollingInterval);
-      clearInterval(timer);
-      stopAmbient();
-      ultimaVersao=null;
-      ultimaIndex=-1;
-      respondeuEstaRodada=false;
-      resetShot();
-      showPanel('home-panel');
+    // ✅ VERSÃO MUDOU = servidor foi resetado = volta para home
+    if(ultimaVersao && data.versao !== ultimaVersao){
+      irParaHome();
       return;
     }
 
-    // Atualiza placar
+    // Atualiza placar sempre
     if(data.placar){
       $('score-azul').textContent=data.placar.azul??0;
       $('score-verde').textContent=data.placar.verde??0;
@@ -916,24 +878,25 @@ async function verificarEstado(){
 
     // Fim de jogo
     if(data.fimDeJogo){
-      clearInterval(pollingInterval);
-      clearInterval(timer);
+      clearInterval(pollingInterval);clearInterval(timer);
       stopAmbient();
       mostrarResultado(data.placar);
       return;
     }
 
-    // ✅ Mudou de pergunta — renderiza nova pergunta nos 2 dispositivos
-    if(data.perguntaIndex!==ultimaIndex){
+    // ✅ Mudou de pergunta — renderiza nos 2 dispositivos
+    if(data.perguntaIndex !== ultimaIndex){
       ultimaIndex=data.perguntaIndex;
       perguntaAtual=data.pergunta;
       respondeuEstaRodada=false;
+      jaExibiuFeedback=false;
       renderizarPergunta(data);
       return;
     }
 
-    // ✅ Ambos responderam — mostra "Próxima pergunta" nos 2 dispositivos
-    if(respondeuEstaRodada && data.todosResponderam && !data.fimDeJogo){
+    // ✅ Este time já respondeu e aguarda o outro
+    // Quando o outro responder (todosResponderam=true), mostra "Próxima pergunta"
+    if(respondeuEstaRodada && data.todosResponderam){
       $('wait-other').style.display='none';
       $('next-btn').style.display='block';
     }
@@ -993,6 +956,7 @@ async function responder(opcao){
   respondeuEstaRodada=true;
   clearInterval(timer);
 
+  // ✅ Desabilita botões IMEDIATAMENTE para não aceitar segunda resposta
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   $('quiz-panel').style.display='none';
 
@@ -1003,6 +967,13 @@ async function responder(opcao){
       body:JSON.stringify({time:meuTime,resposta:opcao})
     });
     const data=await r.json();
+
+    // Atualiza placar imediatamente
+    if(data.placar){
+      $('score-azul').textContent=data.placar.azul??0;
+      $('score-verde').textContent=data.placar.verde??0;
+      $('score-tag').textContent=`${data.placar.azul??0} x ${data.placar.verde??0}`;
+    }
 
     // Marca botões
     const btns=document.querySelectorAll('.opt');
@@ -1041,13 +1012,13 @@ async function responder(opcao){
       if(data.fimDeJogo){
         clearInterval(pollingInterval);
         stopAmbient();
-        mostrarResultado(null);
+        mostrarResultado(data.placar);
       }else if(data.todosResponderam){
-        // ✅ Ambos já responderam: mostra próxima imediatamente
+        // ✅ Ambos já responderam: mostra próxima imediatamente nos 2
         $('wait-other').style.display='none';
         $('next-btn').style.display='block';
       }else{
-        // ✅ Só este respondeu: aguarda (polling detecta quando o outro responder)
+        // ✅ Só este respondeu: aguarda o outro via polling
         $('wait-other').style.display='block';
         $('next-btn').style.display='none';
       }
@@ -1075,31 +1046,27 @@ function mostrarResultado(placar){
 
   const azul=(placar?.azul??parseInt($('score-azul').textContent))||0;
   const verde=(placar?.verde??parseInt($('score-verde').textContent))||0;
-  const total=20;
 
   showPanel('result-panel');
   $('res-scoreline').textContent=`${azul} x ${verde}`;
   $('st-azul').textContent=azul;
   $('st-verde').textContent=verde;
-  $('st-acc').textContent=Math.round((azul+verde)/total*100)+'%';
+  $('st-acc').textContent=Math.round((azul+verde)/20*100)+'%';
 
   let medal,msg;
   if(azul>verde){
-    medal='🔵';
-    msg=`Time Azul venceu por ${azul} x ${verde}! Excelente domínio em higienização das mãos.`;
+    medal='🔵';msg=`Time Azul venceu por ${azul} x ${verde}!`;
   }else if(verde>azul){
-    medal='🟢';
-    msg=`Time Verde venceu por ${verde} x ${azul}! Mandou bem nos fundamentos de higiene.`;
+    medal='🟢';msg=`Time Verde venceu por ${verde} x ${azul}!`;
   }else{
-    medal='🤝';
-    msg=`Empate em ${azul} x ${verde}! Os dois times mostraram ótimo conhecimento.`;
+    medal='🤝';msg=`Empate em ${azul} x ${verde}!`;
   }
   $('res-medal').textContent=medal;
   $('res-msg').textContent=msg;
 }
 
 // ===== JOGAR NOVAMENTE =====
-// ✅ Reseta tudo no servidor e volta para home
+// ✅ Reseta servidor → versão muda → todos os dispositivos voltam para home via polling
 async function jogarNovamente(){
   try{
     await fetch(`${SERVIDOR}/resetar`,{
@@ -1108,18 +1075,23 @@ async function jogarNovamente(){
       body:JSON.stringify({})
     });
   }catch(e){console.error('Erro ao resetar:',e);}
+  // Quem clicou também volta para home
+  irParaHome();
+}
 
+// ✅ Função centralizada para voltar ao início
+function irParaHome(){
   clearInterval(pollingInterval);
   clearInterval(timer);
   stopAmbient();
   ultimaIndex=-1;
   ultimaVersao=null;
   respondeuEstaRodada=false;
+  jaExibiuFeedback=false;
   meuTime='';
   jogadoresLocais=[];
   resetShot();
-
-  // Reseta visual da home
+  // Reseta visual
   $('btn-time-azul').className='time-btn';
   $('btn-time-verde').className='time-btn';
   $('sec-jogadores').style.display='none';
@@ -1130,7 +1102,6 @@ async function jogarNovamente(){
   $('score-azul').textContent='0';
   $('score-verde').textContent='0';
   $('score-tag').textContent='0 x 0';
-
   showPanel('home-panel');
 }
 </script>
