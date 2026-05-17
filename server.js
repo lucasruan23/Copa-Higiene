@@ -30,17 +30,18 @@ const ALL_Q = [
   {cat:"👨‍👩‍👧 Público Geral",q:"Em escolas e eventos esportivos, incentivar a higiene das mãos impacta principalmente:",opts:["Notas escolares","Transmissão de infecções","Conforto térmico","Desempenho físico"],ans:1,exp:"Menos infecções significam menos faltas e menor transmissão entre participantes."}
 ];
 
-// ===== PARTIDA GLOBAL — sem salas =====
+// ===== PARTIDA GLOBAL =====
 function novaPartida() {
   return {
+    versao: Date.now(),
     iniciada: false,
+    encerrada: false,
     perguntaIndex: 0,
     perguntas: ALL_Q,
     times: {
       azul:  { gols: 0, respondeu: false, jogadores: [] },
       verde: { gols: 0, respondeu: false, jogadores: [] }
-    },
-    versao: Date.now() // ✅ versão única para detectar reset
+    }
   };
 }
 
@@ -60,37 +61,15 @@ function podeIniciar() {
          partida.times.verde.jogadores.length > 0;
 }
 
-// ===== ROTAS =====
-
-// Registrar jogadores de UM time
-// POST /registrar  { time: "azul", jogadores: ["Lucas","Pedro"] }
-app.post('/registrar', (req, res) => {
-  const { time, jogadores = [] } = req.body;
-  if (!['azul','verde'].includes(time))
-    return res.status(400).json({ erro: 'Time inválido.' });
-  if (!Array.isArray(jogadores) || jogadores.length === 0)
-    return res.status(400).json({ erro: 'Informe ao menos 1 jogador.' });
-
-  // ✅ Substitui a lista do time (não acumula de partidas anteriores)
-  partida.times[time].jogadores = jogadores.slice(0, 10);
-
-  res.json({
-    ok: true,
-    versao: partida.versao,
-    podeIniciar: podeIniciar(),
-    jogadoresAzul: partida.times.azul.jogadores,
-    jogadoresVerde: partida.times.verde.jogadores,
-    iniciada: partida.iniciada,
-  });
-});
-
-// Estado — polling do cliente
+// ===== ROTA: estado =====
 app.get('/estado', (req, res) => {
   const { time = 'azul' } = req.query;
-  const pergunta = partida.perguntas[partida.perguntaIndex];
+  const idx = partida.perguntaIndex;
+  const pergunta = partida.perguntas[idx];
+  const fimDeJogo = partida.iniciada && idx >= partida.perguntas.length;
 
-  const perguntaSegura = pergunta ? {
-    index: partida.perguntaIndex,
+  const perguntaSegura = (!fimDeJogo && pergunta) ? {
+    index: idx,
     total: partida.perguntas.length,
     cat: pergunta.cat,
     q: pergunta.q,
@@ -98,30 +77,59 @@ app.get('/estado', (req, res) => {
   } : null;
 
   res.json({
-    versao: partida.versao,
-    iniciada: partida.iniciada,
-    perguntaIndex: partida.perguntaIndex,
-    totalPerguntas: partida.perguntas.length,
-    jogadoresAzul: partida.times.azul.jogadores,
+    versao:         partida.versao,
+    iniciada:       partida.iniciada,
+    encerrada:      partida.encerrada,
+    perguntaIndex:  idx,
+    jogadoresAzul:  partida.times.azul.jogadores,
     jogadoresVerde: partida.times.verde.jogadores,
-    podeIniciar: podeIniciar(),
-    pergunta: perguntaSegura,
+    podeIniciar:    podeIniciar(),
+    pergunta:       perguntaSegura,
     placar: {
-      azul: partida.times.azul.gols,
+      azul:  partida.times.azul.gols,
       verde: partida.times.verde.gols,
     },
-    jaRespondeu: partida.times[time]?.respondeu || false,
+    // ✅ informa se ESTE time já respondeu a pergunta atual
+    jaRespondeu:     partida.times[time]?.respondeu || false,
+    // ✅ informa se os 2 já responderam (usado pelo polling do que respondeu primeiro)
     todosResponderam: todosResponderam(),
-    fimDeJogo: partida.iniciada && partida.perguntaIndex >= partida.perguntas.length,
+    fimDeJogo,
   });
 });
 
-// Iniciar partida
+// ===== ROTA: registrar jogadores =====
+app.post('/registrar', (req, res) => {
+  const { time, jogadores = [] } = req.body;
+  if (!['azul','verde'].includes(time))
+    return res.status(400).json({ erro: 'Time inválido.' });
+  if (!Array.isArray(jogadores) || jogadores.length === 0)
+    return res.status(400).json({ erro: 'Informe ao menos 1 jogador.' });
+
+  // Se a partida já encerrou ou está em andamento, não registra
+  if (partida.encerrada)
+    return res.status(400).json({ erro: 'Partida encerrada. Aguarde o reset.' });
+
+  partida.times[time].jogadores = jogadores.slice(0, 10);
+
+  res.json({
+    ok: true,
+    versao:         partida.versao,
+    jogadoresAzul:  partida.times.azul.jogadores,
+    jogadoresVerde: partida.times.verde.jogadores,
+    podeIniciar:    podeIniciar(),
+    iniciada:       partida.iniciada,
+  });
+});
+
+// ===== ROTA: iniciar =====
 app.post('/iniciar', (req, res) => {
   if (!podeIniciar())
     return res.status(400).json({ erro: 'Os 2 times precisam ter jogadores.' });
+  if (partida.iniciada)
+    return res.status(400).json({ erro: 'Partida já iniciada.' });
 
   partida.iniciada = true;
+  partida.encerrada = false;
   partida.perguntaIndex = 0;
   partida.times.azul.gols = 0;
   partida.times.azul.respondeu = false;
@@ -131,7 +139,7 @@ app.post('/iniciar', (req, res) => {
   res.json({ ok: true, versao: partida.versao });
 });
 
-// Responder
+// ===== ROTA: responder =====
 app.post('/responder', (req, res) => {
   const { time, resposta } = req.body;
 
@@ -154,22 +162,30 @@ app.post('/responder', (req, res) => {
   if (todos) {
     partida.perguntaIndex++;
     resetarRespostas();
+    // Marca encerrada se acabaram as perguntas
+    if (partida.perguntaIndex >= partida.perguntas.length) {
+      partida.encerrada = true;
+    }
   }
 
   res.json({
     acertou,
     respostaCorreta: pergunta.ans,
-    opcaoTexto: pergunta.opts[pergunta.ans],
-    explicacao: pergunta.exp,
-    gols: partida.times[time].gols,
+    opcaoTexto:      pergunta.opts[pergunta.ans],
+    explicacao:      pergunta.exp,
+    gols:            partida.times[time].gols,
     todosResponderam: todos,
-    fimDeJogo: partida.perguntaIndex >= partida.perguntas.length,
+    fimDeJogo:       partida.perguntaIndex >= partida.perguntas.length,
+    placar: {
+      azul:  partida.times.azul.gols,
+      verde: partida.times.verde.gols,
+    }
   });
 });
 
-// ✅ Resetar TUDO — nova partida do zero
+// ===== ROTA: resetar — NOVA partida do zero =====
 app.post('/resetar', (req, res) => {
-  partida = novaPartida();
+  partida = novaPartida(); // ✅ nova versao gerada aqui
   res.json({ ok: true, versao: partida.versao });
 });
 
