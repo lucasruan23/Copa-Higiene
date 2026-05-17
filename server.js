@@ -38,9 +38,8 @@ function novaPartida() {
     iniciada: false,
     encerrada: false,
     perguntaIndex: 0,
-    // ✅ Countdown entre perguntas (5s após ambos responderem)
     aguardandoProxima: false,
-    proximaEm: null, // timestamp unix (ms) de quando avança
+    proximaEm: null,
     perguntas: ALL_Q,
     times: {
       azul:  { gols: 0, respondeu: false, jogadores: [] },
@@ -65,16 +64,24 @@ function podeIniciar() {
          partida.times.verde.jogadores.length > 0;
 }
 
-// ===== ENVIO DE EMAIL via EmailJS REST API =====
+// ===== ENVIO DE EMAIL via EmailJS =====
 function enviarRelatorio(placar, jogadoresAzul, jogadoresVerde) {
+  console.log('📧 Iniciando envio de relatório por email...');
+  console.log('   Placar:', placar);
+  console.log('   Time Azul:', jogadoresAzul);
+  console.log('   Time Verde:', jogadoresVerde);
+
   const azul  = placar.azul;
   const verde = placar.verde;
-  let vencedor;
-  if (azul > verde)       vencedor = `🔵 Time Azul (${azul} x ${verde})`;
-  else if (verde > azul)  vencedor = `🟢 Time Verde (${verde} x ${azul})`;
-  else                    vencedor = `🤝 Empate (${azul} x ${verde})`;
 
-  const dataHora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+  let vencedor;
+  if (azul > verde)      vencedor = `🔵 Time Azul (${azul} x ${verde})`;
+  else if (verde > azul) vencedor = `🟢 Time Verde (${verde} x ${azul})`;
+  else                   vencedor = `🤝 Empate (${azul} x ${verde})`;
+
+  const dataHora = new Date().toLocaleString('pt-BR', {
+    timeZone: 'America/Sao_Paulo'
+  });
 
   const corpo = `
 ⚽ RELATÓRIO FINAL — COPA DA HIGIENE
@@ -94,23 +101,24 @@ Total de perguntas: ${ALL_Q.length}
 Aproveitamento geral: ${Math.round((azul + verde) / ALL_Q.length * 100)}%
   `.trim();
 
-  // Usa EmailJS REST API (serviço gratuito)
   const payload = JSON.stringify({
     service_id:  'service_t2hr53m',
     template_id: 'template_pwoea85',
     user_id:     'uFnIjg1P8MKqSKyAp',
     template_params: {
-      to_email:   'raianesouzam09@gmail.com',
-      subject:    `⚽ Relatório Copa da Higiene — ${dataHora}`,
-      message:    corpo,
+      to_email:        'raianesouzan09@gmail.com',
+      subject:         `⚽ Relatório Copa da Higiene — ${dataHora}`,
+      message:         corpo,
       vencedor,
-      azul_gols:  azul,
-      verde_gols: verde,
+      azul_gols:       String(azul),
+      verde_gols:      String(verde),
       jogadores_azul:  jogadoresAzul.join(', ') || '—',
       jogadores_verde: jogadoresVerde.join(', ') || '—',
-      data_hora:  dataHora,
+      data_hora:       dataHora,
     }
   });
+
+  console.log('📤 Payload montado, enviando para api.emailjs.com...');
 
   const options = {
     hostname: 'api.emailjs.com',
@@ -119,13 +127,27 @@ Aproveitamento geral: ${Math.round((azul + verde) / ALL_Q.length * 100)}%
     headers:  {
       'Content-Type':   'application/json',
       'Content-Length': Buffer.byteLength(payload),
+      'origin':         'http://localhost'
     }
   };
 
   const req = https.request(options, res => {
-    console.log(`📧 Email enviado — status: ${res.statusCode}`);
+    let body = '';
+    res.on('data', chunk => body += chunk);
+    res.on('end', () => {
+      if (res.statusCode === 200) {
+        console.log('✅ Email enviado com sucesso! Status:', res.statusCode);
+      } else {
+        console.error('❌ Erro ao enviar email. Status:', res.statusCode);
+        console.error('   Resposta:', body);
+      }
+    });
   });
-  req.on('error', e => console.error('Erro ao enviar email:', e.message));
+
+  req.on('error', e => {
+    console.error('❌ Erro de rede ao enviar email:', e.message);
+  });
+
   req.write(payload);
   req.end();
 }
@@ -136,7 +158,7 @@ Aproveitamento geral: ${Math.round((azul + verde) / ALL_Q.length * 100)}%
 app.get('/estado', (req, res) => {
   const { time = 'azul' } = req.query;
 
-  // ✅ Avança pergunta automaticamente quando o timer expirar
+  // Avança pergunta automaticamente quando timer expirar
   if (
     partida.aguardandoProxima &&
     partida.proximaEm &&
@@ -146,8 +168,17 @@ app.get('/estado', (req, res) => {
     partida.aguardandoProxima = false;
     partida.proximaEm = null;
     resetarRespostas();
+
     if (partida.perguntaIndex >= partida.perguntas.length) {
       partida.encerrada = true;
+      console.log('🏁 Fim de jogo! Enviando relatório...');
+      console.log('   Azul:', partida.times.azul.gols, 'gols |', partida.times.azul.jogadores);
+      console.log('   Verde:', partida.times.verde.gols, 'gols |', partida.times.verde.jogadores);
+      enviarRelatorio(
+        { azul: partida.times.azul.gols, verde: partida.times.verde.gols },
+        partida.times.azul.jogadores,
+        partida.times.verde.jogadores
+      );
     }
   }
 
@@ -178,7 +209,6 @@ app.get('/estado', (req, res) => {
     },
     jaRespondeu:       partida.times[time]?.respondeu || false,
     todosResponderam:  todosResponderam(),
-    // ✅ Countdown info para o cliente mostrar a contagem regressiva
     aguardandoProxima: partida.aguardandoProxima,
     proximaEm:         partida.proximaEm,
     fimDeJogo,
@@ -196,6 +226,8 @@ app.post('/registrar', (req, res) => {
     return res.status(400).json({ erro: 'Partida encerrada. Aguarde o reset.' });
 
   partida.times[time].jogadores = jogadores.slice(0, 10);
+  console.log(`✅ Time ${time} registrado:`, partida.times[time].jogadores);
+
   res.json({
     ok: true,
     versao:         partida.versao,
@@ -223,6 +255,7 @@ app.post('/iniciar', (req, res) => {
   partida.times.verde.gols  = 0;
   partida.times.verde.respondeu = false;
 
+  console.log('🚀 Partida iniciada!');
   res.json({ ok: true, versao: partida.versao });
 });
 
@@ -234,8 +267,8 @@ app.post('/responder', (req, res) => {
     return res.status(400).json({ erro: 'Partida não iniciada.' });
   if (partida.encerrada)
     return res.status(400).json({ erro: 'Partida encerrada.' });
-  if (partida.aguardandoProxima)
-    return res.status(400).json({ erro: 'Aguardando próxima pergunta.' });
+  if (partida.perguntaIndex >= partida.perguntas.length)
+    return res.status(400).json({ erro: 'Fim de jogo.' });
   if (!['azul','verde'].includes(time))
     return res.status(400).json({ erro: 'Time inválido.' });
   if (partida.times[time].respondeu)
@@ -247,51 +280,46 @@ app.post('/responder', (req, res) => {
   if (acertou) partida.times[time].gols++;
   partida.times[time].respondeu = true;
 
+  console.log(`📝 ${time} respondeu pergunta ${partida.perguntaIndex + 1} — ${acertou ? '✅ CERTO' : '❌ ERRADO'}`);
+
   const todos = todosResponderam();
 
-  // ✅ Quando ambos respondem, inicia countdown de 5s
-  if (todos) {
+  // ✅ Quando os 2 respondem: inicia countdown de 5s
+  if (todos && !partida.aguardandoProxima) {
     partida.aguardandoProxima = true;
-    partida.proximaEm = Date.now() + 5000; // 5 segundos
+    partida.proximaEm = Date.now() + 5000;
+    console.log('⏳ Ambos responderam! Próxima pergunta em 5 segundos...');
   }
 
-  // Verifica fim de jogo (será confirmado após o timer expirar no /estado)
-  const proximoIndex = partida.perguntaIndex + (todos ? 1 : 0);
-  const fimDeJogo    = todos && proximoIndex >= partida.perguntas.length;
-
-  if (fimDeJogo) {
-    // ✅ Envia relatório por email ao fim
-    enviarRelatorio(
-      { azul: partida.times.azul.gols, verde: partida.times.verde.gols },
-      [...partida.times.azul.jogadores],
-      [...partida.times.verde.jogadores]
-    );
-  }
+  // ✅ Verifica se é a última pergunta
+  const ultimaPergunta = partida.perguntaIndex === partida.perguntas.length - 1;
+  const fimDeJogo = todos && ultimaPergunta;
 
   res.json({
     acertou,
-    respostaCorreta:   pergunta.ans,
-    opcaoTexto:        pergunta.opts[pergunta.ans],
-    explicacao:        pergunta.exp,
-    gols:              partida.times[time].gols,
+    respostaCorreta: pergunta.ans,
+    opcaoTexto:      pergunta.opts[pergunta.ans],
+    explicacao:      pergunta.exp,
+    gols:            partida.times[time].gols,
+    placar: {
+      azul:  partida.times.azul.gols,
+      verde: partida.times.verde.gols,
+    },
     todosResponderam:  todos,
     aguardandoProxima: partida.aguardandoProxima,
     proximaEm:         partida.proximaEm,
     fimDeJogo,
-    placar: {
-      azul:  partida.times.azul.gols,
-      verde: partida.times.verde.gols,
-    }
   });
 });
 
 // Resetar
 app.post('/resetar', (req, res) => {
+  console.log('🔄 Partida resetada!');
   partida = novaPartida();
   res.json({ ok: true, versao: partida.versao });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n✅ Servidor rodando na porta ${PORT}\n`);
+  console.log(`\n✅ Servidor Copa da Higiene rodando na porta ${PORT}\n`);
 });
