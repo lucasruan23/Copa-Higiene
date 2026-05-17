@@ -84,304 +84,181 @@ html,body{
 /* BOLA */
 #ball{
   position:absolute;bottom:14%;left:50%;transform:translateX(-50%);
-  width:24px;height:24px;border-radius:50%;
-  background:radial-gradient(circle at 32% 28%,#fff 0,#e0e0e0 50%,#aaa 100%);
+  width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff 0,#e0e0e0 50%,#aaa 100%);
   border:2px solid #333;
-  box-shadow:0 4px 10px rgba(0,0,0,.8),inset 0 -3px 5px rgba(0,0,0,.3);
+  box-shadow:0 3px 8px rgba(0,0,0,.8),inset 0 -2px 4px rgba(0,0,0,.3);
   z-index:5;
 }
 #ball::before{
-  content:"";position:absolute;top:3px;left:5px;
-  width:9px;height:9px;border-radius:50%;
-  background:rgba(255,255,255,.45);
-}
-#ball::after{
-  content:"";position:absolute;inset:2px;border-radius:50%;
-  background:
-    radial-gradient(circle at 65% 70%,#555 0,transparent 35%),
-    radial-gradient(circle at 25% 65%,#444 0,transparent 30%),
-    radial-gradient(circle at 60% 25%,#444 0,transparent 28%);
+  content:"";position:absolute;top:2px;left:4px;
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.4);
 }
 @keyframes shootGoal{
-  0%  {bottom:14%;left:50%;transform:translateX(-50%) scale(1) rotate(0deg);opacity:1}
-  30% {bottom:28%;left:52%;transform:translateX(-50%) scale(.85) rotate(180deg)}
-  70% {bottom:44%;left:50%;transform:translateX(-50%) scale(.6) rotate(400deg)}
-  100%{bottom:48%;left:50%;transform:translateX(-50%) scale(.45) rotate(540deg);opacity:.7}
+  0%{transform:translate(-50%,0) scale(1);bottom:14%;opacity:1}
+  70%{transform:translate(-50%,-45%) scale(.55);bottom:42%}
+  100%{transform:translate(-50%,-50%) scale(.4);bottom:46%;opacity:.7}
 }
 @keyframes shootMiss{
-  0%  {bottom:14%;left:50%;transform:translateX(-50%) scale(1) rotate(0deg);opacity:1}
-  40% {bottom:24%;left:75%;transform:translateX(-50%) scale(.8) rotate(200deg);opacity:1}
-  100%{bottom:10%;left:95%;transform:translateX(-50%) scale(.4) rotate(420deg);opacity:.2}
+  0%{transform:translate(-50%,0) scale(1);bottom:14%;opacity:1}
+  100%{transform:translate(-220%,5%) scale(.45);bottom:18%;opacity:.3}
 }
-#ball.goal{animation:shootGoal .9s cubic-bezier(.4,0,.2,1) forwards}
-#ball.miss{animation:shootMiss .9s cubic-bezier(.4,0,.2,1) forwards}
+#ball.goal{animation:shootGoal .85s ease-in forwards}
+#ball.miss{animation:shootMiss .85s ease-in forwards}
 
 /* GOLEIRO */
 #keeper{
   position:absolute;bottom:22%;left:50%;transform:translateX(-50%);
-  width:36px;height:70px;
+  width:32px;height:64px;
 }
 #kp-head{
-  position:absolute;bottom:50px;left:50%;transform:translateX(-50%);
-  width:18px;height:18px;border-radius:50%;
-  background:radial-gradient(circle at 38% 32%,#ffe0b2,#ffb74d);
-  border:2px solid #e09040;
-  box-shadow:0 2px 6px rgba(0,0,0,.35);z-index:2;
+  position:absolute;bottom:44px;left:50%;transform:translateX(-50%);
+  width:16px;height:16px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#ffe0b2,#ffb74d);
+  border:1.5px solid #e09040;
+  box-shadow:0 2px 4px rgba(0,0,0,.3);
 }
 #kp-head::before{
-  content:"";position:absolute;top:0;left:1px;
-  width:15px;height:7px;border-radius:8px 8px 0 0;background:#4a2800;
-}
-#kp-head::after{
-  content:"• •";position:absolute;top:7px;left:2px;
-  font-size:5px;color:#333;letter-spacing:3px;line-height:1;
+  content:"";position:absolute;top:2px;left:2px;
+  width:12px;height:5px;border-radius:3px;background:#5d3a1a;
 }
 #kp-neck{
-  position:absolute;bottom:47px;left:50%;transform:translateX(-50%);
-  width:8px;height:5px;border-radius:2px;background:#ffb74d;
+  position:absolute;bottom:41px;left:50%;transform:translateX(-50%);
+  width:7px;height:5px;border-radius:2px;background:#ffb74d;
 }
 #kp-body{
-  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
-  width:22px;height:28px;border-radius:7px 7px 4px 4px;
-  background:linear-gradient(160deg,#ffee58 0%,#fdd835 50%,#f9a825 100%);
-  border:2px solid #f57f17;
-  box-shadow:0 3px 8px rgba(0,0,0,.4);
+  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+  width:20px;height:24px;border-radius:6px 6px 4px 4px;
+  background:linear-gradient(180deg,#ffeb3b,#f9a825);
+  border:1.5px solid #f57f17;
+  box-shadow:0 2px 6px rgba(0,0,0,.4);
 }
 #kp-body::after{
-  content:"1";position:absolute;top:6px;left:50%;transform:translateX(-50%);
-  font-size:9px;font-weight:900;color:#e65100;
+  content:"1";position:absolute;top:4px;left:50%;transform:translateX(-50%);
+  font-size:8px;font-weight:900;color:#f57f17;
 }
 #kp-arm-l{
-  position:absolute;bottom:34px;left:-10px;
-  width:14px;height:8px;border-radius:5px;
-  background:linear-gradient(90deg,#ffe082,#fdd835);
-  border:1.5px solid #f57f17;
-  transform:rotate(20deg);transform-origin:right center;
-  box-shadow:0 2px 4px rgba(0,0,0,.3);
-}
-#kp-arm-l::after{
-  content:"";position:absolute;left:-5px;top:-1px;
-  width:7px;height:10px;border-radius:4px;
-  background:#388e3c;border:1.5px solid #1b5e20;
+  position:absolute;bottom:30px;left:-8px;
+  width:12px;height:7px;border-radius:4px;
+  background:#ffeb3b;border:1px solid #f57f17;
+  transform:rotate(25deg);transform-origin:right center;
 }
 #kp-arm-r{
-  position:absolute;bottom:34px;right:-10px;
-  width:14px;height:8px;border-radius:5px;
-  background:linear-gradient(90deg,#fdd835,#ffe082);
-  border:1.5px solid #f57f17;
-  transform:rotate(-20deg);transform-origin:left center;
-  box-shadow:0 2px 4px rgba(0,0,0,.3);
-}
-#kp-arm-r::after{
-  content:"";position:absolute;right:-5px;top:-1px;
-  width:7px;height:10px;border-radius:4px;
-  background:#388e3c;border:1.5px solid #1b5e20;
+  position:absolute;bottom:30px;right:-8px;
+  width:12px;height:7px;border-radius:4px;
+  background:#ffeb3b;border:1px solid #f57f17;
+  transform:rotate(-25deg);transform-origin:left center;
 }
 #kp-pants{
-  position:absolute;bottom:11px;left:50%;transform:translateX(-50%);
-  width:22px;height:11px;border-radius:3px;
-  background:#1565c0;border:1.5px solid #0d47a1;
+  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+  width:20px;height:10px;border-radius:3px;
+  background:#1565c0;border:1px solid #0d47a1;
 }
 #kp-leg-l{
   position:absolute;bottom:0;left:3px;
-  width:8px;height:13px;border-radius:3px 3px 5px 5px;
-  background:#ffb74d;border:1.5px solid #e09040;
+  width:7px;height:12px;border-radius:3px 3px 4px 4px;
+  background:#ffb74d;border:1px solid #e09040;
 }
 #kp-leg-l::after{
-  content:"";position:absolute;bottom:0;left:-1px;
-  width:11px;height:5px;border-radius:3px;background:#1a237e;
+  content:"";position:absolute;bottom:0;left:0;
+  width:9px;height:4px;border-radius:2px;
+  background:#222;
 }
 #kp-leg-r{
   position:absolute;bottom:0;right:3px;
-  width:8px;height:13px;border-radius:3px 3px 5px 5px;
-  background:#ffb74d;border:1.5px solid #e09040;
+  width:7px;height:12px;border-radius:3px 3px 4px 4px;
+  background:#ffb74d;border:1px solid #e09040;
 }
 #kp-leg-r::after{
-  content:"";position:absolute;bottom:0;left:-1px;
-  width:11px;height:5px;border-radius:3px;background:#1a237e;
+  content:"";position:absolute;bottom:0;left:0;
+  width:9px;height:4px;border-radius:2px;background:#222;
 }
 @keyframes diveRight{
-  0%  {transform:translateX(-50%) rotate(0deg)}
-  25% {transform:translateX(-20%) rotate(-15deg)}
-  60% {transform:translateX(55%) rotate(-55deg)}
-  100%{transform:translateX(70%) rotate(-70deg)}
+  0%{transform:translateX(-50%) rotate(0deg)}
+  100%{transform:translateX(60%) rotate(-40deg)}
 }
 @keyframes diveLeft{
-  0%  {transform:translateX(-50%) rotate(0deg)}
-  25% {transform:translateX(-80%) rotate(15deg)}
-  60% {transform:translateX(-155%) rotate(55deg)}
-  100%{transform:translateX(-170%) rotate(70deg)}
+  0%{transform:translateX(-50%) rotate(0deg)}
+  100%{transform:translateX(-160%) rotate(40deg)}
 }
-@keyframes keeperShake{
-  0%,100%{transform:translateX(-50%)}
-  20%{transform:translateX(-44%)}
-  40%{transform:translateX(-56%)}
-  60%{transform:translateX(-45%)}
-  80%{transform:translateX(-55%)}
-}
-#keeper.dive-right{animation:diveRight .55s cubic-bezier(.4,0,.2,1) forwards}
-#keeper.dive-left {animation:diveLeft  .55s cubic-bezier(.4,0,.2,1) forwards}
-#keeper.shake     {animation:keeperShake .4s ease forwards}
+#keeper.dive-right{animation:diveRight .5s ease-out forwards}
+#keeper.dive-left{animation:diveLeft .5s ease-out forwards}
 
 /* JOGADORES */
 .player-fig{
   position:absolute;bottom:8%;
-  width:30px;height:62px;
+  width:28px;height:58px;
 }
-.pl-azul {left:18%}
-.pl-verde{right:18%}
+.pl-azul{left:22%}
+.pl-verde{right:22%}
 .pl-head{
-  position:absolute;bottom:44px;left:50%;transform:translateX(-50%);
-  width:16px;height:16px;border-radius:50%;
-  background:radial-gradient(circle at 38% 32%,#ffe0b2,#ffb74d);
-  border:2px solid #e09040;
-  box-shadow:0 2px 5px rgba(0,0,0,.3);z-index:2;
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#ffe0b2,#ffb74d);
+  border:1.5px solid #e09040;
 }
-.pl-azul  .pl-head::before{content:"";position:absolute;top:0;left:1px;width:13px;height:6px;border-radius:8px 8px 0 0;background:#1a237e;}
-.pl-verde .pl-head::before{content:"";position:absolute;top:0;left:1px;width:13px;height:6px;border-radius:8px 8px 0 0;background:#1b5e20;}
-.pl-head::after{content:"· ·";position:absolute;top:7px;left:2px;font-size:5px;color:#333;letter-spacing:2px;}
+.pl-head::before{
+  content:"";position:absolute;top:1px;left:1px;
+  width:11px;height:5px;border-radius:3px;
+}
+.pl-azul .pl-head::before{background:#1a237e}
+.pl-verde .pl-head::before{background:#1b5e20}
 .pl-neck{
-  position:absolute;bottom:41px;left:50%;transform:translateX(-50%);
-  width:7px;height:5px;border-radius:2px;background:#ffb74d;
+  position:absolute;bottom:37px;left:50%;transform:translateX(-50%);
+  width:6px;height:5px;border-radius:2px;background:#ffb74d;
 }
 .pl-body{
-  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
-  width:20px;height:24px;border-radius:6px 6px 4px 4px;
-  border:2px solid rgba(0,0,0,.2);
-  box-shadow:0 3px 8px rgba(0,0,0,.35);
-}
-.pl-azul  .pl-body{background:linear-gradient(160deg,#1e88e5,#0d47a1)}
-.pl-verde .pl-body{background:linear-gradient(160deg,#43a047,#1b5e20)}
-.pl-azul  .pl-body::after{content:"10";position:absolute;top:5px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:900;color:rgba(255,255,255,.85);}
-.pl-verde .pl-body::after{content:"11";position:absolute;top:5px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:900;color:rgba(255,255,255,.85);}
-.pl-arm-l{
-  position:absolute;bottom:30px;left:-8px;
-  width:11px;height:7px;border-radius:4px;
+  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  width:18px;height:22px;border-radius:5px 5px 3px 3px;
   border:1.5px solid rgba(0,0,0,.2);
-  transform:rotate(20deg);transform-origin:right center;
 }
-.pl-azul  .pl-arm-l{background:#1976d2}
+.pl-azul .pl-body{background:linear-gradient(180deg,#1976d2,#0d47a1)}
+.pl-verde .pl-body{background:linear-gradient(180deg,#388e3c,#1b5e20)}
+.pl-arm-l{
+  position:absolute;bottom:28px;left:-7px;
+  width:10px;height:6px;border-radius:3px;
+  transform:rotate(20deg);transform-origin:right center;
+  border:1px solid rgba(0,0,0,.2);
+}
+.pl-azul .pl-arm-l{background:#1976d2}
 .pl-verde .pl-arm-l{background:#388e3c}
 .pl-arm-r{
-  position:absolute;bottom:30px;right:-8px;
-  width:11px;height:7px;border-radius:4px;
-  border:1.5px solid rgba(0,0,0,.2);
+  position:absolute;bottom:28px;right:-7px;
+  width:10px;height:6px;border-radius:3px;
   transform:rotate(-20deg);transform-origin:left center;
+  border:1px solid rgba(0,0,0,.2);
 }
-.pl-azul  .pl-arm-r{background:#1976d2}
+.pl-azul .pl-arm-r{background:#1976d2}
 .pl-verde .pl-arm-r{background:#388e3c}
 .pl-pants{
-  position:absolute;bottom:9px;left:50%;transform:translateX(-50%);
-  width:20px;height:10px;border-radius:3px;
-  border:1px solid rgba(0,0,0,.15);
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  width:18px;height:9px;border-radius:2px;
 }
-.pl-azul  .pl-pants{background:#0d47a1}
+.pl-azul .pl-pants{background:#0d47a1}
 .pl-verde .pl-pants{background:#1b5e20}
 .pl-leg-l{
   position:absolute;bottom:0;left:2px;
-  width:7px;height:11px;border-radius:3px 3px 4px 4px;
-  background:#ffb74d;border:1.5px solid #e09040;
+  width:6px;height:10px;border-radius:2px 2px 3px 3px;
+  background:#ffb74d;border:1px solid #e09040;
 }
-.pl-azul  .pl-leg-l::after{content:"";position:absolute;bottom:0;left:-1px;width:9px;height:4px;border-radius:2px;background:#1a237e;}
-.pl-verde .pl-leg-l::after{content:"";position:absolute;bottom:0;left:-1px;width:9px;height:4px;border-radius:2px;background:#1b5e20;}
+.pl-leg-l::after{
+  content:"";position:absolute;bottom:0;left:-1px;
+  width:8px;height:3px;border-radius:2px;
+}
+.pl-azul .pl-leg-l::after{background:#1a237e}
+.pl-verde .pl-leg-l::after{background:#1b5e20}
 .pl-leg-r{
   position:absolute;bottom:0;right:2px;
-  width:7px;height:11px;border-radius:3px 3px 4px 4px;
-  background:#ffb74d;border:1.5px solid #e09040;
+  width:6px;height:10px;border-radius:2px 2px 3px 3px;
+  background:#ffb74d;border:1px solid #e09040;
 }
-.pl-azul  .pl-leg-r::after{content:"";position:absolute;bottom:0;left:-1px;width:9px;height:4px;border-radius:2px;background:#1a237e;}
-.pl-verde .pl-leg-r::after{content:"";position:absolute;bottom:0;left:-1px;width:9px;height:4px;border-radius:2px;background:#1b5e20;}
-
-/* ANIMAÇÕES JOGADORES */
-@keyframes kickShot{
-  0%  {transform:translateX(0) rotate(0deg)}
-  20% {transform:translateX(8px) rotate(5deg)}
-  45% {transform:translateX(18px) rotate(12deg)}
-  65% {transform:translateX(12px) rotate(6deg)}
-  85% {transform:translateX(4px) rotate(2deg)}
-  100%{transform:translateX(0) rotate(0deg)}
+.pl-leg-r::after{
+  content:"";position:absolute;bottom:0;left:-1px;
+  width:8px;height:3px;border-radius:2px;
 }
-@keyframes kickLegR{
-  0%  {transform:rotate(0deg)}
-  30% {transform:rotate(-60deg) translateY(-6px)}
-  55% {transform:rotate(-80deg) translateY(-8px)}
-  80% {transform:rotate(-20deg)}
-  100%{transform:rotate(0deg)}
-}
-@keyframes kickLegL{
-  0%  {transform:rotate(0deg)}
-  30% {transform:rotate(20deg)}
-  55% {transform:rotate(30deg)}
-  100%{transform:rotate(0deg)}
-}
-@keyframes kickArmL{
-  0%  {transform:rotate(20deg)}
-  40% {transform:rotate(-60deg)}
-  100%{transform:rotate(20deg)}
-}
-@keyframes kickArmR{
-  0%  {transform:rotate(-20deg)}
-  40% {transform:rotate(50deg)}
-  100%{transform:rotate(-20deg)}
-}
-@keyframes celebrate{
-  0%  {transform:translateY(0) rotate(0deg)}
-  20% {transform:translateY(-14px) rotate(-5deg)}
-  40% {transform:translateY(-20px) rotate(5deg)}
-  60% {transform:translateY(-10px) rotate(-3deg)}
-  80% {transform:translateY(-16px) rotate(4deg)}
-  100%{transform:translateY(0) rotate(0deg)}
-}
-@keyframes celebrateArm{
-  0%,100%{transform:rotate(-80deg)}
-  50%    {transform:rotate(-130deg)}
-}
-@keyframes celebrateLeg{
-  0%,100%{transform:rotate(0deg)}
-  40%    {transform:rotate(-40deg) translateY(-5px)}
-  70%    {transform:rotate(20deg)}
-}
-@keyframes sad{
-  0%  {transform:translateY(0)}
-  40% {transform:translateY(5px)}
-  70% {transform:translateY(3px)}
-  100%{transform:translateY(4px)}
-}
-@keyframes sadArm{
-  0%,100%{transform:rotate(-10deg)}
-  50%    {transform:rotate(40deg)}
-}
-@keyframes sadLeg{
-  0%,100%{transform:rotate(0deg)}
-  50%    {transform:rotate(15deg)}
-}
-@keyframes armSwingL{
-  0%,100%{transform:rotate(20deg)}
-  50%    {transform:rotate(-30deg)}
-}
-@keyframes armSwingR{
-  0%,100%{transform:rotate(-20deg)}
-  50%    {transform:rotate(30deg)}
-}
-
-/* Classes de estado */
-.player-fig.idle .pl-arm-l{animation:armSwingL 1.4s ease-in-out infinite}
-.player-fig.idle .pl-arm-r{animation:armSwingR 1.4s ease-in-out infinite}
-.player-fig.kicking{animation:kickShot .7s ease-in-out forwards}
-.player-fig.kicking .pl-leg-r{animation:kickLegR .7s ease-in-out forwards;transform-origin:top center}
-.player-fig.kicking .pl-leg-l{animation:kickLegL .7s ease-in-out forwards;transform-origin:top center}
-.player-fig.kicking .pl-arm-l{animation:kickArmL .7s ease-in-out forwards;transform-origin:right center}
-.player-fig.kicking .pl-arm-r{animation:kickArmR .7s ease-in-out forwards;transform-origin:left center}
-.player-fig.celebrating{animation:celebrate .5s ease-in-out 3}
-.player-fig.celebrating .pl-arm-l{animation:celebrateArm .5s ease-in-out 3;transform-origin:right center}
-.player-fig.celebrating .pl-arm-r{animation:celebrateArm .5s ease-in-out 3;transform-origin:left center}
-.player-fig.celebrating .pl-leg-l{animation:celebrateLeg .5s ease-in-out 3;transform-origin:top center}
-.player-fig.celebrating .pl-leg-r{animation:celebrateLeg .5s ease-in-out 3 .25s;transform-origin:top center}
-.player-fig.sad{animation:sad .6s ease-in-out forwards}
-.player-fig.sad .pl-arm-l{animation:sadArm .6s ease-in-out forwards;transform-origin:right center}
-.player-fig.sad .pl-arm-r{animation:sadArm .6s ease-in-out forwards;transform-origin:left center}
-.player-fig.sad .pl-leg-l{animation:sadLeg .6s ease-in-out forwards;transform-origin:top center}
-.player-fig.sad .pl-leg-r{animation:sadLeg .6s ease-in-out forwards .15s;transform-origin:top center}
+.pl-azul .pl-leg-r::after{background:#1a237e}
+.pl-verde .pl-leg-r::after{background:#1b5e20}
 
 /* SHOT LABEL */
 #shot-label{
@@ -419,6 +296,16 @@ html,body{
   background:linear-gradient(135deg,#e3f2fd,#bbdefb);
   color:#0d47a1;font-size:.78em;font-weight:700;margin-bottom:14px;
 }
+.input-group{margin-bottom:10px}
+.input-group label{font-size:.78em;font-weight:700;color:#444;display:block;margin-bottom:4px}
+.input-group input,.input-group select{
+  width:100%;padding:10px 12px;border-radius:12px;
+  border:2px solid #e0e0e0;font-size:.88em;outline:none;
+  transition:.2s;background:#fafafa;
+}
+.input-group input:focus,.input-group select:focus{border-color:#1565c0;background:#fff}
+
+/* TIME SELECTOR */
 .time-selector{display:flex;gap:10px;margin-bottom:14px}
 .time-btn{
   flex:1;padding:12px;border-radius:14px;border:2px solid #e0e0e0;
@@ -428,6 +315,8 @@ html,body{
 .time-btn:hover{border-color:#888}
 .sel-azul{background:linear-gradient(135deg,#1565c0,#1976d2);color:#fff;border-color:#1565c0}
 .sel-verde{background:linear-gradient(135deg,#2e7d32,#388e3c);color:#fff;border-color:#2e7d32}
+
+/* TEAM SECTION */
 .team-section{
   background:#f8f9ff;border-radius:14px;border:2px solid #e8eaf6;
   padding:12px;margin-bottom:12px;
@@ -457,8 +346,13 @@ html,body{
 }
 .chip-azul-j{background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9}
 .chip-verde-j{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
-.chip-rm{background:none;border:none;cursor:pointer;font-size:.85em;color:#999;padding:0 2px;}
+.chip-rm{
+  background:none;border:none;cursor:pointer;
+  font-size:.85em;color:#999;padding:0 2px;line-height:1;
+}
 .chip-rm:hover{color:#e53935}
+
+/* BOTÕES HOME */
 .btn-entrar-ok,.btn-entrar-disabled{
   width:100%;padding:13px;border-radius:50px;border:none;
   font-size:.95em;font-weight:700;margin-top:6px;transition:.22s;cursor:pointer;
@@ -469,8 +363,16 @@ html,body{
 }
 .btn-entrar-ok:hover{transform:translateY(-1px)}
 .btn-entrar-disabled{background:#e0e0e0;color:#aaa;cursor:not-allowed}
+
+/* WAIT PANEL */
+.wait-panel{
+  text-align:center;
+  background:linear-gradient(160deg,#03163d,#051f52);color:#fff;
+}
 .wait-spinner{font-size:3em;animation:spin 2s linear infinite;display:inline-block;margin-bottom:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* BOTÃO INICIAR */
 .btn-iniciar{
   width:100%;padding:13px;border-radius:50px;border:none;
   font-size:.95em;font-weight:700;margin-top:14px;cursor:pointer;transition:.22s;
@@ -481,6 +383,8 @@ html,body{
 }
 .btn-iniciar-ok:hover{transform:translateY(-1px)}
 .btn-iniciar-wait{background:#37474f;color:#78909c;cursor:not-allowed}
+
+/* QUIZ */
 .quiz-header{
   display:flex;justify-content:space-between;align-items:center;
   flex-wrap:wrap;gap:6px;margin-bottom:8px;
@@ -498,60 +402,79 @@ html,body{
 .q-text{font-size:1em;font-weight:700;color:#1a1a2e;line-height:1.55;margin:8px 0 12px}
 .options{display:flex;flex-direction:column;gap:8px}
 .opt{
-  display:flex;align-items:center;gap:10px;
-  padding:11px 14px;border-radius:14px;border:2px solid #e8eaf6;
-  background:#f8f9ff;cursor:pointer;font-size:.88em;font-weight:600;
-  text-align:left;transition:.18s;width:100%;
+  display:flex;align-items:center;gap:12px;
+  background:#fafafa;border:2px solid #e0e0e0;
+  border-radius:14px;padding:13px 14px;
+  font-size:.92em;color:#333;cursor:pointer;
+  transition:.18s;text-align:left;width:100%;
 }
-.opt:hover:not(:disabled){border-color:#1565c0;background:#e3f2fd;transform:translateX(3px)}
-.opt:disabled{cursor:not-allowed;opacity:.7}
+.opt:active:not(:disabled){transform:scale(.98)}
+.opt:hover:not(:disabled){border-color:#1565c0;background:#e3f2fd}
 .opt-letter{
-  min-width:26px;height:26px;border-radius:8px;
-  background:linear-gradient(135deg,#1565c0,#1976d2);
-  color:#fff;font-size:.8em;font-weight:800;
-  display:flex;align-items::center;justify-content:center;text-align:center;
+  width:30px;height:30px;border-radius:50%;
+  background:#1565c0;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8em;font-weight:800;flex-shrink:0;
 }
-.opt.correct{background:#e8f5e9;border-color:#00c853;color:#1b5e20}
-.opt.wrong  {background:#ffebee;border-color:#ff1744;color:#b71c1c}
+.opt.correct{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20}
+.opt.correct .opt-letter{background:#2e7d32}
+.opt.wrong{background:#ffebee;border-color:#c62828;color:#b71c1c}
+.opt.wrong .opt-letter{background:#c62828}
+.opt:disabled{cursor:not-allowed;opacity:.75}
 .feedback{
-  margin-top:10px;padding:10px 14px;border-radius:12px;
-  font-size:.82em;line-height:1.5;display:none;
+  margin-top:10px;padding:11px 13px;border-radius:12px;
+  font-size:.84em;line-height:1.55;display:none;
 }
 .feedback.show{display:block}
-.feedback.ok {background:#e8f5e9;border-left:4px solid #00c853;color:#1b5e20}
-.feedback.err{background:#ffebee;border-left:4px solid #ff1744;color:#b71c1c}
-#wait-other{
-  text-align:center;padding:14px 0 4px;
+.feedback.ok{background:#e8f5e9;border-left:4px solid #2e7d32;color:#1b5e20}
+.feedback.err{background:#ffebee;border-left:4px solid #c62828;color:#b71c1c}
+#wait-other{text-align:center;padding:12px 0;display:none}
+
+/* COUNTDOWN ENTRE PERGUNTAS */
+#countdown-box{
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:20px 0 10px;gap:4px;
 }
+#countdown-num{
+  font-size:4em;font-weight:900;
+  background:linear-gradient(135deg,#1565c0,#00c853);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;filter:drop-shadow(0 2px 8px rgba(21,101,192,.3));
+}
+
+/* BOTÃO PRÓXIMA */
 .btn-next{
-  width:100%;margin-top:10px;padding:12px;border-radius:50px;border:none;
-  background:linear-gradient(135deg,#1565c0,#1976d2);color:#fff;
-  font-size:.92em;font-weight:700;cursor:pointer;transition:.2s;
+  padding:12px 18px;border-radius:16px;border:none;
+  background:linear-gradient(135deg,#FFD700,#FFA500);color:#222;
+  font-size:.9em;font-weight:700;cursor:pointer;
+  box-shadow:0 3px 12px rgba(255,160,0,.4);
+  margin-top:10px;width:100%;transition:.2s;
 }
 .btn-next:hover{transform:translateY(-1px)}
-.stats-row{display:flex;gap:8px;margin:10px 0}
-.stat-box{
-  flex:1;background:#f8f9ff;border-radius:14px;padding:10px;
-  border:2px solid #e8eaf6;text-align:center;
-}
-.sv{font-size:1.4em;font-weight:900;color:#1565c0}
-.sl{font-size:.72em;color:#666;margin-top:2px}
+
+/* RESULTADO */
+#result-panel{text-align:center}
+.stats-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.stat-box{flex:1;min-width:95px;background:#f5f7ff;border-radius:14px;padding:12px}
+.stat-box .sv{font-size:1.5em;font-weight:800;color:#006400}
+.stat-box .sl{font-size:.72em;color:#888;margin-top:2px}
 .res-msg{
-  margin:10px 0;padding:12px 14px;border-radius:14px;
-  background:#f8f9ff;border:2px solid #e8eaf6;
-  font-size:.84em;color:#333;line-height:1.5;text-align:center;
+  margin-top:10px;padding:13px 14px;border-radius:14px;
+  background:linear-gradient(135deg,#f0fff4,#e8f5e9);
+  border:2px solid #4CAF50;font-size:.88em;color:#2e7d32;line-height:1.6;
 }
 .btn-jogar-novo{
   width:100%;padding:13px;border-radius:50px;border:none;
+  font-size:.95em;font-weight:700;margin-top:14px;
   background:linear-gradient(135deg,#00c853,#00a040);color:#fff;
-  font-size:.95em;font-weight:700;cursor:pointer;transition:.22s;
-  box-shadow:0 4px 14px rgba(0,200,83,.4);margin-top:8px;
+  cursor:pointer;box-shadow:0 4px 14px rgba(0,200,83,.5);transition:.22s;
 }
 .btn-jogar-novo:hover{transform:translateY(-1px)}
 
 /* SCOREBOARD */
 #scoreboard{
-  position:fixed;top:10px;left:50%;transform:translateX(-50%);
+  position:fixed;top:8px;left:50%;transform:translateX(-50%);
   width:min(700px,96vw);z-index:45;
   display:flex;justify-content:space-between;align-items:center;gap:8px;
 }
@@ -576,35 +499,23 @@ html,body{
   background:rgba(0,0,0,.85);border:2px solid #4dd0e1;
   color:#e0f7fa;font-family:monospace;font-size:1.1em;font-weight:700;z-index:45;
 }
-
-/* COUNTDOWN */
-#countdown-box{
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:18px 0 10px;
-  gap:6px;
-}
-#countdown-num{
-  font-size:3.5em;font-weight:900;
-  color:#1565c0;
-  text-shadow:0 2px 8px rgba(21,101,192,.3);
-  line-height:1;
-}
 </style>
 </head>
 <body>
 
+<!-- ESTÁDIO -->
 <div id="stadium">
   <div class="spot tl"></div>
   <div class="spot tr"></div>
   <div class="crowd"></div>
 </div>
 
+<!-- CAMPO -->
 <div id="field">
   <div class="center-circle"></div>
   <div class="center-dot"></div>
+
+  <!-- GOL + GOLEIRO + BOLA -->
   <div id="goal-front">
     <div class="goal-posts"></div>
     <div class="goal-net"></div>
@@ -620,7 +531,9 @@ html,body{
     </div>
     <div id="ball"></div>
   </div>
-  <div id="player-azul" class="player-fig pl-azul idle">
+
+  <!-- JOGADOR AZUL -->
+  <div id="player-azul" class="player-fig pl-azul">
     <div class="pl-head"></div>
     <div class="pl-neck"></div>
     <div class="pl-body"></div>
@@ -630,7 +543,9 @@ html,body{
     <div class="pl-leg-l"></div>
     <div class="pl-leg-r"></div>
   </div>
-  <div id="player-verde" class="player-fig pl-verde idle">
+
+  <!-- JOGADOR VERDE -->
+  <div id="player-verde" class="player-fig pl-verde">
     <div class="pl-head"></div>
     <div class="pl-neck"></div>
     <div class="pl-body"></div>
@@ -645,6 +560,7 @@ html,body{
 <div id="shot-label"></div>
 <div id="big-timer">00:20</div>
 
+<!-- SCOREBOARD -->
 <div id="scoreboard">
   <div class="sb-box">
     <div class="sb-dot dot-azul"></div>
@@ -672,10 +588,11 @@ html,body{
     Cada dispositivo representa <strong>1 time</strong>.<br>
     Cadastre os jogadores do seu time e entre na partida!
   </div>
-  <div style="text-align:center">
+  <div style="text-align:center;margin-bottom:14px">
     <span class="home-badge">⚽ 20 perguntas — Azul x Verde</span>
   </div>
-  <div style="font-size:.8em;color:#b0bfff;margin-bottom:6px;font-weight:600">
+
+  <div style="font-size:.8em;color:#555;margin-bottom:6px;font-weight:600">
     Qual é o seu time neste dispositivo?
   </div>
   <div class="time-selector">
@@ -686,14 +603,13 @@ html,body{
       🟢 Time Verde
     </button>
   </div>
+
   <div id="sec-jogadores" style="display:none">
-    <div class="team-section" id="sec-team-box">
-      <div class="team-section-title" id="sec-team-title">
-        <div id="sec-team-dot"
-             style="width:12px;height:12px;border-radius:3px;background:#1565c0"></div>
+    <div class="team-section">
+      <div class="team-section-title">
+        <div id="sec-team-dot" style="width:12px;height:12px;border-radius:3px;background:#1565c0"></div>
         <span id="sec-team-label">Jogadores do Time Azul</span>
-        <span id="sec-team-count"
-              style="color:#90caf9;margin-left:4px">(0/10)</span>
+        <span id="sec-team-count" style="margin-left:4px;color:#90caf9">(0/10)</span>
       </div>
       <div class="add-row">
         <input type="text" id="inp-nome-jogador"
@@ -705,44 +621,30 @@ html,body{
       <div class="jogadores-list" id="list-jogadores"></div>
     </div>
   </div>
-  <button id="btn-entrar" class="btn-entrar-disabled"
-          disabled onclick="entrarNaSala()">
+
+  <button id="btn-entrar" class="btn-entrar-disabled" disabled onclick="entrarNaSala()">
     Entrar na partida
   </button>
   <div id="home-erro"
-       style="color:#ff6b6b;font-size:.8em;margin-top:6px;
-              text-align:center;min-height:18px"></div>
+       style="color:#ff6b6b;font-size:.8em;margin-top:6px;text-align:center;min-height:18px"></div>
 </div>
 
 <!-- AGUARDANDO -->
-<div id="wait-panel" class="panel" style="display:none;
-  background:linear-gradient(160deg,#03163d,#051f52);color:#fff;text-align:center;">
+<div id="wait-panel" class="panel wait-panel" style="display:none">
   <div class="wait-spinner">⏳</div>
-  <h2 style="color:#FFD700;margin-bottom:10px;font-size:1.3em">
-    Aguardando os 2 times...
-  </h2>
-  <div style="background:rgba(255,255,255,.07);border-radius:14px;
-              padding:12px;margin-bottom:12px">
-    <div style="font-size:.8em;color:#b0bfff;margin-bottom:6px">
-      Você entrou como:
-      <strong id="wait-meu-time" style="color:#fff"></strong>
+  <h2 style="color:#FFD700;margin-bottom:10px;font-size:1.3em">Aguardando os 2 times...</h2>
+  <div style="background:rgba(255,255,255,.07);border-radius:14px;padding:12px;margin-bottom:12px">
+    <div style="font-size:.82em;color:#b0bfff;margin-bottom:6px">
+      Você entrou como: <strong id="wait-meu-time" style="color:#fff"></strong>
     </div>
-    <div style="font-size:.8em;color:#b0bfff;margin-bottom:4px">
-      🔵 Jogadores Azul:
-    </div>
-    <div id="wait-jogadores-azul"
-         style="font-size:.78em;color:#90caf9;margin-bottom:8px">—</div>
-    <div style="font-size:.8em;color:#b0bfff;margin-bottom:4px">
-      🟢 Jogadores Verde:
-    </div>
-    <div id="wait-jogadores-verde"
-         style="font-size:.78em;color:#a5d6a7">—</div>
+    <div style="font-size:.8em;color:#b0bfff;margin-bottom:4px">🔵 Jogadores Azul:</div>
+    <div id="wait-jogadores-azul" style="font-size:.78em;color:#90caf9;margin-bottom:8px">—</div>
+    <div style="font-size:.8em;color:#b0bfff;margin-bottom:4px">🟢 Jogadores Verde:</div>
+    <div id="wait-jogadores-verde" style="font-size:.78em;color:#a5d6a7">—</div>
   </div>
   <div id="wait-msg"
-       style="font-size:.82em;color:#ffcc02;text-align:center;
-              margin-bottom:8px;min-height:20px"></div>
-  <button id="btn-iniciar" class="btn-iniciar btn-iniciar-wait"
-          disabled onclick="iniciarPartida()">
+       style="font-size:.82em;color:#ffcc02;text-align:center;margin-bottom:8px;min-height:20px"></div>
+  <button id="btn-iniciar" class="btn-iniciar btn-iniciar-wait" disabled onclick="iniciarPartida()">
     ⚽ Iniciar partida
   </button>
   <p style="font-size:.72em;color:#7986cb;margin-top:8px;text-align:center">
@@ -760,12 +662,8 @@ html,body{
     </div>
     <span class="tag tag-gold" id="score-tag">0 x 0</span>
   </div>
-  <div class="bar-wrap">
-    <div class="bar-fill prog-bar" id="prog-bar" style="width:0%"></div>
-  </div>
-  <div class="bar-wrap">
-    <div class="bar-fill time-bar" id="time-bar" style="width:100%"></div>
-  </div>
+  <div class="bar-wrap"><div class="bar-fill prog-bar" id="prog-bar" style="width:0%"></div></div>
+  <div class="bar-wrap"><div class="bar-fill time-bar" id="time-bar" style="width:100%"></div></div>
   <div style="margin-bottom:8px">
     <span id="turn-badge" class="tag tag-blue"></span>
     <span style="font-size:.78em;color:#666"> respondendo</span>
@@ -775,61 +673,48 @@ html,body{
   <div class="options" id="opts"></div>
   <div class="feedback" id="feedback"></div>
 
-  <!-- COUNTDOWN entre perguntas -->
+  <!-- COUNTDOWN ENTRE PERGUNTAS -->
   <div id="countdown-box">
-    <div style="font-size:.85em;color:#555;font-weight:600">
-      ⏳ Próxima pergunta em...
-    </div>
+    <div style="font-size:.85em;color:#555;font-weight:600">⏳ Próxima pergunta em...</div>
     <div id="countdown-num">5</div>
     <div style="font-size:.75em;color:#888">segundos</div>
   </div>
 
+  <!-- AGUARDANDO OUTRO TIME -->
   <div id="wait-other">
     <div style="font-size:1.8em">⏳</div>
     <p style="color:#888;font-size:.84em;margin-top:4px">
       Aguardando o outro time responder...
     </p>
   </div>
-  <button class="btn-next" id="next-btn"
-          onclick="avancarPergunta()" style="display:none">
+
+  <button class="btn-next" id="next-btn" onclick="avancarPergunta()" style="display:none">
     Próxima pergunta ➜
   </button>
 </div>
 
 <!-- RESULTADO -->
 <div id="result-panel" class="panel" style="display:none">
-  <div id="res-medal" style="font-size:64px;margin-bottom:6px;
-       text-align:center">🏆</div>
-  <div style="font-size:1.5em;color:#006400;font-weight:900;
-       margin-bottom:4px;text-align:center">Fim de jogo!</div>
-  <div style="margin:6px 0;font-size:1.3em;font-weight:800;
-       color:#1a1a2e;text-align:center" id="res-scoreline">0 x 0</div>
+  <div id="res-medal" style="font-size:64px;margin-bottom:6px">🏆</div>
+  <div style="font-size:1.5em;color:#006400;font-weight:900;margin-bottom:4px">Fim de jogo!</div>
+  <div style="margin:6px 0;font-size:1.3em;font-weight:800;color:#1a1a2e" id="res-scoreline">0 x 0</div>
   <div class="stats-row">
-    <div class="stat-box">
-      <div class="sv" id="st-azul">0</div>
-      <div class="sl">⚽ Gols Azul</div>
-    </div>
-    <div class="stat-box">
-      <div class="sv" id="st-verde">0</div>
-      <div class="sl">⚽ Gols Verde</div>
-    </div>
-    <div class="stat-box">
-      <div class="sv" id="st-acc">0%</div>
-      <div class="sl">Aproveitamento</div>
-    </div>
+    <div class="stat-box"><div class="sv" id="st-azul">0</div><div class="sl">⚽ Gols Azul</div></div>
+    <div class="stat-box"><div class="sv" id="st-verde">0</div><div class="sl">⚽ Gols Verde</div></div>
+    <div class="stat-box"><div class="sv" id="st-acc">0%</div><div class="sl">Aproveitamento</div></div>
   </div>
   <div class="res-msg" id="res-msg"></div>
+
+  <!-- AVISO EMAIL -->
   <div id="res-email-info" style="
     display:none;margin-top:10px;padding:10px 14px;
     border-radius:12px;background:#e3f2fd;
     border-left:4px solid #1565c0;
     font-size:.8em;color:#1565c0;text-align:left;">
-    📧 Relatório enviado para
-    <strong>raianesouzan09@gmail.com</strong>
+    📧 Relatório enviado para <strong>raianesouzan09@gmail.com</strong>
   </div>
-  <button class="btn-jogar-novo" onclick="jogarNovamente()">
-    🔄 Jogar novamente
-  </button>
+
+  <button class="btn-jogar-novo" onclick="jogarNovamente()">🔄 Jogar novamente</button>
 </div>
 
 <script>
@@ -837,23 +722,20 @@ const SERVIDOR = window.location.origin;
 const $ = id => document.getElementById(id);
 
 // ===== ESTADO LOCAL =====
-let meuTime          = '';
-let jogadoresLocais  = [];
-let perguntaAtual    = null;
-let ultimaIndex      = -1;
-let ultimaVersao     = null;
+let meuTime = '';
+let jogadoresLocais = [];
+let perguntaAtual = null;
+let ultimaIndex = -1;
+let ultimaVersao = null;
 let respondeuEstaRodada = false;
-let timeLeft         = 20;
-let timer            = null;
-let pollingInterval  = null;
-let countdownInterval= null;
+let timeLeft = 20;
+let timer = null;
+let pollingInterval = null;
+let countdownInterval = null;
 
 // ===== ÁUDIO =====
 let actx=null,ambNode=null,ambGain=null;
-function ctx(){
-  if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
-  return actx;
-}
+function ctx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
 function startAmbient(){
   const c=ctx();if(ambNode)return;
   const len=c.sampleRate*4,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);
@@ -862,8 +744,7 @@ function startAmbient(){
   const src=c.createBufferSource();src.buffer=b;src.loop=true;
   const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=750;bp.Q.value=.7;
   ambGain=c.createGain();ambGain.gain.value=.15;
-  src.connect(bp);bp.connect(ambGain);ambGain.connect(c.destination);
-  src.start();ambNode=src;
+  src.connect(bp);bp.connect(ambGain);ambGain.connect(c.destination);src.start();ambNode=src;
 }
 function stopAmbient(){
   if(ambNode){ambNode.stop();ambNode=null;ambGain=null;}
@@ -871,34 +752,24 @@ function stopAmbient(){
 }
 function sndKick(){
   const c=ctx(),o=c.createOscillator(),g=c.createGain(),now=c.currentTime;
-  o.type='sine';
-  o.frequency.setValueAtTime(140,now);
-  o.frequency.exponentialRampToValueAtTime(40,now+.2);
-  g.gain.setValueAtTime(.7,now);
-  g.gain.exponentialRampToValueAtTime(.001,now+.22);
+  o.type='sine';o.frequency.setValueAtTime(140,now);o.frequency.exponentialRampToValueAtTime(40,now+.2);
+  g.gain.setValueAtTime(.7,now);g.gain.exponentialRampToValueAtTime(.001,now+.22);
   o.connect(g);g.connect(c.destination);o.start(now);o.stop(now+.23);
 }
 function sndGoal(){
   const c=ctx(),now=c.currentTime,len=c.sampleRate*2;
-  const b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);
-  let lv=0;
+  const b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0);let lv=0;
   for(let i=0;i<len;i++){lv=(lv+.05*(Math.random()*2-1))/1.05;d[i]=lv*20;}
   const src=c.createBufferSource();src.buffer=b;
   const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1200;bp.Q.value=.9;
   const g=c.createGain();
-  g.gain.setValueAtTime(0,now);
-  g.gain.linearRampToValueAtTime(.5,now+.25);
-  g.gain.linearRampToValueAtTime(0,now+2);
-  src.connect(bp);bp.connect(g);g.connect(c.destination);
-  src.start(now);src.stop(now+2);
+  g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(.5,now+.25);g.gain.linearRampToValueAtTime(0,now+2);
+  src.connect(bp);bp.connect(g);g.connect(c.destination);src.start(now);src.stop(now+2);
 }
 function sndMiss(){
   const c=ctx(),now=c.currentTime,o=c.createOscillator(),g=c.createGain();
-  o.type='sine';
-  o.frequency.setValueAtTime(420,now);
-  o.frequency.exponentialRampToValueAtTime(180,now+.9);
-  g.gain.setValueAtTime(.26,now);
-  g.gain.exponentialRampToValueAtTime(.001,now+1);
+  o.type='sine';o.frequency.setValueAtTime(420,now);o.frequency.exponentialRampToValueAtTime(180,now+.9);
+  g.gain.setValueAtTime(.26,now);g.gain.exponentialRampToValueAtTime(.001,now+1);
   o.connect(g);g.connect(c.destination);o.start(now);o.stop(now+1);
 }
 function spawnConfetti(){
@@ -922,79 +793,18 @@ function showPanel(id){
   $(id).style.display='block';
 }
 
-// ===== ANIMAÇÃO — RESET =====
 function resetShot(){
   const ball=$('ball');
   ball.className='';
   ball.style.cssText='bottom:14%;left:50%;transform:translateX(-50%)';
   $('keeper').className='';
-  const lbl=$('shot-label');
-  lbl.className='';lbl.textContent='';
-  // ✅ Reseta jogadores para idle
-  const pAzul=$('player-azul');
-  const pVerde=$('player-verde');
-  if(pAzul) pAzul.className ='player-fig pl-azul idle';
-  if(pVerde)pVerde.className='player-fig pl-verde idle';
-}
-
-// ===== ANIMAÇÃO GOL =====
-function animarGol(timeQueAcertou){
-  const pAzul =$('player-azul');
-  const pVerde=$('player-verde');
-  const atacante=timeQueAcertou==='azul'?pAzul:pVerde;
-  const outro   =timeQueAcertou==='azul'?pVerde:pAzul;
-  // Chute
-  if(atacante)atacante.className=`player-fig pl-${timeQueAcertou} kicking`;
-  // Bola e goleiro
-  setTimeout(()=>{ $('ball').classList.add('goal'); },140);
-  setTimeout(()=>{ $('keeper').classList.add('dive-right'); },220);
-  // Label GOL
-  setTimeout(()=>{
-    $('shot-label').textContent='⚽ GOL!';
-    $('shot-label').className='show';
-    sndGoal();spawnConfetti();
-  },550);
-  // Comemoração
-  setTimeout(()=>{
-    if(atacante)atacante.className=`player-fig pl-${timeQueAcertou} celebrating`;
-  },750);
-  // Outro fica triste
-  setTimeout(()=>{
-    if(outro){
-      const outroTime=timeQueAcertou==='azul'?'verde':'azul';
-      outro.className=`player-fig pl-${outroTime} sad`;
-    }
-  },900);
-}
-
-// ===== ANIMAÇÃO FORA =====
-function animarFora(timeQueErrou){
-  const pAzul =$('player-azul');
-  const pVerde=$('player-verde');
-  const atacante=timeQueErrou==='azul'?pAzul:pVerde;
-  const outro   =timeQueErrou==='azul'?pVerde:pAzul;
-  // Chute
-  if(atacante)atacante.className=`player-fig pl-${timeQueErrou} kicking`;
-  // Bola e goleiro
-  setTimeout(()=>{ $('ball').classList.add('miss'); },140);
-  setTimeout(()=>{ $('keeper').classList.add('dive-left'); },220);
-  // Label FORA
-  setTimeout(()=>{
-    $('shot-label').textContent='❌ FORA!';
-    $('shot-label').className='show miss';
-    sndMiss();
-  },550);
-  // Atacante triste
-  setTimeout(()=>{
-    if(atacante)atacante.className=`player-fig pl-${timeQueErrou} sad`;
-  },750);
-  // Goleiro comemora
-  setTimeout(()=>{ $('keeper').className='shake'; },900);
+  const lbl=$('shot-label');lbl.className='';lbl.textContent='';
 }
 
 // ===== SELECIONAR TIME =====
 function selecionarTime(time){
-  meuTime=time;jogadoresLocais=[];
+  meuTime=time;
+  jogadoresLocais=[];
   $('btn-time-azul').className='time-btn'+(time==='azul'?' sel-azul':'');
   $('btn-time-verde').className='time-btn'+(time==='verde'?' sel-verde':'');
   const isAzul=time==='azul';
@@ -1017,12 +827,16 @@ function adicionarJogador(){
   if(jogadoresLocais.includes(nome)){alert('Este nome já foi adicionado!');return;}
   jogadoresLocais.push(nome);
   inp.value='';inp.focus();
-  renderizarListaHome();atualizarBtnEntrar();
+  renderizarListaHome();
+  atualizarBtnEntrar();
 }
+
 function removerJogador(nome){
   jogadoresLocais=jogadoresLocais.filter(n=>n!==nome);
-  renderizarListaHome();atualizarBtnEntrar();
+  renderizarListaHome();
+  atualizarBtnEntrar();
 }
+
 function renderizarListaHome(){
   const lista=$('list-jogadores');
   $('sec-team-count').textContent=`(${jogadoresLocais.length}/10)`;
@@ -1031,11 +845,11 @@ function renderizarListaHome(){
     const chip=document.createElement('div');
     chip.className=`jogador-chip chip-${meuTime}-j`;
     chip.innerHTML=`<span>${nome}</span>
-      <button class="chip-rm"
-        onclick="removerJogador('${nome.replace(/'/g,"\\'")}')">✕</button>`;
+      <button class="chip-rm" onclick="removerJogador('${nome.replace(/'/g,"\\'")}')">✕</button>`;
     lista.appendChild(chip);
   });
 }
+
 function atualizarBtnEntrar(){
   const ok=meuTime!==''&&jogadoresLocais.length>0;
   const btn=$('btn-entrar');
@@ -1047,8 +861,7 @@ function atualizarBtnEntrar(){
 async function entrarNaSala(){
   $('home-erro').textContent='';
   if(!meuTime||jogadoresLocais.length===0){
-    $('home-erro').textContent='❌ Selecione um time e adicione ao menos 1 jogador.';
-    return;
+    $('home-erro').textContent='❌ Selecione um time e adicione ao menos 1 jogador.';return;
   }
   try{
     const r=await fetch(`${SERVIDOR}/registrar`,{
@@ -1057,9 +870,7 @@ async function entrarNaSala(){
       body:JSON.stringify({time:meuTime,jogadores:jogadoresLocais})
     });
     const data=await r.json();
-    if(!data.ok){
-      $('home-erro').textContent='❌ '+(data.erro||'Erro ao entrar.');return;
-    }
+    if(!data.ok){$('home-erro').textContent='❌ '+(data.erro||'Erro ao entrar.');return;}
     ultimaVersao=data.versao;
     $('wait-meu-time').textContent=meuTime==='azul'?'🔵 Time Azul':'🟢 Time Verde';
     atualizarWaitPanel(data);
@@ -1069,6 +880,7 @@ async function entrarNaSala(){
     $('home-erro').textContent='❌ Erro ao conectar com o servidor.';
   }
 }
+
 function atualizarWaitPanel(data){
   $('wait-jogadores-azul').textContent=(data.jogadoresAzul||[]).join(', ')||'—';
   $('wait-jogadores-verde').textContent=(data.jogadoresVerde||[]).join(', ')||'—';
@@ -1086,13 +898,10 @@ function atualizarWaitPanel(data){
 async function iniciarPartida(){
   try{
     const r=await fetch(`${SERVIDOR}/iniciar`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({})
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})
     });
     const data=await r.json();
-    if(!data.ok){
-      $('wait-msg').textContent='❌ '+(data.erro||'Erro ao iniciar.');return;
-    }
+    if(!data.ok){$('wait-msg').textContent='❌ '+(data.erro||'Erro ao iniciar.');return;}
     startAmbient();
   }catch(e){console.error('Erro ao iniciar:',e);}
 }
@@ -1102,13 +911,14 @@ function iniciarPolling(){
   if(pollingInterval)clearInterval(pollingInterval);
   pollingInterval=setInterval(verificarEstado,1000);
 }
+
 async function verificarEstado(){
   try{
     const r=await fetch(`${SERVIDOR}/estado?time=${meuTime}`);
     const data=await r.json();
 
     // ✅ Versão mudou = servidor resetado = volta para home
-    if(ultimaVersao&&data.versao!==ultimaVersao){irParaHome();return;}
+    if(ultimaVersao && data.versao!==ultimaVersao){irParaHome();return;}
 
     // Atualiza placar
     if(data.placar){
@@ -1127,9 +937,10 @@ async function verificarEstado(){
       mostrarResultado(data.placar);return;
     }
 
-    // ✅ COUNTDOWN ativo
-    if(data.aguardandoProxima&&data.proximaEm){
+    // ✅ COUNTDOWN ativo — mostra contagem regressiva
+    if(data.aguardandoProxima && data.proximaEm){
       if(!respondeuEstaRodada){
+        // Dispositivo que ainda não respondeu: bloqueia botões e mostra countdown
         document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
         respondeuEstaRodada=true;
       }
@@ -1140,7 +951,7 @@ async function verificarEstado(){
       return;
     }
 
-    // ✅ Nova pergunta
+    // ✅ Nova pergunta chegou — renderiza nos 2 dispositivos
     if(data.perguntaIndex!==ultimaIndex){
       ultimaIndex=data.perguntaIndex;
       perguntaAtual=data.pergunta;
@@ -1150,11 +961,12 @@ async function verificarEstado(){
       return;
     }
 
-    // Aguarda o outro
+    // Já respondeu, aguarda o outro via polling
     if(respondeuEstaRodada&&!data.aguardandoProxima){
       $('wait-other').style.display='block';
       $('next-btn').style.display='none';
     }
+
   }catch(e){console.error('Erro no polling:',e);}
 }
 
@@ -1164,13 +976,16 @@ function mostrarCountdown(proximaEm){
   cd.style.display='flex';
   $('wait-other').style.display='none';
   $('next-btn').style.display='none';
+
   if(countdownInterval)return;
+
   countdownInterval=setInterval(()=>{
     const restante=Math.ceil((proximaEm-Date.now())/1000);
     $('countdown-num').textContent=restante>0?restante:0;
     if(restante<=0)pararCountdown();
   },200);
 }
+
 function pararCountdown(){
   if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;}
   const cd=$('countdown-box');
@@ -1181,19 +996,23 @@ function pararCountdown(){
 function renderizarPergunta(data){
   if(!data.pergunta)return;
   const q=data.pergunta;
+
   showPanel('quiz-panel');
   $('wait-other').style.display='none';
   $('next-btn').style.display='none';
   $('feedback').className='feedback';
   $('feedback').innerHTML='';
   $('countdown-box').style.display='none';
+
   $('q-counter').textContent=`Pergunta ${q.index+1}/${q.total}`;
   $('cat-tag').textContent=q.cat;
   $('q-text').textContent=q.q;
   $('prog-bar').style.width=`${(q.index/q.total)*100}%`;
+
   const tb=$('turn-badge');
   tb.textContent=meuTime==='azul'?'🔵 Time Azul':'🟢 Time Verde';
   tb.className='tag '+(meuTime==='azul'?'tag-blue':'tag-verde-dark');
+
   const cont=$('opts');cont.innerHTML='';
   ['A','B','C','D'].forEach((l,i)=>{
     const b=document.createElement('button');
@@ -1202,6 +1021,7 @@ function renderizarPergunta(data){
     b.onclick=()=>responder(i);
     cont.appendChild(b);
   });
+
   resetShot();
   clearInterval(timer);
   timeLeft=20;updateTimer();
@@ -1210,6 +1030,7 @@ function renderizarPergunta(data){
     if(timeLeft<=0){clearInterval(timer);responder(-1);}
   },1000);
 }
+
 function updateTimer(){
   $('timer-disp').textContent=timeLeft;
   $('big-timer').textContent=`00:${String(timeLeft).padStart(2,'0')}`;
@@ -1223,6 +1044,7 @@ async function responder(opcao){
   clearInterval(timer);
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
   $('quiz-panel').style.display='none';
+
   try{
     const r=await fetch(`${SERVIDOR}/responder`,{
       method:'POST',
@@ -1239,26 +1061,32 @@ async function responder(opcao){
 
     const btns=document.querySelectorAll('.opt');
     if(btns[data.respostaCorreta])btns[data.respostaCorreta].classList.add('correct');
-    if(opcao>=0&&opcao!==data.respostaCorreta&&btns[opcao])
-      btns[opcao].classList.add('wrong');
+    if(opcao>=0&&opcao!==data.respostaCorreta&&btns[opcao])btns[opcao].classList.add('wrong');
 
     const fb=$('feedback');
     if(data.acertou){
       fb.className='feedback ok show';
-      fb.innerHTML=`✅ <strong>Resposta correta!</strong><br>
-                    <em>${data.explicacao}</em>`;
+      fb.innerHTML=`✅ <strong>Resposta correta!</strong><br><em>${data.explicacao}</em>`;
       setTimeout(()=>sndKick(),80);
-      // ✅ Nova animação de gol
-      animarGol(meuTime);
+      setTimeout(()=>$('ball').classList.add('goal'),140);
+      setTimeout(()=>$('keeper').classList.add('dive-right'),220);
+      setTimeout(()=>{
+        $('shot-label').textContent='⚽ GOL!';
+        $('shot-label').className='show';
+        sndGoal();spawnConfetti();
+      },550);
     }else{
       fb.className='feedback err show';
       const correta=data.opcaoTexto||perguntaAtual?.opts[data.respostaCorreta]||'';
-      fb.innerHTML=`❌ <strong>Chute pra fora!</strong>
-                    Correta: <strong>${correta}</strong><br>
-                    <em>${data.explicacao}</em>`;
+      fb.innerHTML=`❌ <strong>Chute pra fora!</strong> Correta: <strong>${correta}</strong><br><em>${data.explicacao}</em>`;
       setTimeout(()=>sndKick(),80);
-      // ✅ Nova animação de fora
-      animarFora(meuTime);
+      setTimeout(()=>$('ball').classList.add('miss'),140);
+      setTimeout(()=>$('keeper').classList.add('dive-left'),220);
+      setTimeout(()=>{
+        $('shot-label').textContent='❌ FORA!';
+        $('shot-label').className='show miss';
+        sndMiss();
+      },550);
     }
 
     setTimeout(()=>{
@@ -1267,8 +1095,10 @@ async function responder(opcao){
         clearInterval(pollingInterval);pararCountdown();stopAmbient();
         mostrarResultado(data.placar);
       }else if(data.aguardandoProxima){
+        // ✅ Ambos responderam — mostra countdown
         mostrarCountdown(data.proximaEm);
       }else{
+        // Só este respondeu — aguarda o outro
         $('wait-other').style.display='block';
       }
     },1300);
@@ -1282,15 +1112,20 @@ async function responder(opcao){
 
 // ===== RESULTADO =====
 function mostrarResultado(placar){
-  clearInterval(pollingInterval);clearInterval(timer);
-  pararCountdown();stopAmbient();
+  clearInterval(pollingInterval);
+  clearInterval(timer);
+  pararCountdown();
+  stopAmbient();
+
   const azul=(placar?.azul??parseInt($('score-azul').textContent))||0;
   const verde=(placar?.verde??parseInt($('score-verde').textContent))||0;
+
   showPanel('result-panel');
   $('res-scoreline').textContent=`${azul} x ${verde}`;
   $('st-azul').textContent=azul;
   $('st-verde').textContent=verde;
   $('st-acc').textContent=Math.round((azul+verde)/20*100)+'%';
+
   let medal,msg;
   if(azul>verde){
     medal='🔵';
@@ -1304,6 +1139,8 @@ function mostrarResultado(placar){
   }
   $('res-medal').textContent=medal;
   $('res-msg').textContent=msg;
+
+  // ✅ Mostra aviso de email enviado
   $('res-email-info').style.display='block';
 }
 
@@ -1311,7 +1148,8 @@ function mostrarResultado(placar){
 async function jogarNovamente(){
   try{
     await fetch(`${SERVIDOR}/resetar`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({})
     });
   }catch(e){console.error('Erro ao resetar:',e);}
@@ -1320,12 +1158,19 @@ async function jogarNovamente(){
 
 // ===== IR PARA HOME =====
 function irParaHome(){
-  clearInterval(pollingInterval);clearInterval(timer);
-  pararCountdown();stopAmbient();
-  ultimaIndex=-1;ultimaVersao=null;
+  clearInterval(pollingInterval);
+  clearInterval(timer);
+  pararCountdown();
+  stopAmbient();
+
+  ultimaIndex=-1;
+  ultimaVersao=null;
   respondeuEstaRodada=false;
-  meuTime='';jogadoresLocais=[];
+  meuTime='';
+  jogadoresLocais=[];
   resetShot();
+
+  // Reseta visual da home
   $('btn-time-azul').className='time-btn';
   $('btn-time-verde').className='time-btn';
   $('sec-jogadores').style.display='none';
@@ -1333,9 +1178,16 @@ function irParaHome(){
   $('sec-team-count').textContent='(0/10)';
   $('btn-entrar').disabled=true;
   $('btn-entrar').className='btn-entrar-disabled';
+  $('home-erro').textContent='';
+
+  // Reseta placar visual
   $('score-azul').textContent='0';
   $('score-verde').textContent='0';
   $('score-tag').textContent='0 x 0';
+
+  // Reseta resultado
+  $('res-email-info').style.display='none';
+
   showPanel('home-panel');
 }
 </script>
