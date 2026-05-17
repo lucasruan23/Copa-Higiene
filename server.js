@@ -7,7 +7,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ===== PERGUNTAS =====
 const ALL_Q = [
   {cat:"⚽ Aquecimento",q:"A OMS recomenda que as mãos sejam higienizadas por pelo menos quanto tempo com água e sabão?",opts:["5 segundos","20 segundos","1 minuto","5 minutos"],ans:1,exp:"A OMS recomenda pelo menos 20 segundos — tempo de cantar Parabéns duas vezes."},
   {cat:"🏟️ Grandes Eventos",q:"Qual é a forma mais eficaz de eliminar vírus como o Norovírus nas mãos?",opts:["Álcool gel 70%","Somente enxaguar com água","Lavar com água e sabão","Usar luvas cirúrgicas"],ans:2,exp:"Para Norovírus, água e sabão é mais eficaz que álcool gel."},
@@ -18,7 +17,7 @@ const ALL_Q = [
   {cat:"🏆 Regulação",q:"No Brasil, qual órgão publica normas sobre higienização das mãos em serviços de saúde?",opts:["SUS","ANVISA","Ministério do Esporte","INMETRO"],ans:1,exp:"A ANVISA é o órgão regulador responsável por essas normas."},
   {cat:"🧪 Ciência",q:"Qual patógeno hospitalar tem transmissão fortemente reduzida com higiene das mãos?",opts:["MRSA","Vírus da gripe sazonal","Toxoplasma gondii","Plasmodium falciparum"],ans:0,exp:"O MRSA é frequentemente transmitido pelas mãos dos profissionais de saúde."},
   {cat:"📋 Regras",q:"O que os profissionais de saúde devem evitar para garantir boa higiene das mãos?",opts:["Uniforme de manga curta","Anéis, pulseiras e unhas com esmalte ou alongamento","Tênis fechado","Cabelo preso"],ans:1,exp:"Anéis, pulseiras e unhas artificiais favorecem acúmulo de microrganismos."},
-  {cat:"🎯 Pênalti Final",q:"Qual é a forma correta de secar as mãos após a lavagem?",opts:["Papel toalha descartável, secando completamente","Sacudir as mãos no ar","Secar na roupa","Deixar secar ao natural"],ans:0,exp:"Mãos úmidas transmitem muito mais microrganismos; secar bem com papel toalha é essencial."},
+  {cat:"🎯 Pênalti Final",q:"Qual é a forma correta de secar as mãos após a lavagem?",opts:["Papel toalha descartável, secando completamente","Sacudir as mãos no ar","Secar na roupa","Deixar secar ao natural"],ans:0,exp:"Mãos úmidas transmitem muito mais microrganismos; secar bem é essencial."},
   {cat:"🧴 Álcool Gel",q:"Em qual situação o álcool gel é suficiente para higiene das mãos em área hospitalar?",opts:["Sempre, mesmo sujas de sangue","Quando as mãos não estão visivelmente sujas","Somente após usar o banheiro","Nunca, sempre água e sabão"],ans:1,exp:"Sem sujidade visível, álcool a 70% é eficaz e recomendado."},
   {cat:"🚿 Água e Sabão",q:"Quando a preferência é lavar com água e sabão, mesmo havendo álcool gel?",opts:["Após usar o banheiro","Ao entrar no hospital","Ao sair para o almoço","Sempre que lembrar"],ans:0,exp:"Após o banheiro e com mãos visivelmente sujas, prioriza-se água e sabão."},
   {cat:"👶 Pediatria",q:"Em unidades pediátricas, a higiene das mãos ajuda principalmente a prevenir:",opts:["Quedas","Infecções respiratórias e gastrointestinais","Reações a medicamentos","Desidratação"],ans:1,exp:"As mãos são via importante de transmissão de vírus respiratórios e entéricos."},
@@ -31,7 +30,6 @@ const ALL_Q = [
   {cat:"👨‍👩‍👧 Público Geral",q:"Em escolas e eventos esportivos, incentivar a higiene das mãos impacta principalmente:",opts:["Notas escolares","Transmissão de infecções","Conforto térmico","Desempenho físico"],ans:1,exp:"Menos infecções significam menos faltas e menor transmissão entre participantes."}
 ];
 
-// ===== ESTADO =====
 const salas = {};
 
 function criarSala(salaId) {
@@ -39,11 +37,8 @@ function criarSala(salaId) {
     iniciada: false,
     perguntaIndex: 0,
     perguntas: ALL_Q,
-    // Cada time: { gols, respondeu, jogadores:[] }
     times: {},
     timesEsperados: [],
-    // Quantos times precisam estar presentes para iniciar
-    timesNecessarios: 2,
   };
 }
 
@@ -58,7 +53,6 @@ function registrarJogador(salaId, time, nome) {
     sala.times[time] = { gols: 0, respondeu: false, jogadores: [] };
     if (!sala.timesEsperados.includes(time)) sala.timesEsperados.push(time);
   }
-  // Adiciona jogador se não existir e se tiver vaga (máx 10)
   if (nome && !sala.times[time].jogadores.includes(nome) && sala.times[time].jogadores.length < 10) {
     sala.times[time].jogadores.push(nome);
   }
@@ -74,13 +68,10 @@ function resetarRespostas(sala) {
 }
 
 function podeIniciar(sala) {
-  // Só inicia se os 2 times (azul e verde) estiverem presentes
   return sala.timesEsperados.includes('azul') && sala.timesEsperados.includes('verde');
 }
 
-// ===== ROTAS =====
-
-// Entrar na sala
+// Entrar na sala — aceita múltiplos nomes por time
 app.get('/entrar', (req, res) => {
   const { sala = '1', time, nome = '' } = req.query;
   if (!time) return res.status(400).json({ erro: 'Informe o time.' });
@@ -98,7 +89,7 @@ app.get('/entrar', (req, res) => {
   });
 });
 
-// Iniciar partida — só funciona se os 2 times estiverem presentes
+// Iniciar
 app.post('/iniciar', (req, res) => {
   const { sala = '1' } = req.body;
   const s = getSala(sala);
@@ -114,7 +105,7 @@ app.post('/iniciar', (req, res) => {
   res.json({ ok: true });
 });
 
-// Estado atual
+// Estado — inclui todosResponderam para o polling do cliente
 app.get('/estado', (req, res) => {
   const { sala = '1', time } = req.query;
   const s = getSala(sala);
@@ -127,6 +118,8 @@ app.get('/estado', (req, res) => {
     q: pergunta.q,
     opts: pergunta.opts,
   } : null;
+
+  const todos = todosResponderam(s);
 
   res.json({
     iniciada: s.iniciada,
@@ -141,7 +134,7 @@ app.get('/estado', (req, res) => {
       s.timesEsperados.map(t => [t, s.times[t].gols])
     ),
     jaRespondeu: time ? (s.times[time]?.respondeu || false) : false,
-    todosResponderam: todosResponderam(s),
+    todosResponderam: todos,
     fimDeJogo: s.iniciada && s.perguntaIndex >= s.perguntas.length,
   });
 });
@@ -171,6 +164,7 @@ app.post('/responder', (req, res) => {
   res.json({
     acertou,
     respostaCorreta: pergunta.ans,
+    // ✅ Corrigido: envia o texto da opção correta diretamente
     opcaoTexto: pergunta.opts[pergunta.ans],
     explicacao: pergunta.exp,
     gols: s.times[time].gols,
@@ -179,26 +173,20 @@ app.post('/responder', (req, res) => {
   });
 });
 
-// Resetar sala (jogar novamente)
+// Resetar sala
 app.post('/resetar', (req, res) => {
   const { sala = '1' } = req.body;
   const s = getSala(sala);
-  // Guarda jogadores e times
   const timesAntigos = { ...s.times };
   const timesEsperados = [...s.timesEsperados];
-
   criarSala(sala);
-
-  // Restaura jogadores
   timesEsperados.forEach(t => {
-    getSala(sala).times[t] = { gols: 0, respondeu: false, jogadores: timesAntigos[t]?.jogadores || [] };
-    getSala(sala).timesEsperados.push(t);
+    salas[sala].times[t] = { gols: 0, respondeu: false, jogadores: timesAntigos[t]?.jogadores || [] };
+    salas[sala].timesEsperados.push(t);
   });
-
   res.json({ ok: true });
 });
 
-// ===== PORTA =====
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n✅ Servidor rodando na porta ${PORT}\n`);
