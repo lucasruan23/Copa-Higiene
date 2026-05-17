@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const https = require('https');
 
 const app = express();
 app.use(cors());
@@ -37,6 +38,9 @@ function novaPartida() {
     iniciada: false,
     encerrada: false,
     perguntaIndex: 0,
+    // ✅ Countdown entre perguntas (5s após ambos responderem)
+    aguardandoProxima: false,
+    proximaEm: null, // timestamp unix (ms) de quando avança
     perguntas: ALL_Q,
     times: {
       azul:  { gols: 0, respondeu: false, jogadores: [] },
@@ -61,56 +65,137 @@ function podeIniciar() {
          partida.times.verde.jogadores.length > 0;
 }
 
-// ===== ROTA: estado =====
+// ===== ENVIO DE EMAIL via EmailJS REST API =====
+function enviarRelatorio(placar, jogadoresAzul, jogadoresVerde) {
+  const azul  = placar.azul;
+  const verde = placar.verde;
+  let vencedor;
+  if (azul > verde)       vencedor = `🔵 Time Azul (${azul} x ${verde})`;
+  else if (verde > azul)  vencedor = `🟢 Time Verde (${verde} x ${azul})`;
+  else                    vencedor = `🤝 Empate (${azul} x ${verde})`;
+
+  const dataHora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+  const corpo = `
+⚽ RELATÓRIO FINAL — COPA DA HIGIENE
+=====================================
+📅 Data/Hora: ${dataHora}
+
+🏆 RESULTADO: ${vencedor}
+
+🔵 TIME AZUL — ${azul} gol(s)
+Jogadores: ${jogadoresAzul.join(', ') || '—'}
+
+🟢 TIME VERDE — ${verde} gol(s)
+Jogadores: ${jogadoresVerde.join(', ') || '—'}
+
+=====================================
+Total de perguntas: ${ALL_Q.length}
+Aproveitamento geral: ${Math.round((azul + verde) / ALL_Q.length * 100)}%
+  `.trim();
+
+  // Usa EmailJS REST API (serviço gratuito)
+  const payload = JSON.stringify({
+    service_id:  'service_copa_higiene',
+    template_id: 'template_copa_higiene',
+    user_id:     'YOUR_EMAILJS_PUBLIC_KEY',
+    template_params: {
+      to_email:   'raianesouzan09@gmail.com',
+      subject:    `⚽ Relatório Copa da Higiene — ${dataHora}`,
+      message:    corpo,
+      vencedor,
+      azul_gols:  azul,
+      verde_gols: verde,
+      jogadores_azul:  jogadoresAzul.join(', ') || '—',
+      jogadores_verde: jogadoresVerde.join(', ') || '—',
+      data_hora:  dataHora,
+    }
+  });
+
+  const options = {
+    hostname: 'api.emailjs.com',
+    path:     '/api/v1.0/email/send',
+    method:   'POST',
+    headers:  {
+      'Content-Type':   'application/json',
+      'Content-Length': Buffer.byteLength(payload),
+    }
+  };
+
+  const req = https.request(options, res => {
+    console.log(`📧 Email enviado — status: ${res.statusCode}`);
+  });
+  req.on('error', e => console.error('Erro ao enviar email:', e.message));
+  req.write(payload);
+  req.end();
+}
+
+// ===== ROTAS =====
+
+// Estado
 app.get('/estado', (req, res) => {
   const { time = 'azul' } = req.query;
-  const idx = partida.perguntaIndex;
-  const pergunta = partida.perguntas[idx];
-  const fimDeJogo = partida.iniciada && idx >= partida.perguntas.length;
 
-  const perguntaSegura = (!fimDeJogo && pergunta) ? {
+  // ✅ Avança pergunta automaticamente quando o timer expirar
+  if (
+    partida.aguardandoProxima &&
+    partida.proximaEm &&
+    Date.now() >= partida.proximaEm
+  ) {
+    partida.perguntaIndex++;
+    partida.aguardandoProxima = false;
+    partida.proximaEm = null;
+    resetarRespostas();
+    if (partida.perguntaIndex >= partida.perguntas.length) {
+      partida.encerrada = true;
+    }
+  }
+
+  const idx      = partida.perguntaIndex;
+  const fimDeJogo = partida.iniciada && partida.encerrada;
+  const pergunta  = !fimDeJogo ? partida.perguntas[idx] : null;
+
+  const perguntaSegura = pergunta ? {
     index: idx,
     total: partida.perguntas.length,
-    cat: pergunta.cat,
-    q: pergunta.q,
-    opts: pergunta.opts,
+    cat:   pergunta.cat,
+    q:     pergunta.q,
+    opts:  pergunta.opts,
   } : null;
 
   res.json({
-    versao:         partida.versao,
-    iniciada:       partida.iniciada,
-    encerrada:      partida.encerrada,
-    perguntaIndex:  idx,
-    jogadoresAzul:  partida.times.azul.jogadores,
-    jogadoresVerde: partida.times.verde.jogadores,
-    podeIniciar:    podeIniciar(),
-    pergunta:       perguntaSegura,
+    versao:            partida.versao,
+    iniciada:          partida.iniciada,
+    encerrada:         partida.encerrada,
+    perguntaIndex:     idx,
+    jogadoresAzul:     partida.times.azul.jogadores,
+    jogadoresVerde:    partida.times.verde.jogadores,
+    podeIniciar:       podeIniciar(),
+    pergunta:          perguntaSegura,
     placar: {
       azul:  partida.times.azul.gols,
       verde: partida.times.verde.gols,
     },
-    // ✅ informa se ESTE time já respondeu a pergunta atual
-    jaRespondeu:     partida.times[time]?.respondeu || false,
-    // ✅ informa se os 2 já responderam (usado pelo polling do que respondeu primeiro)
-    todosResponderam: todosResponderam(),
+    jaRespondeu:       partida.times[time]?.respondeu || false,
+    todosResponderam:  todosResponderam(),
+    // ✅ Countdown info para o cliente mostrar a contagem regressiva
+    aguardandoProxima: partida.aguardandoProxima,
+    proximaEm:         partida.proximaEm,
     fimDeJogo,
   });
 });
 
-// ===== ROTA: registrar jogadores =====
+// Registrar jogadores
 app.post('/registrar', (req, res) => {
   const { time, jogadores = [] } = req.body;
   if (!['azul','verde'].includes(time))
     return res.status(400).json({ erro: 'Time inválido.' });
   if (!Array.isArray(jogadores) || jogadores.length === 0)
     return res.status(400).json({ erro: 'Informe ao menos 1 jogador.' });
-
-  // Se a partida já encerrou ou está em andamento, não registra
   if (partida.encerrada)
     return res.status(400).json({ erro: 'Partida encerrada. Aguarde o reset.' });
 
   partida.times[time].jogadores = jogadores.slice(0, 10);
-
   res.json({
     ok: true,
     versao:         partida.versao,
@@ -121,61 +206,78 @@ app.post('/registrar', (req, res) => {
   });
 });
 
-// ===== ROTA: iniciar =====
+// Iniciar
 app.post('/iniciar', (req, res) => {
   if (!podeIniciar())
     return res.status(400).json({ erro: 'Os 2 times precisam ter jogadores.' });
   if (partida.iniciada)
     return res.status(400).json({ erro: 'Partida já iniciada.' });
 
-  partida.iniciada = true;
-  partida.encerrada = false;
-  partida.perguntaIndex = 0;
-  partida.times.azul.gols = 0;
-  partida.times.azul.respondeu = false;
-  partida.times.verde.gols = 0;
+  partida.iniciada          = true;
+  partida.encerrada         = false;
+  partida.perguntaIndex     = 0;
+  partida.aguardandoProxima = false;
+  partida.proximaEm         = null;
+  partida.times.azul.gols   = 0;
+  partida.times.azul.respondeu  = false;
+  partida.times.verde.gols  = 0;
   partida.times.verde.respondeu = false;
 
   res.json({ ok: true, versao: partida.versao });
 });
 
-// ===== ROTA: responder =====
+// Responder
 app.post('/responder', (req, res) => {
   const { time, resposta } = req.body;
 
   if (!partida.iniciada)
     return res.status(400).json({ erro: 'Partida não iniciada.' });
-  if (partida.perguntaIndex >= partida.perguntas.length)
-    return res.status(400).json({ erro: 'Fim de jogo.' });
+  if (partida.encerrada)
+    return res.status(400).json({ erro: 'Partida encerrada.' });
+  if (partida.aguardandoProxima)
+    return res.status(400).json({ erro: 'Aguardando próxima pergunta.' });
   if (!['azul','verde'].includes(time))
     return res.status(400).json({ erro: 'Time inválido.' });
   if (partida.times[time].respondeu)
     return res.status(400).json({ erro: 'Já respondeu esta pergunta.' });
 
   const pergunta = partida.perguntas[partida.perguntaIndex];
-  const acertou = Number(resposta) === pergunta.ans;
+  const acertou  = Number(resposta) === pergunta.ans;
 
   if (acertou) partida.times[time].gols++;
   partida.times[time].respondeu = true;
 
   const todos = todosResponderam();
+
+  // ✅ Quando ambos respondem, inicia countdown de 5s
   if (todos) {
-    partida.perguntaIndex++;
-    resetarRespostas();
-    // Marca encerrada se acabaram as perguntas
-    if (partida.perguntaIndex >= partida.perguntas.length) {
-      partida.encerrada = true;
-    }
+    partida.aguardandoProxima = true;
+    partida.proximaEm = Date.now() + 5000; // 5 segundos
+  }
+
+  // Verifica fim de jogo (será confirmado após o timer expirar no /estado)
+  const proximoIndex = partida.perguntaIndex + (todos ? 1 : 0);
+  const fimDeJogo    = todos && proximoIndex >= partida.perguntas.length;
+
+  if (fimDeJogo) {
+    // ✅ Envia relatório por email ao fim
+    enviarRelatorio(
+      { azul: partida.times.azul.gols, verde: partida.times.verde.gols },
+      [...partida.times.azul.jogadores],
+      [...partida.times.verde.jogadores]
+    );
   }
 
   res.json({
     acertou,
-    respostaCorreta: pergunta.ans,
-    opcaoTexto:      pergunta.opts[pergunta.ans],
-    explicacao:      pergunta.exp,
-    gols:            partida.times[time].gols,
-    todosResponderam: todos,
-    fimDeJogo:       partida.perguntaIndex >= partida.perguntas.length,
+    respostaCorreta:   pergunta.ans,
+    opcaoTexto:        pergunta.opts[pergunta.ans],
+    explicacao:        pergunta.exp,
+    gols:              partida.times[time].gols,
+    todosResponderam:  todos,
+    aguardandoProxima: partida.aguardandoProxima,
+    proximaEm:         partida.proximaEm,
+    fimDeJogo,
     placar: {
       azul:  partida.times.azul.gols,
       verde: partida.times.verde.gols,
@@ -183,9 +285,9 @@ app.post('/responder', (req, res) => {
   });
 });
 
-// ===== ROTA: resetar — NOVA partida do zero =====
+// Resetar
 app.post('/resetar', (req, res) => {
-  partida = novaPartida(); // ✅ nova versao gerada aqui
+  partida = novaPartida();
   res.json({ ok: true, versao: partida.versao });
 });
 
