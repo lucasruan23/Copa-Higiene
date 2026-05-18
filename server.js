@@ -324,6 +324,25 @@ app.post('/resetar', (req, res) => {
   res.json({ ok: true, versao: partida.versao });
 });
 
+// ✅ Reset manual de emergência — acesse /admin/reset no navegador
+app.get('/admin/reset', (req, res) => {
+  console.log('🚨 Reset manual via /admin/reset');
+  partida = novaPartida();
+  res.send(`
+    <html>
+      <body style="font-family:sans-serif;text-align:center;padding:40px;background:#021428;color:#fff">
+        <h1>✅ Partida resetada!</h1>
+        <p style="color:#90caf9">Nova versão: ${partida.versao}</p>
+        <a href="/" style="
+          display:inline-block;margin-top:20px;padding:12px 28px;
+          background:#1565c0;color:#fff;border-radius:50px;
+          text-decoration:none;font-weight:700;font-size:1.1em
+        ">🎮 Voltar ao jogo</a>
+      </body>
+    </html>
+  `);
+});
+
 // ===== START =====
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
