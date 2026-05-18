@@ -223,8 +223,12 @@ app.post('/registrar', (req, res) => {
     return res.status(400).json({ erro: 'Time inválido.' });
   if (!Array.isArray(jogadores) || jogadores.length === 0)
     return res.status(400).json({ erro: 'Informe ao menos 1 jogador.' });
-  if (partida.encerrada)
-    return res.status(400).json({ erro: 'Partida encerrada. Aguarde o reset.' });
+
+  // ✅ Se partida encerrada, reseta automaticamente para nova partida
+  if (partida.encerrada) {
+    console.log('🔄 Partida encerrada detectada no /registrar — resetando automaticamente...');
+    partida = novaPartida();
+  }
 
   partida.times[time].jogadores = jogadores.slice(0, 10);
   console.log(`✅ Time ${time} registrado:`, partida.times[time].jogadores);
